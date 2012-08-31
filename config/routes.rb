@@ -1,16 +1,13 @@
 Tutubnb2::Application.routes.draw do
   match "/details" => "detail#create"
-  match "/detail/:id" => "detail#show"
   resources :detail, :controller => 'detail'
 
 
   match "/prices" => "price#create"
-  match "/price/:id" => "price#show"
   resources :price, :controller => 'price'
 
 
   match "/places" => "place#create"
-  match "/place/:id" => "place#show"
   resources :place, :controller => 'place'
 
   get "display/show"
@@ -25,9 +22,10 @@ Tutubnb2::Application.routes.draw do
 
   post "profile/save"
 
+  #match "/profile/validate_user" => "profile#validate_user", as: "validate_user"
   post "profile/validate_user"
 
-  match "/validate_user" => "profile#values", as: "validate_user"
+  
 
   #match "/places" => "place#create"
 

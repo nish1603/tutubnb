@@ -4,10 +4,14 @@ class ProfileController < ApplicationController
 
   def validate_user
     user = User.find_by_email(params[:email])
-    if user and user.authenticate(params[:password])
-      session[:user_id] = user.user_id
-    else
-      redirect_to profile_login_path
+    
+    respond_to do |format|
+      if user and user.authenticate(params[:password])
+        session[:user_id] = user.id
+        format.html { redirect_to display_show_path }
+      else
+        format.html { redirect_to profile_login_path }
+      end 
     end
   end
 
@@ -24,10 +28,10 @@ class ProfileController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html
+        format.html { redirect_to display_show_path }
       else
         format.html { redirect_to profile_signup_path }
-    end	
-  end
+      end	
+    end
   end
 end

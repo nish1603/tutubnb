@@ -1,0 +1,38 @@
+<%= form_for @detail do |form| %>
+
+  <div class="field">
+    <%= form.label :accomodation %><br />
+    <%= form.text_field :accomodation %>
+  </div>
+  <div class="field">
+    <%= form.label :bedrooms %><br />
+    <%= form.number_field :bedrooms %>
+  </div>
+  <div class="field">
+    <%= form.label :beds %><br />
+    <%= form.number_field :beds %>
+  </div>
+  <div class="field">
+    <%= form.label :bed_type %><br />
+    <%= form.text_field :bed_type %>
+  </div>
+  <div class="field">
+    <%= form.label :bathrooms %><br />
+    <%= form.number_field :bathrooms %>
+  </div>
+  <div class="field">
+    <%= form.label :size %><br />
+    <%= form.text_field :size %>
+  </div>
+  <div class="field">
+    <%= form.label :unit %><br />
+    <%= form.text_field :unit %>
+  </div>
+  <div class="field">
+    <%= form.label :pets %><br />
+    <%= form.check_box :pets %>
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

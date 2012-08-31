@@ -1,2 +1,16 @@
-<h1>Display#show</h1>
-<p>Find me in app/views/display/show.html.erb</p>
+<table class = "display-places">
+	<% @places.each do |place| %>
+	  <tr class = "<%= cycle("odd_place_row", "even_place_row") %> selected-place" >
+      <td class = "left-cell">
+        <%= image_tag 'place.jpg', :class => "place_pic", :height => '100px', :width => '95%' %>
+      </td>
+      <td class = "mid-cell">
+        <%= image_tag 'user.png', :class => "profile_pic", :height => '25px', :width => '25px' %>
+	  	  <p class = "title"><a href ="<%= place_path place.id %>"><%= place.title %></a><p>
+	  	  <p class = "property-type" ><%= place.property_type %></p>
+      </td>
+      <td class = "last-cell">
+      </td>
+	  </tr>
+  <% end %>
+</table>

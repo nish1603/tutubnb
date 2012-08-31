@@ -1,27 +1,17 @@
 Tutubnb2::Application.routes.draw do
-  get "price/new"
+  match "/details" => "detail#create"
+  match "/detail/:id" => "detail#show"
+  resources :detail, :controller => 'detail'
 
-  get "price/:id/edit"
 
-  get "price/:id/show"
+  match "/prices" => "price#create"
+  match "/price/:id" => "price#show"
+  resources :price, :controller => 'price'
 
-  post "price/create"
 
-  get "detail/new"
-
-  get "detail/:id/edit"
-
-  get "detail/:id/show"
-
-  post "detail/create"
-
-  get "place/new"
-
-  get "place/:id/edit"
-
-  get "place/:id/show"
-
-  post "place/create"
+  match "/places" => "place#create"
+  match "/place/:id" => "place#show"
+  resources :place, :controller => 'place'
 
   get "display/show"
 
@@ -38,6 +28,8 @@ Tutubnb2::Application.routes.draw do
   post "profile/validate_user"
 
   match "/validate_user" => "profile#values", as: "validate_user"
+
+  #match "/places" => "place#create"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

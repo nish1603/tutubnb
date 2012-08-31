@@ -1,0 +1,37 @@
+<div class = "signup">
+
+  <%= form_for @user,:url => {:action => 'save', :controller => 'profile' } do |form| %>
+
+    
+    <fieldset>
+    	<legend>Enter your details</legend>
+
+    	<div>
+    		<%= form.text_field :first_name, placeholder: 'First Name' %>
+    	</div>
+
+    	<div>
+    		<%= form.text_field :last_name, placeholder: 'Last Name' %>
+    	</div>
+
+      <div>
+    		<%= form.text_field :email, placeholder: 'Email Address' %>  
+    	</div>
+
+      <div>
+    		<%= form.password_field :password, placeholder: 'Password' %>  
+    	</div>
+
+    	<div>
+    		<%= form.select :gender, User::Gender %>
+    	</div>
+
+      <div>
+        <%= form.submit 'Create User' %>
+      </div>
+
+
+    </fieldset>
+  <% end %>
+
+</div>

@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  accomodation: MyString
+  bedrooms: 1
+  beds: 1
+  bed_type: MyString
+  bathrooms: 1
+  size: 1.5
+  unit: MyString
+  pets: false
+
+two:
+  accomodation: MyString
+  bedrooms: 1
+  beds: 1
+  bed_type: MyString
+  bathrooms: 1
+  size: 1.5
+  unit: MyString
+  pets: false

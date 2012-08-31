@@ -1,0 +1,33 @@
+<% if controller.action_name == 'new' then new_action = 'create' else new_action = 'update' end %>
+
+<p>new_action</p>
+
+<%= form_for @place, :url => {:action => new_action, :controller => 'place' } do |f| %>
+
+   <fieldset>
+
+    <legend>Register Your Place</legend>
+
+    <div class="field">
+      <%= f.label :title %><br />
+      <%= f.text_field :title %>
+    </div>
+    <div class="field">
+      <%= f.label :description %><br />
+      <%= f.text_area :description %>
+    </div>
+    <div class="field">
+      <%= f.label :property_type %><br />
+      <%= f.text_field :property_type %>
+    </div>
+    <div class="field">
+      <%= f.label :room_type %><br />
+      <%= f.text_field :room_type %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+  </fieldset>
+
+<% end %>

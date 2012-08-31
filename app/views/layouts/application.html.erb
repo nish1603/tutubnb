@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tutubnb2</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body class = "<%= controller.controller_name %>">
+	<div class = "header">
+    <%= button_to 'List your place' %>
+	  <%= link_to 'Sign Up', profile_signup_path %>
+	  <%= link_to 'Log In', profile_login_path %>
+	  <%= link_to 'Log Out', profile_signup_path %>
+  </div>
+
+  <div class = "part">
+    <%= yield %>
+  </div>
+
+</body>
+</html>

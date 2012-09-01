@@ -20,11 +20,7 @@ class PriceController < ApplicationController
 
   def edit
     @price = Price.find(params[:id])
-    validate_owner @price.place.user_id, show_price_path
-
-    respond_to do |format|
-      format.html 
-    end
+    validating_owner @price.place.user_id, price_path(params[:id])
   end
 
   def update

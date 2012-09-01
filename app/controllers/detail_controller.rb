@@ -19,17 +19,16 @@ class DetailController < ApplicationController
 
   def edit
     @detail = Detail.find(params[:id])
-    validate_owner @detail.place.user_id, show_detail_path
-
-    respond_to do |format|
-      format.html 
+    
+    if !@detail.nil?
+      validating_owner @detail.place.user_id, detail_path(params[:id])
     end
   end
 
   def update
     @detail = Detail.find(params[:id])
-
     update_attributes @detail, :detail
+
   end
 
   def show

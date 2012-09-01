@@ -11,15 +11,23 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def validate_owner owner_id, show_path
-  	if session[:user_id] != owner_id
-  		redirect_to show_path, notice: "Please log in"
-  	end
+  def validating_owner owner_id, show_path
+  	respond_to do |format|
+      if session[:user_id] != owner_id
+  		  format.html { redirect_to show_path }
+      else
+        format.html
+      end
+    end
   end
 
   def update_attributes to_update, type_to_update
-    if to_update.update_attributes(params[type_to_update])
-      format.html { redirect_to to_update }
+    respond_to do |format|
+      if to_update.update_attributes(params[type_to_update])
+        format.html { redirect_to to_update }
+      else
+        format.html
+      end
     end
   end
 end

@@ -1,7 +1,6 @@
 class PlaceController < ApplicationController
 
   skip_before_filter :authorize, only: :show
-  before_filter :validate_owner, only: :edit
 
   def new
   	@place = Place.new
@@ -21,11 +20,7 @@ class PlaceController < ApplicationController
 
   def edit
     @place = Place.find(params[:id])
-    validate_owner @place.user_id, show_place_path
-
-    respond_to do |format|
-      format.html 
-    end
+    validating_owner @place.user_id, place_path(params[:id]) 
   end
 
   def update

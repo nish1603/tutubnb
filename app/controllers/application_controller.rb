@@ -15,6 +15,11 @@ class ApplicationController < ActionController::Base
   	if session[:user_id] != owner_id
   		redirect_to show_path, notice: "Please log in"
   	end
+  end
 
+  def update_attributes to_update, type_to_update
+    if to_update.update_attributes(params[type_to_update])
+      format.html { redirect_to to_update }
+    end
   end
 end

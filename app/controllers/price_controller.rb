@@ -30,11 +30,7 @@ class PriceController < ApplicationController
   def update
     @price = Price.find(params[:id])
 
-    respond_to do |format|
-      if@price.update_attributes(params[:price])
-        format.html { redirect_to @price }
-      end
-    end
+    update_attributes @price, :price
   end
 
   def show

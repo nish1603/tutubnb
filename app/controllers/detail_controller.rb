@@ -29,11 +29,7 @@ class DetailController < ApplicationController
   def update
     @detail = Detail.find(params[:id])
 
-    respond_to do |format|
-      if@detail.update_attributes(params[:price])
-        format.html { redirect_to @detail }
-      end
-    end
+    update_attributes @detail, :detail
   end
 
   def show

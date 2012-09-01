@@ -30,12 +30,7 @@ class PlaceController < ApplicationController
 
   def update
     @place = Place.find(params[:id])
-
-    respond_to do |format|
-      if@place.update_attributes(params[:place])
-        format.html { redirect_to @place }
-      end
-    end
+    update_attributes @place, :place
   end
 
   def show

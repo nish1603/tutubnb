@@ -20,13 +20,10 @@ class PriceController < ApplicationController
 
   def edit
     @price = Price.find(params[:id])
-   
+    validate_owner @price.place.user_id, show_price_path
+
     respond_to do |format|
-      if session[:user_id] != @price.place.user_id
-        format.html { redirect_to show_price_path }
-      else
-        format.html 
-      end
+      format.html 
     end
   end
 

@@ -21,13 +21,10 @@ class PlaceController < ApplicationController
 
   def edit
     @place = Place.find(params[:id])
-    
+    validate_owner @place.user_id, show_place_path
+
     respond_to do |format|
-      if session[:user_id] != @place.user_id
-        format.html { redirect_to show_place_path }
-      else
-        format.html 
-      end
+      format.html 
     end
   end
 

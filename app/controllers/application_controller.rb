@@ -11,10 +11,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # def validate_owner owner_id
-  # 	if session[:user_id] != owner_id
-  # 		redirect_to profile_login_path, notice: "Please log in"
-  # 	end
+  def validate_owner owner_id, show_path
+  	if session[:user_id] != owner_id
+  		redirect_to show_path, notice: "Please log in"
+  	end
 
-  # end
+  end
 end

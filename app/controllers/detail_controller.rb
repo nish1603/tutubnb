@@ -19,18 +19,15 @@ class DetailController < ApplicationController
 
   def edit
     @detail = Detail.find(params[:id])
-  
+    validate_owner @detail.place.user_id, show_detail_path
+
     respond_to do |format|
-      if session[:user_id] != @price.place.user_id
-        format.html { redirect_to show_detail_path }
-      else
-        format.html 
-      end
+      format.html 
     end
   end
 
   def update
-    @detaail = Detail.find(params[:id])
+    @detail = Detail.find(params[:id])
 
     respond_to do |format|
       if@detail.update_attributes(params[:price])

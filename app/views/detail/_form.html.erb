@@ -1,38 +1,40 @@
 <%= form_for @detail do |form| %>
-
-  <div class="field">
-    <%= form.label :accomodation %><br />
-    <%= form.text_field :accomodation %>
-  </div>
-  <div class="field">
-    <%= form.label :bedrooms %><br />
-    <%= form.number_field :bedrooms %>
-  </div>
-  <div class="field">
-    <%= form.label :beds %><br />
-    <%= form.number_field :beds %>
-  </div>
-  <div class="field">
-    <%= form.label :bed_type %><br />
-    <%= form.text_field :bed_type %>
-  </div>
-  <div class="field">
-    <%= form.label :bathrooms %><br />
-    <%= form.number_field :bathrooms %>
-  </div>
-  <div class="field">
-    <%= form.label :size %><br />
-    <%= form.text_field :size %>
-  </div>
-  <div class="field">
-    <%= form.label :unit %><br />
-    <%= form.text_field :unit %>
-  </div>
-  <div class="field">
-    <%= form.label :pets %><br />
-    <%= form.check_box :pets %>
-  </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <table>
+    <tr class="field">
+      <td><%= form.label :accomodation %></td>
+      <td><%= form.text_field :accomodation %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :bedrooms %></td>
+      <td><%= form.number_field :bedrooms %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :beds %></td>
+      <td><%= form.number_field :beds %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :bed_type %></td>
+      <td><%= form.text_field :bed_type %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :bathrooms %></td>
+      <td><%= form.number_field :bathrooms %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :size %></td>
+      <td><%= form.text_field :size %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :unit %></td>
+      <td><%= form.text_field :unit %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :pets %></td>
+      <td><%= form.check_box :pets %></td>
+    </tr>
+    <tr class="actions">
+      <td></td>
+      <td><%= form.submit %></td>
+    </tr>
+  </table>
 <% end %>

@@ -1,14 +1,9 @@
 class PlaceController < ApplicationController
+
+  skip_before_filter :authorize, only: :show
+
   def new
   	@place = Place.new
-
-    respond_to do |format|
-      if !session[:user_id].nil?
-        format.html 
-      else
-        format.html { redirect_to profile_login_path }
-      end
-    end
   end
 
   def create
@@ -27,9 +22,7 @@ class PlaceController < ApplicationController
     @place = Place.find(params[:id])
 
     respond_to do |format|
-      if session[:user_id].nil?
-        format.html { redirect_to profile_login_path }
-      elsif session[:user_id] != @place.user_id
+      if session[:user_id] != @place.user_id
         format.html { redirect_to display_show_path }
       else
         format.html 

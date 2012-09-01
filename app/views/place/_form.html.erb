@@ -1,30 +1,24 @@
 
 <%= form_for @place do |f| %>
-
-   <fieldset>
-
-    <legend>Register Your Place</legend>
-
-    <div class="field">
-      <%= f.label :title %><br />
-      <%= f.text_field :title %>
-    </div>
-    <div class="field">
-      <%= f.label :description %><br />
-      <%= f.text_area :description %>
-    </div>
-    <div class="field">
-      <%= f.label :property_type %><br />
-      <%= f.text_field :property_type %>
-    </div>
-    <div class="field">
-      <%= f.label :room_type %><br />
-      <%= f.text_field :room_type %>
-    </div>
-    <div class="actions">
-      <%= f.submit %>
-    </div>
-
-  </fieldset>
-
+  <table>
+    <tr class="field">
+      <td><%= f.label :title %></td>
+      <td><%= f.text_field :title %></td>
+    </tr>
+    <tr class="field">
+      <td><%= f.label :description %></td>
+      <td><%= f.text_area :description %></td>
+    </tr>
+    <tr class="field">
+      <td><%= f.label :property_type %></td>
+      <td><%= f.text_field :property_type %></td>
+    </tr>
+    <tr class="field">
+      <td><%= f.label :room_type %></td>
+      <td><%= f.text_field :room_type %></td>
+    </tr>
+    <tr class="actions">
+      <td><%= f.submit %></td>
+    </tr>
+  </table>
 <% end %>

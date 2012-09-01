@@ -8,10 +8,14 @@
 </head>
 <body class = "<%= controller.controller_name %> main">
 	<div class = "header">
-    <%= button_to 'List your place' %>
-	  <%= link_to 'Sign Up', profile_signup_path %>
-	  <%= link_to 'Log In', profile_login_path %>
-	  <%= link_to 'Log Out', profile_signup_path %>
+    <table>
+      <tr>
+	      <td class = "for_user" ><%= link_to 'Sign Up', profile_signup_path %></td>
+	      <td class = "for_user" ><%= link_to 'Log In', profile_login_path %></td>
+	      <td class = "for_guest" ><%= link_to 'Log Out', profile_signup_path %></td>
+        <td><%= button_to 'List your place' %></td>
+      </tr>
+    </table>
   </div>
 
   <div class = "part">

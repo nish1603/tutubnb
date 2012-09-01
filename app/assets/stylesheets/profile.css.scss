@@ -1,3 +1,35 @@
 // Place all the styles related to the Profile controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com
+
+.signup, .login {
+  form {
+    fieldset {
+      background : lightblue;
+      border : 1px solid black;
+      width : 33%;
+      margin-left : 33%;
+
+      legend {
+        background : yellow;
+      }
+
+      input {
+        height : 40px;
+        width : 90%;
+        margin-left : 5%;
+        margin-top : 30px;
+        font-size : 20px;
+      }
+
+      select {
+        height : 40px;
+        width : 45%;
+        margin-left : 5%;
+        margin-top : 30px;
+        padding-top : 6px;
+        text-align : center;
+      }
+    }
+  }
+}

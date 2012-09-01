@@ -1,34 +1,35 @@
 <%= form_for @price do |form| %>
-
-  <div class="field">
-    <%= form.label :daily %><br />
-    <%= form.text_field :daily %>
-  </div>
-  <div class="field">
-    <%= form.label :weekend %><br />
-    <%= form.text_field :weekend %>
-  </div>
-  <div class="field">
-    <%= form.label :weekly %><br />
-    <%= form.text_field :weekly %>
-  </div>
-  <div class="field">
-    <%= form.label :monthly %><br />
-    <%= form.text_field :monthly %>
-  </div>
-  <div class="field">
-    <%= form.label :max_guests %><br />
-    <%= form.number_field :max_guests %>
-  </div>
-  <div class="field">
-    <%= form.label :add_guests %><br />
-    <%= form.number_field :add_guests %>
-  </div>
-  <div class="field">
-    <%= form.label :add_price %><br />
-    <%= form.text_field :add_price %>
-  </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <table>
+  <tr class="field">
+    <td><%= form.label :daily %></td>
+    <td><%= form.text_field :daily %></td>
+  </tr>
+  <tr class="field">
+    <td><%= form.label :weekend %></td>
+    <td><%= form.text_field :weekend %></td>
+  </tr>
+  <tr class="field">
+    <td><%= form.label :weekly %></td>
+    <td><%= form.text_field :weekly %></td>
+  </tr>
+  <tr class="field">
+    <td><%= form.label :monthly %></td>
+    <td><%= form.text_field :monthly %></td>
+  </tr>
+  <tr class="field">
+    <td><%= form.label :max_guests %></td>
+    <td><%= form.number_field :max_guests %></td>
+  </tr>
+  <tr class="field">
+    <td><%= form.label :add_guests %></td>
+    <td><%= form.number_field :add_guests %></td>
+  </tr>
+  <tr class="field">
+    <td><%= form.label :add_price %></td>
+    <td><%= form.text_field :add_price %></td>
+  </tr>
+  <tr class="actions">
+    <td><%= form.submit %></td>
+  </tr>
+  </table>
 <% end %>

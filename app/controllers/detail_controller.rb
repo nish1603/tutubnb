@@ -1,14 +1,9 @@
 class DetailController < ApplicationController
+
+  skip_before_filter :authorize, only: :show
+
   def new
   	@detail = Detail.new
-
-    respond_to do |format|
-      if !session[:user_id].nil?
-        format.html 
-      else
-        format.html { redirect_to profile_login_path }
-      end
-    end
   end
 
   def create
@@ -24,6 +19,14 @@ class DetailController < ApplicationController
 
   def edit
     @detail = Detail.find(params[:id])
+
+    respond_to do |format|
+      if session[:user_id] != @price.place.user_id
+        format.html { redirect_to display_show_path }
+      else
+        format.html 
+      end
+    end
   end
 
   def update

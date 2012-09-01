@@ -1,4 +1,7 @@
 class ProfileController < ApplicationController
+  
+  skip_before_filter :authorize
+  
   def login
   end
 

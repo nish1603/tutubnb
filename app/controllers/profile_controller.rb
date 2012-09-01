@@ -1,7 +1,7 @@
 class ProfileController < ApplicationController
   
   skip_before_filter :authorize
-  
+
   def login
   end
 
@@ -11,6 +11,7 @@ class ProfileController < ApplicationController
     respond_to do |format|
       if user and user.authenticate(params[:password])
         session[:user_id] = user.id
+        session[:user_name] = user.first_name
         format.html { redirect_to display_show_path }
       else
         format.html { redirect_to profile_login_path }
@@ -20,6 +21,11 @@ class ProfileController < ApplicationController
 
   def logout
     session[:user_id] = nil
+    session[:user_name] = nil
+
+    respond_to do |format|
+      format.html { redirect_to display_show_path }
+    end
   end
 
   def signup

@@ -10,10 +10,14 @@
 	<div class = "header">
     <table>
       <tr>
-	      <td class = "for_user" ><%= link_to 'Sign Up', profile_signup_path %></td>
-	      <td class = "for_user" ><%= link_to 'Log In', profile_login_path %></td>
-	      <td class = "for_guest" ><%= link_to 'Log Out', profile_signup_path %></td>
-        <td><%= button_to 'List your place' %></td>
+        <td class = "user_name" ><%= link_to session[:user_name] || "Guest", display_show_path  %></td>
+	      <% if session[:user_id].nil? %>
+          <td class = "for_user" ><%= link_to 'Sign Up', profile_signup_path %></td>
+	        <td class = "for_user" ><%= link_to 'Log In', profile_login_path %></td>
+        <% else %>
+	        <td class = "for_guest" ><%= link_to 'Log Out', profile_logout_path %></td>
+        <% end %>
+        <td class = "new_place" ><%= button_to 'List your place', new_place_path, :method => :get %></td>
       </tr>
     </table>
   </div>

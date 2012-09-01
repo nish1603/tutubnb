@@ -1,2 +1,19 @@
-<h1>Place#show</h1>
-<p>Find me in app/views/place/show.html.erb</p>
+
+  <table>
+    <tr class="field">
+      <td><%= "title:" %></td>
+      <td><%= @place.title %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "description:" %></td>
+      <td><%= @place.description %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "property_type:" %></td>
+      <td><%= @place.property_type %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "room_type:" %></td>
+      <td><%= @place.room_type %></td>
+    </tr>
+  </table>

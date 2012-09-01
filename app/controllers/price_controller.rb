@@ -20,10 +20,10 @@ class PriceController < ApplicationController
 
   def edit
     @price = Price.find(params[:id])
-
+   
     respond_to do |format|
       if session[:user_id] != @price.place.user_id
-        format.html { redirect_to display_show_path }
+        format.html { redirect_to show_price_path }
       else
         format.html 
       end
@@ -41,5 +41,6 @@ class PriceController < ApplicationController
   end
 
   def show
+    @price = Price.find(params[:id])
   end
 end

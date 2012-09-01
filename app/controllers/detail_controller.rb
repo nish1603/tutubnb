@@ -12,17 +12,17 @@ class DetailController < ApplicationController
 
     respond_to do |format|
       if @detail.save
-        format.html { redirect_to price_new_path }
+        format.html { redirect_to new_price_path }
       end
     end 
   end
 
   def edit
     @detail = Detail.find(params[:id])
-
+  
     respond_to do |format|
       if session[:user_id] != @price.place.user_id
-        format.html { redirect_to display_show_path }
+        format.html { redirect_to show_detail_path }
       else
         format.html 
       end
@@ -40,5 +40,6 @@ class DetailController < ApplicationController
   end
 
   def show
+    @detail = Detail.find(params[:id])
   end
 end

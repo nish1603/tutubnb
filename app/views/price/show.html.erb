@@ -1,2 +1,31 @@
-<h1>Price#show</h1>
-<p>Find me in app/views/price/show.html.erb</p>
+
+<table>
+  <tr class="field">
+    <td><%= "daily:" %></td>
+    <td><%= @price.daily %></td>
+  </tr>
+  <tr class="field">
+    <td><%= "weekend:" %></td>
+    <td><%= @price.weekend %></td>
+  </tr>
+  <tr class="field">
+    <td><%= "weekly:" %></td>
+    <td><%= @price.weekly %></td>
+  </tr>
+  <tr class="field">
+    <td><%= "monthly:" %></td>
+    <td><%= @price.monthly %></td>
+  </tr>
+  <tr class="field">
+    <td><%= "max_guests" %></td>
+    <td><%= @place.max_guests %></td>
+  </tr>
+  <tr class="field">
+    <td><%= "add_guests:" %></td>
+    <td><%= @place.add_guests %></td>
+  </tr>
+  <tr class="field">
+    <td><%= "add_price:" %></td>
+    <td><%= @place.add_price %></td>
+  </tr>
+</table>

@@ -1,6 +1,7 @@
 class PlaceController < ApplicationController
 
   skip_before_filter :authorize, only: :show
+  before_filter :validate_owner, only: :edit
 
   def new
   	@place = Place.new
@@ -20,10 +21,10 @@ class PlaceController < ApplicationController
 
   def edit
     @place = Place.find(params[:id])
-
+    
     respond_to do |format|
       if session[:user_id] != @place.user_id
-        format.html { redirect_to display_show_path }
+        format.html { redirect_to show_place_path }
       else
         format.html 
       end
@@ -41,5 +42,6 @@ class PlaceController < ApplicationController
   end
 
   def show
+    @place = Place.find(params[:id])
   end
 end

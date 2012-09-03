@@ -1,5 +1,7 @@
 Tutubnb2::Application.routes.draw do
 
+  get "photo/upload"
+
   get "deal/new"
 
   match "deal/create" => "deal#create", :via => :post, :as => :deals
@@ -12,13 +14,13 @@ Tutubnb2::Application.routes.draw do
 
   match  "/deal/:id" => "deal#show", :via => :get, :as => :deal
 
-  get "user/edit"
+  match  "/user/:id/edit" => "user#edit", :via => :get, :as => :user_edit
 
   get "user/update"
 
-  get "user/listings"
+  match  "/user/listings/:id" => "user#listings", :via => :get, :as => :user_listings
 
-  get "user/trips"
+  match  "/user/trips/:id" => "user#trips", :via => :get, :as => :user_trips  
 
   get "user/requests"
 

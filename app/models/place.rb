@@ -13,7 +13,7 @@ class Place < ActiveRecord::Base
   	result = []
 
   	addresses.each do |address|
-  	  result << address.place
+  	  result << address.place unless address.place.nil?
     end
     result
   end

@@ -17,11 +17,13 @@ class UserController < ApplicationController
   end
 
   def listings
-    @listings = Deal.find_listings(params[:id])
+    user = User.find(params[:id])
+    places = user.places
+    @listings = Deal.find_listings(places)
   end
 
   def trips
-    @trips = Deal.find_trips(params[:id])
+    @trips = Deal.find_all_by_user_id(params[:id])
   end
 
   def requests

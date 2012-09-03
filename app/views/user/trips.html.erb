@@ -1,2 +1,27 @@
-<h1>User#trips</h1>
-<p>Find me in app/views/user/trips.html.erb</p>
+<%= render 'form' %>
+
+
+<% @trips.each do |trip| %>
+  <table>
+    <tr class="field">
+      <td><%= "start_date:" %></td>
+      <td><%= trip.start_date %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "end_date:" %></td>
+      <td><%= trip.end_date %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "price:" %></td>
+      <td><%= trip.price %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "User_name:" %></td>
+      <td><%= trip.user_id %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "Place_name:" %></td>
+      <td><%= trip.place_id %></td>
+    </tr>
+  </table>
+<% end %>

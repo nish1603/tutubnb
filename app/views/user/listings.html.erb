@@ -1,2 +1,27 @@
-<h1>User#listings</h1>
-<p>Find me in app/views/user/listings.html.erb</p>
+
+<%= render 'form' %>
+
+<% @listings.each do |listing| %>
+  <table>
+    <tr class="field">
+      <td><%= "start_date:" %></td>
+      <td><%= listing.start_date %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "end_date:" %></td>
+      <td><%= listing.end_date %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "price:" %></td>
+      <td><%= listing.price %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "User_name:" %></td>
+      <td><%= listing.user_id %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "Place_name:" %></td>
+      <td><%= listing.place_id %></td>
+    </tr>
+  </table>
+<% end %>

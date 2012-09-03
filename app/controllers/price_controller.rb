@@ -8,7 +8,7 @@ class PriceController < ApplicationController
 
   def create
   	@price = Price.new(params[:price])
-    @price.place_id = session[:price_id]
+    @price.place_id = session[:place_id]
     session[:place_id] = nil
 
   	respond_to do |format|

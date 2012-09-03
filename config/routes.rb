@@ -1,16 +1,50 @@
 Tutubnb2::Application.routes.draw do
-  match "/details" => "detail#create"
+
+  get "deal/new"
+
+  match "deal/create" => "deal#create", :via => :post, :as => :deals
+
+  get "deal/accept"
+
+  get "deal/reject"
+
+  get "deal/cancel"
+
+  match  "/deal/:id" => "deal#show", :via => :get, :as => :deal
+
+  get "user/edit"
+
+  get "user/update"
+
+  get "user/listings"
+
+  get "user/trips"
+
+  get "user/requests"
+
+  match  "/addresses" => "address#create", :via => :post
+  match  "/address/:id/edit" => "address#edit", :via => :get, :as => :edit_address
+  match  "/address/new" => "address#new", :via => :get, :as => :new_address
+  match  "/address/:id" => "address#show", :via => :get, :as => :address
+  match  "/address/:id" => "address#update", :via => :put
+  match  "/address/:id" => "address#destroy", :via => :delete
+  
+
+  match "/details" => "detail#create", :via => :post
   resources :detail, :controller => 'detail'
 
 
-  match "/prices" => "price#create"
+  match "/prices" => "price#create", :via => :post
   resources :price, :controller => 'price'
 
 
-  match "/places" => "place#create"
+  match "/places" => "place#create", :via => :post
   resources :place, :controller => 'place'
 
-  get "display/show"
+  match "display/show" => "display#show", :via => :post, :as => :display_show
+  match "display/show" => "display#show", :via => :get, :as => :display_show
+
+  post "display/search"
 
   get "profile/login"
 

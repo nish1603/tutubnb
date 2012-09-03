@@ -17,3 +17,10 @@
       <td><%= @place.room_type %></td>
     </tr>
   </table>
+
+  <% if(session[:user_id] && session[:user_id] == @place.user_id) %>
+    <%= link_to 'Edit', edit_place_path(@place.id) %>
+  <% else %>
+    <% session[:place_id] = @place.id %>
+    <%= button_to 'Request Place', deal_new_path, :method => :get %> 
+  <% end %>

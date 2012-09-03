@@ -1,0 +1,24 @@
+<%= form_for(@deal) do |form| %>
+  <table>
+    <tr class="field">
+      <td><%= form.label :start_date %></td>
+      <td><%= form.text_field :start_date %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :end_date %></td>
+      <td><%= form.number_field :end_date %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :guests %></td>
+      <td><%= form.number_field :guests %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :price %></td>
+      <td><%= form.text_field :price %></td>
+    </tr>
+    <tr class="actions">
+      <td></td>
+      <td><%= form.submit %></td>
+    </tr>
+  </table>
+<% end %>

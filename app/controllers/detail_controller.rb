@@ -12,7 +12,7 @@ class DetailController < ApplicationController
 
     respond_to do |format|
       if @detail.save
-        format.html { redirect_to new_price_path }
+        format.html { redirect_to new_address_path }
       end
     end 
   end
@@ -28,10 +28,12 @@ class DetailController < ApplicationController
   def update
     @detail = Detail.find(params[:id])
     update_attributes @detail, :detail
-
   end
 
   def show
     @detail = Detail.find(params[:id])
+  end
+
+  def destroy
   end
 end

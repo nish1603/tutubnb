@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_secure_password
 
   has_many :places
+  has_many :deals
 
   Gender = ['Male', 'Female']
 end

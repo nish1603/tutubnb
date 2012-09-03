@@ -2,6 +2,7 @@ class PlaceController < ApplicationController
 
   skip_before_filter :authorize, only: :show
 
+  # GET new_address_path
   def new
   	@place = Place.new
   end
@@ -9,11 +10,11 @@ class PlaceController < ApplicationController
   def create
   	@place = Place.new(params[:place])
     @place.user_id = session[:user_id]
-    session[:place_id] = @place.id
 
   	respond_to do |format|
       if @place.save
-        format.html { redirect_to detail_new_path }
+        session[:place_id] = @place.id
+        format.html { redirect_to new_detail_path }
       end
     end 
   end

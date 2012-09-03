@@ -11,7 +11,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120830091805) do
+ActiveRecord::Schema.define(:version => 20120903050455) do
+
+  create_table "addresses", :force => true do |t|
+    t.string   "address_line1"
+    t.string   "address_line2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "pincode"
+    t.string   "country"
+    t.integer  "place_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "deals", :force => true do |t|
+    t.date     "start_date"
+    t.date     "end_date"
+    t.float    "price"
+    t.integer  "guests"
+    t.integer  "user_id"
+    t.integer  "place_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "details", :force => true do |t|
     t.string   "accomodation"
@@ -25,6 +48,15 @@ ActiveRecord::Schema.define(:version => 20120830091805) do
     t.integer  "place_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "photos", :force => true do |t|
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.string   "photo_file_size"
+    t.integer  "place_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "places", :force => true do |t|

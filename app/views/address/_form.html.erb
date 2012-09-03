@@ -1,0 +1,32 @@
+<%= form_for @address do |form| %>
+  <table>
+    <tr class="field">
+      <td><%= form.label :address_line1 %></td>
+      <td><%= form.text_field :address_line1 %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :address_line2 %></td>
+      <td><%= form.number_field :address_line2 %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :city %></td>
+      <td><%= form.number_field :city %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :state %></td>
+      <td><%= form.text_field :state %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :pincode %></td>
+      <td><%= form.number_field :pincode %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :country %></td>
+      <td><%= form.text_field :country %></td>
+    </tr>
+    <tr class="actions">
+      <td></td>
+      <td><%= form.submit %></td>
+    </tr>
+  </table>
+<% end %>

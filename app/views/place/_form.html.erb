@@ -1,24 +1,24 @@
 
-<%= form_for @place do |f| %>
+<%= form_for @place do |form| %>
   <table>
     <tr class="field">
-      <td><%= f.label :title %></td>
-      <td><%= f.text_field :title %></td>
+      <td><%= form.label :title %></td>
+      <td><%= form.text_field :title %></td>
     </tr>
     <tr class="field">
-      <td><%= f.label :description %></td>
-      <td><%= f.text_area :description %></td>
+      <td><%= form.label :description %></td>
+      <td><%= form.text_area :description %></td>
     </tr>
     <tr class="field">
-      <td><%= f.label :property_type %></td>
-      <td><%= f.text_field :property_type %></td>
+      <td><%= form.label :property_type %></td>
+      <td><%= form.select :property_type, Place::PROPERTY_TYPE, prompt: "Select Property Type" %></td>
     </tr>
     <tr class="field">
-      <td><%= f.label :room_type %></td>
-      <td><%= f.text_field :room_type %></td>
+      <td><%= form.label :room_type %></td>
+      <td><%= form.select :room_type, Place::ROOM_TYPE, prompt: "Select Room Type" %></td>
     </tr>
     <tr class="actions">
-      <td><%= f.submit %></td>
+      <td><%= form.submit %></td>
     </tr>
   </table>
 <% end %>

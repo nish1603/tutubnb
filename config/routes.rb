@@ -14,11 +14,17 @@ Tutubnb2::Application.routes.draw do
 
   match  "/deal/:id" => "deal#show", :via => :get, :as => :deal
 
+  match  "/deal/:perform/:id" => "deal#reply", :via => :get, :as => :deal_reply
+
   match  "/user/:id/edit" => "user#edit", :via => :get, :as => :user_edit
 
-  get "user/update"
+  match  "/user/:id" => "user#update", :via => :put
+
+  match  "/user/:id" => "user#show", :via => :get, :as => :user
 
   match  "/user/listings/:id" => "user#listings", :via => :get, :as => :user_listings
+
+  match  "/user/requests/:id" => "user#requests", :via => :get, :as => :user_requests
 
   match  "/user/trips/:id" => "user#trips", :via => :get, :as => :user_trips  
 
@@ -114,7 +120,7 @@ Tutubnb2::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+   root :to => 'display#show'
 
   # See how all your routes lay out with "rake routes"
 

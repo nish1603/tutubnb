@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120903050455) do
+ActiveRecord::Schema.define(:version => 20120904065329) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address_line1"
@@ -32,8 +32,11 @@ ActiveRecord::Schema.define(:version => 20120903050455) do
     t.integer  "guests"
     t.integer  "user_id"
     t.integer  "place_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "cancel",     :default => false
+    t.boolean  "accept"
+    t.boolean  "request",    :default => true
   end
 
   create_table "details", :force => true do |t|
@@ -53,7 +56,7 @@ ActiveRecord::Schema.define(:version => 20120903050455) do
   create_table "photos", :force => true do |t|
     t.string   "photo_file_name"
     t.string   "photo_content_type"
-    t.string   "photo_file_size"
+    t.integer  "photo_file_size"
     t.integer  "place_id"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
@@ -90,6 +93,12 @@ ActiveRecord::Schema.define(:version => 20120903050455) do
     t.string   "gender"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.date     "birth_date"
+    t.string   "school"
+    t.text     "describe"
+    t.string   "live"
+    t.string   "work"
+    t.boolean  "verified"
   end
 
 end

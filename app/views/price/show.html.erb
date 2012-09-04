@@ -29,3 +29,10 @@
     <td><%= @price.add_price %></td>
   </tr>
 </table>
+
+ <% if(session[:user_id] && session[:user_id] == @price.place.user_id) %>
+    <%= link_to 'Edit', edit_place_path(@price.id) %>
+  <% else %>
+    <% session[:place_id] = @price.place.id %>
+    <%= button_to 'Request Place', deal_new_path, :method => :get %> 
+  <% end %>

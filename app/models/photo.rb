@@ -4,8 +4,5 @@ class Photo < ActiveRecord::Base
   belongs_to :place
 
 
-  has_attached_file :photo,
-    :styles => {
-    	:thumb => "100x100#"
-    }
+  
 end

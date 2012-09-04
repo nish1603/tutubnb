@@ -1,5 +1,9 @@
-<div class = "login">
+<% if(notice) %>
+  <div class = "notice"><%= notice %></div>
+<% end %> 
 
+
+<div class = "login">
   <%= form_tag('validate_user') do %>
     <fieldset>
     	<legend>Log In</legend>

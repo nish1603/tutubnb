@@ -1,5 +1,11 @@
 class Place < ActiveRecord::Base
   attr_accessible :description, :property_type, :room_type, :title
+  
+  validates :title, :description, :property_type, :room_type, presence: true
+
+  PROPERTY_TYPE = ['Hi']
+  ROOM_TYPE = ['Hello']
+
   has_one :price
   has_one :detail
   has_one :address

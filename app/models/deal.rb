@@ -5,23 +5,26 @@ class Deal < ActiveRecord::Base
   belongs_to :place
 
   def self.find_listings(places)
-  	result = []
-  	places.each do |place|
-  	  temp = Deal.find_all_by_place_id(place.id)
-      result << temp unless temp.nil?
-    end
-    result = result.flatten
-    result = nil if result.empty?
-    result
-  end
-
-   def self.find_listings(places)
     result = []
     places.each do |place|
-      temp = Deal.find_all_by_place_id(place.id)
+      temp = Deal.where(:request => false, :place_id => place.id)
       result << temp unless temp.nil?
     end
     result.flatten
   end
+
+  def self.find_trips(user_id)
+    Deal.find_all_by_user_id(user_id) || []
+  end
+
+  def self.find_requests(places)
+    result = []
+    places.each do |place|
+      temp = Deal.where(:request => true, :place_id => place.id)
+      result << temp unless temp.nil?
+    end
+    result.flatten
+  end
+  
 
 end

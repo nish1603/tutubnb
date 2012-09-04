@@ -1,1 +1,34 @@
 <%= render 'form' %>
+
+<% if(notice) %>
+  <div class = "notice"><%= notice %></div>
+<% end %>
+
+<% @requests.each do |request| %>
+  <table>
+    <tr class="field">
+      <td><%= "start_date:" %></td>
+      <td><%= request.start_date %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "end_date:" %></td>
+      <td><%= request.end_date %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "price:" %></td>
+      <td><%= request.price %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "User_name:" %></td>
+      <td><%= request.user_id %></td>
+    </tr>
+    <tr class="field">
+      <td><%= "Place_name:" %></td>
+      <td><%= request.place_id %></td>
+    </tr>
+    <tr class="action">
+      <td><%= button_to('Accept', deal_reply_path(:accept, request.id), :method => :get) %></td>
+      <td><%= button_to('Reject', deal_reply_path(:reject, request.id), :method => :get) %></td>
+    </tr>
+  </table>
+<% end %>

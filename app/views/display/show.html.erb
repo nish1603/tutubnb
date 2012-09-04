@@ -1,4 +1,8 @@
 
+<% if(notice) %>
+  <div class = "notice"><%= notice %><%= link_to 'Resend Email' %></div>
+<% end %> 
+
 <%= render 'search' %>
 
 <table class = "display-places">

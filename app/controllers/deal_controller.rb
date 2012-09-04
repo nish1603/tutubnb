@@ -18,14 +18,23 @@ class DealController < ApplicationController
     end
   end
 
-  def accept
-    @deal = Deal.find(param[:id])
-    @deal.accept = true
-  end
+  def reply
+    @deal = Deal.find(params[:id])
 
-  def reject
-    @deal = Deal.find(param[:id])
-    @deal.accept = false
+    if(params[:perform] == :accept)
+      res = true
+    else
+      res = false
+    end
+    
+    @deal.accept = res
+    @deal.request = false
+
+    respond_to do |format|
+      if @deal.save
+        format.html { redirect_to user_requests_path(session[:user_id]), notice: "Deal has been #{params[:perform]}ed."  }
+      end
+    end
   end
 
   def cancel

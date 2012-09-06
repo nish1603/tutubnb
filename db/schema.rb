@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904065329) do
+ActiveRecord::Schema.define(:version => 20120905055439) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address_line1"
@@ -58,8 +58,12 @@ ActiveRecord::Schema.define(:version => 20120904065329) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.integer  "place_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   create_table "places", :force => true do |t|
@@ -67,22 +71,15 @@ ActiveRecord::Schema.define(:version => 20120904065329) do
     t.text     "description"
     t.string   "property_type"
     t.string   "room_type"
-    t.integer  "user_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
-
-  create_table "prices", :force => true do |t|
     t.float    "daily"
     t.float    "weekend"
     t.float    "weekly"
     t.float    "monthly"
-    t.integer  "max_guests"
-    t.integer  "add_guests"
-    t.float    "add_price"
-    t.integer  "place_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "add_guests",    :default => 0
+    t.float    "add_price",     :default => 0.0
+    t.integer  "user_id"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -91,14 +88,18 @@ ActiveRecord::Schema.define(:version => 20120904065329) do
     t.string   "email"
     t.string   "password_digest"
     t.string   "gender"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.date     "birth_date"
     t.string   "school"
     t.text     "describe"
     t.string   "live"
     t.string   "work"
     t.boolean  "verified"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
 end

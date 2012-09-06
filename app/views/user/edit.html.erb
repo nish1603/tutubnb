@@ -1,49 +1,60 @@
 
-<%= render 'form' %>
-
 
 <% if(notice) %>
   <div class = "notice"><%= notice %></div>
 <% end %>
 
+<div class = "outer-user-info">
+  <%= render 'form' %>
 
-<%= form_for(@user) do |form| %>
-  <table>
-    <tr class="field">
-      <td><%= form.label :first_name %></td>
-      <td><%= form.text_field :first_name %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label :last_name %></td>
-      <td><%= form.text_field :last_name %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label 'I Am', :for => :user_gender %></td>
-      <td><%= form.select :gender, User::GENDER %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label :birth_date %></td>
-      <td><%= form.date_select :birth_date %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label 'Tell About yourself', :for => :user_description %></td>
-      <td><%= form.text_area :describe %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label :school %></td>
-      <td><%= form.text_field :school %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label 'Where you Work', :for => :user_work %></td>
-      <td><%= form.text_field :work, :placeholder => 'like Microsoft / Apple etc.' %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label 'Where you Live', :for => :user_live %></td>
-      <td><%= form.text_field :live %></td>
-    </tr>
-    <tr class="actions">
-      <td></td>
-      <td><%= form.submit %></td>
-    </tr>
-  </table>
-<% end %>
+  <div class = "user-info">
+    <%= form_for(@user) do |form| %>
+      <table>
+        <tr class="field">
+          <td><%= image_tag @user.avatar %></td>
+          <td><%= link_to 'Change Profile Pic' %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label :first_name %></td>
+          <td><%= form.text_field :first_name %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label :last_name %></td>
+          <td><%= form.text_field :last_name %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label 'I Am', :for => :user_gender %></td>
+          <td><%= form.select :gender, User::GENDER %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label :email %></td>
+          <td><%= form.text_field :email %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label :birth_date %></td>
+          <td><%= form.date_select(:birth_date, :start_year => Time.new.year - 80, :end_year => Time.new.year - 18) %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label 'Tell About yourself', :for => :user_description %></td>
+          <td><%= form.text_area :describe, :rows => 10 %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label :school %></td>
+          <td><%= form.text_field :school %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label 'Where you Work', :for => :user_work %></td>
+          <td><%= form.text_field :work, :placeholder => 'like Microsoft / Apple etc.' %></td>
+        </tr>
+        <tr class="field">
+          <td><%= form.label 'Where you Live', :for => :user_live %></td>
+          <td><%= form.text_field :live %></td>
+        </tr>
+        <tr class="actions">
+          <td></td>
+          <td><%= form.submit("Save User") %></td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</div>

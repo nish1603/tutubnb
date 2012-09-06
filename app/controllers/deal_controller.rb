@@ -4,10 +4,19 @@ class DealController < ApplicationController
   end
 
   def create
+    
+    [:start_date, :end_date].each do |date|
+      params[:deal][date] = Date.new(params[:deal][date.to_s + "(1i)"].to_i, params[:deal][date.to_s + "(2i)"].to_i, params[:deal][date.to_s + "(3i)"].to_i)
+      params[:deal].delete(date.to_s + "(3i)")
+      params[:deal].delete(date.to_s + "(2i)")
+      params[:deal].delete(date.to_s + "(1i)")
+    end
+
     @deal = Deal.new(params[:deal])
-    #@deal.cancel = false
+    @deal.cancel = false
     @deal.user_id = session[:user_id]
     @deal.place_id = session[:place_id]
+
     session[:place_id] = nil
 
 

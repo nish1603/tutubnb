@@ -13,6 +13,7 @@ class DisplayController < ApplicationController
 
   def search
   	location = params[:location]
+    
     places = Place.find_by_location(location)
     session[:places] = places
 

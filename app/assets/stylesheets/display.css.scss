@@ -2,48 +2,72 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.display-places {
-  width : 85%;
-  background : lightblue;
-  margin-left : 15%;
-  .selected-place {
-  	
-    .left-cell {
-      width : 25%;
+.display-showroom {
+
+  .search-options {
+    width : 100%;
+    background : purple;
+    border : 1px solid black;
+    display : block;
+    color : white;
+
+    td {
+      padding : 5px;
     }
 
+    input[type = "text"] {
+      width : 125px;
+    }
+  }
 
-    .mid-cell {
-      width : 60%;
-
-      img {
-        margin-left : 5%;
+  .display-options {
+    width : 15%;
+    background : pink;
+    float : left;
+  }
+  .display-places {
+    width : 85%;
+    background : lightblue;
+    margin-left : 15%;
+    .selected-place {
+    	
+      .left-cell {
+        width : 25%;
       }
 
-      .title {
-        margin : 5%;
-        color : blue;
-        text-weight : bold;
-        display : inline;
+
+      .mid-cell {
+        width : 60%;
+
+        img {
+          margin-left : 5%;
+        }
+
+        .title {
+          margin : 5%;
+          color : blue;
+          text-weight : bold;
+          display : inline;
+        }
+
+        .property-type {
+          margin-left : 10%;
+        }
+      }   
+
+      .right-cell {
+        width : 15%;
       }
 
-      .property-type {
-        margin-left : 10%;
-      }
-    }   
 
-    .right-cell {
-      width : 15%;
     }
 
+    .odd_place_row {
+      background : lightgrey;
+    }
 
-  }
-
-  .odd_place_row {
-    background : lightgrey;
-  }
-
-  .even_place_row {
-    background : lightgreen;
+    .even_place_row {
+      background : lightgreen;
+    }
   }
 }

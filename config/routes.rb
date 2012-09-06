@@ -37,6 +37,7 @@ Tutubnb2::Application.routes.draw do
   match  "/address/:id" => "address#update", :via => :put
   match  "/address/:id" => "address#destroy", :via => :delete
   
+  match  "/photos" => "photo#save", :via => :post
 
   match "/details" => "detail#create", :via => :post
   resources :detail, :controller => 'detail'

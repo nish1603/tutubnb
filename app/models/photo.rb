@@ -1,8 +1,7 @@
 class Photo < ActiveRecord::Base
-  attr_accessible :photo
+  attr_accessible :avatar
 
-  belongs_to :place
+  has_attached_file :avatar, :styles => { :small => '100x100>' }
 
-
-  
+  belongs_to :place 
 end

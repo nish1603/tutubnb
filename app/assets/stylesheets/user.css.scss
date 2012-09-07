@@ -6,6 +6,25 @@
     height : 100%;
     width : 20%;
     border : 1px solid magenta;
+
+    .profile-pic {
+      img {
+        width : 80%;
+        height : 20%;
+        margin-left : 10%;
+        margin-top : 5%;
+      }
+
+      a {
+        width : 80%;
+        height : 20%;
+        margin-left : 20%;
+        margin-top : 5%;
+        color : red;
+        font-size : 12px;
+      }
+    }
+
     ul {
       margin-bottom : 3px;
     	li {

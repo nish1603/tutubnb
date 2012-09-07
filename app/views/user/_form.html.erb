@@ -1,4 +1,16 @@
+
+
 <div class = "user-option">
+
+  <div class = "profile-pic">
+    <% if(@user.avatar.exists?) %>
+      <%= image_tag(@user.avatar) %>
+    <% else %>
+      <%= image_tag('missing.png') %>
+    <% end %>
+    <%= link_to 'Change Profile Pic', user_change_dp_path(session[:user_id]), :class => 'change-pic' %>
+  </div>
+
 	<ul>
     <li><%= link_to 'Edit', user_edit_path(session[:user_id]) %></li>
     <li><%= link_to 'Listings', user_listings_path(session[:user_id]) %></li>

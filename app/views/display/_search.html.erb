@@ -1,10 +1,10 @@
-<%= form_tag('/display/search', :method => :post) %>
+<%= form_tag('/display/show', :method => :post, :remote => :true) %>
 <table class = "search-options">
   <tr>
     <td><%= text_field_tag :city, nil, :placeholder => 'city' %></td>
     <td><%= text_field_tag :country, nil, :placeholder => 'country' %></td>
-    <td><%= 'Start date :' %><%= date_select(:deal, :start_date) %></td>
-    <td><%= 'End date :' %><%= date_select(:deal, :end_date) %></td>
+    <td><%= 'Property type : ' %><%= select_tag(:property_type, options_for_select(Place::PROPERTY_TYPE)) %></td>
+    <td><%= 'Room Type : ' %><%= select_tag(:room_type, options_for_select(Place::ROOM_TYPE)) %></td>
     <td><%= text_field_tag :guests %></td>
     <td><%= submit_tag :Search %></td>
   </tr>

@@ -11,10 +11,6 @@
     <%= form_for(@user) do |form| %>
       <table>
         <tr class="field">
-          <td><%= image_tag @user.avatar %></td>
-          <td><%= link_to 'Change Profile Pic' %></td>
-        </tr>
-        <tr class="field">
           <td><%= form.label :first_name %></td>
           <td><%= form.text_field :first_name %></td>
         </tr>

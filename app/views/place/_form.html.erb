@@ -1,5 +1,5 @@
 <div class="place-info">
-  <%= form_for @place do |form| %>
+  <%= form_for(@place, :html => { :multipart => true }) do |form| %>
     <% if @place.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@place.errors.count, "error") %>prohibited this product from being saved:</h2>
@@ -51,10 +51,6 @@
         <td><%= form.text_field :monthly %></td>
       </tr>
       <tr class="field">
-        <td><%= form.label :max_guests %></td>
-        <td><%= form.number_field :max_guests %></td>
-      </tr>
-      <tr class="field">
         <td><%= form.label :add_guests %></td>
         <td><%= form.number_field :add_guests %></td>
       </tr>
@@ -62,11 +58,12 @@
         <td><%= form.label :add_price %></td>
         <td><%= form.text_field :add_price %></td>
       </tr>
-      <tr class="actions">
-        <td></td>
-        <td><%= form.submit %></td>
-      </tr>
-  </table>
+    </table>
+
+    <p>Images</p>
+    <%= form.fields_for :photos do |builder| %>
+      <%= render :template => 'photo/upload.html.erb', :locals => { :form => builder } %>
+    <% end %>
 
     
     <p>Details (Optional)</p>

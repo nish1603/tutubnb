@@ -18,7 +18,11 @@ Tutubnb2::Application.routes.draw do
 
   match  "/user/:id/edit" => "user#edit", :via => :get, :as => :user_edit
 
+  match  "/user/:id/change_dp" => "user#change_dp", :via => :get, :as => :user_change_dp
+
   match  "/user/:id" => "user#update", :via => :put
+
+  match  "/user/:id/update_dp" => "user#update_dp", :via => :put
 
   match  "/user/:id" => "user#show", :via => :get, :as => :user
 

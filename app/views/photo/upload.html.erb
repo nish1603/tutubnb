@@ -1,4 +1,6 @@
-<%= form_for @photo, :html => { :multipart => :true }, :url => { :action => :save, :controller => :photo } do |form| %>
-  <%= form.file_field :avatar %>
-  <%= form.submit %>
-<% end %>
+<table>
+  <tr class="field">
+    <td><%= form.label 'Upload' %></td>
+    <td><%= form.file_field :avatar, :value => avatar. %></td>
+  </tr>
+</table>

@@ -8,17 +8,20 @@ class DisplayController < ApplicationController
 
   	respond_to do |format|
   		format.html
+      format.js
     end
   end
 
   def search
-  	location = params[:location]
+  # 	location = params[:location]
     
-    places = Place.find_by_location(location)
-    session[:places] = places
+  #   places = Place.find_by_location(location)
+  #   session[:places] = places
 
-    respond_to do |format|
-      format.html { redirect_to display_show_path }
-    end
+  #   respond_to do |format|
+  #     format.html { redirect_to display_show_path }
+  #   end
   end
+
+  
 end

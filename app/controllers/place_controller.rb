@@ -6,11 +6,13 @@ class PlaceController < ApplicationController
   def new
   	@place = Place.new
     @place.detail = Detail.new
-    @place.address = Address.new 
+    @place.address = Address.new
+    2.times { @place.photos.build }
   end
 
   def create
   	@place = Place.new(params[:place])
+    @place.photos.build(params[:photos])
     @place.user_id = session[:user_id]
 
   	respond_to do |format|

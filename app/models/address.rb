@@ -5,7 +5,5 @@ class Address < ActiveRecord::Base
 
   belongs_to :place
 
-  def self.find_by_location(location)
-  	Address.where(:city => location)
-  end
+  scope :a_city, lambda { |city| where(:city => city) }
 end

@@ -1,5 +1,13 @@
 Tutubnb2::Application.routes.draw do
 
+  get "review/new"
+
+  get "review/edit"
+
+  get "review/show"
+
+  get "review/destroy"
+
   get "photo/upload"
 
   get "deal/new"

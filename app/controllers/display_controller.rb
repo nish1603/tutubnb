@@ -13,14 +13,6 @@ class DisplayController < ApplicationController
   end
 
   def search
-  # 	location = params[:location]
-    
-  #   places = Place.find_by_location(location)
-  #   session[:places] = places
-
-  #   respond_to do |format|
-  #     format.html { redirect_to display_show_path }
-  #   end
   end
 
   

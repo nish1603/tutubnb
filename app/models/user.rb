@@ -2,7 +2,7 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :first_name, :gender, :last_name, :password, :describe, :work, :live, :birth_date, :school, :avatar
 
-  validates :first_name, :last_name, :email, :gender, presence: true, :on => :create
+  validates :first_name, :last_name, :email, :gender, presence: true, :on => :create, :update
   validates :password, presence: true, :on => :create
   validates :birth_date, presence: true, :on => :update
   validates :avatar, presence: true, :on => :update_dp

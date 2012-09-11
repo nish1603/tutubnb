@@ -1,4 +1,6 @@
 class UserController < ApplicationController
+  before_filter :validate_account, :except => :wallet
+
   def edit
     edit_func
   end
@@ -20,11 +22,7 @@ class UserController < ApplicationController
     @visits = Deal.find_visits_of_user(@user)
 
     respond_to do |format|
-      if(session[:user_id].nil? and session[:user_id] != @user.id)
-        format.html { redirect_to display_show_path }
-      else
-        format.html
-      end
+      format.html
     end
   end
 
@@ -33,11 +31,7 @@ class UserController < ApplicationController
     @trips = Deal.find_trips_of_user(@user)
 
     respond_to do |format|
-      if(session[:user_id].nil? and session[:user_id] != @user.id)
-        format.html { redirect_to display_show_path }
-      else
-        format.html
-      end
+      format.html
     end
   end
 
@@ -46,11 +40,7 @@ class UserController < ApplicationController
     @requests = Deal.find_requests_of_user(@user)
 
     respond_to do |format|
-      if(session[:user_id].nil? and session[:user_id] != @user.id)
-        format.html { redirect_to display_show_path }
-      else
-        format.html
-      end
+      format.html
     end
   end
 
@@ -61,11 +51,7 @@ class UserController < ApplicationController
      @user = User.find(params[:id])
     
     respond_to do |format|
-      if(session[:user_id].nil? and session[:user_id] != @user.id)
-        format.html { redirect_to display_show_path }
-      else
-        format.html
-      end
+      format.html
     end
   end
 
@@ -73,11 +59,7 @@ class UserController < ApplicationController
     @user = User.find(params[:id])
     
     respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to user_edit_path(params[:id]), notice: "Your #{message} has been updated." }
-      else
-        format.html { render :action => render_option }
-      end
+      format.html { render :action => render_option }
     end
   end
 

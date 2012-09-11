@@ -30,4 +30,10 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  def validate_account
+    if(session[:user_id] != params[:id].to_i)
+      redirect_to display_show_path
+    end
+  end
 end

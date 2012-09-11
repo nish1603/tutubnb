@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120905055439) do
+ActiveRecord::Schema.define(:version => 20120909115847) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address_line1"
@@ -75,11 +75,23 @@ ActiveRecord::Schema.define(:version => 20120905055439) do
     t.float    "weekend"
     t.float    "weekly"
     t.float    "monthly"
-    t.integer  "add_guests",    :default => 0
-    t.float    "add_price",     :default => 0.0
+    t.integer  "add_guests"
+    t.float    "add_price"
     t.integer  "user_id"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.boolean  "verified",      :default => false
+    t.boolean  "hidden",        :default => false
+  end
+
+  create_table "reviews", :force => true do |t|
+    t.string   "subject"
+    t.text     "description"
+    t.integer  "ratings"
+    t.integer  "user_id"
+    t.integer  "place_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -100,6 +112,9 @@ ActiveRecord::Schema.define(:version => 20120905055439) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.float    "wallet"
+    t.boolean  "admin"
+    t.string   "activation_link"
   end
 
 end

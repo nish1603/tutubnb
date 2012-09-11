@@ -1,26 +1,46 @@
+<div class = "place-information">
+  <iframe name = "image-frame" src = "<%= @place.photos.first.avatar.url %>" >
+  </iframe> 
 
-  <table>
-    <tr class="field">
-      <td><%= "title:" %></td>
-      <td><%= @place.title %></td>
-    </tr>
-    <tr class="field">
-      <td><%= "description:" %></td>
-      <td><%= @place.description %></td>
-    </tr>
-    <tr class="field">
-      <td><%= "property_type:" %></td>
-      <td><%= @place.property_type %></td>
-    </tr>
-    <tr class="field">
-      <td><%= "room_type:" %></td>
-      <td><%= @place.room_type %></td>
-    </tr>
-  </table>
+  <div class = "images">
+    <% @place.photos.each do |photo| %>
+      <a href = "<%= photo.avatar.url %>" target = "image-frame"><%= image_tag photo.avatar, :class => :small %></a>
+    <% end %>
+  </div>
 
-  <% if(session[:user_id] && session[:user_id] == @place.user_id) %>
-    <%= link_to 'Edit', edit_place_path(@place.id) %>
-  <% else %>
-    <% session[:place_id] = @place.id %>
-    <%= button_to 'Request Place', deal_new_path, :method => :get %> 
-  <% end %>
+  <ul>
+    <li><%= link_to 'Description' %></li>
+    <li><%= link_to 'Details' %></li>
+    <li><%= link_to 'House Rules' %></li>
+    <li><%= link_to 'Amenties' %></li>
+  </ul>
+
+    <table>
+      <tr class="field">
+        <td><%= "Title:" %></td>
+        <td><%= @place.title %></td>
+      </tr>
+      <tr class="field">
+        <td><%= "Description:" %></td>
+        <td><%= @place.description %></td>
+      </tr>
+      <tr class="field">
+        <td><%= "Property Type:" %></td>
+        <td><%= @place.property_type %></td>
+      </tr>
+      <tr class="field">
+        <td><%= "Room Type:" %></td>
+        <td><%= @place.room_type %></td>
+      </tr>
+    </table>
+
+    <% if(session[:user_id] && session[:user_id] == @place.user_id) %>
+      <%= link_to 'Edit', edit_place_path(@place.id) %>
+    <% else %>
+      <%= button_to 'Request Place', deal_new_path(@place.id), :method => :get %> 
+    <% end %>
+
+  <div id = "place-reviews">
+    <%= render 'reviews' %>
+  </div>
+</div>

@@ -31,6 +31,13 @@
           <td><%= "Place Name:" %></td>
           <td><%= visit.place_id %></td>
         </tr>
+        <tr class="field">
+          <td><%= "Email - ID of Visitor " %></td>
+          <td><%= visit.user.email %></td>
+          <% if(@deal.start_date >= Date.current) %>
+            <td><%= "Have a Safe Journey" %></td>
+          <% end %>
+        </tr>
       </table>
     <% end %>
   </div>

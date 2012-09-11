@@ -9,8 +9,8 @@ class CreatePlaces < ActiveRecord::Migration
       t.float :weekend
       t.float :weekly 
       t.float :monthly
-      t.integer :add_guests, default: 0
-      t.float :add_price, default: 0.00
+      t.integer :add_guests
+      t.float :add_price
       t.integer :user_id
 
       t.timestamps

@@ -12,7 +12,7 @@
     <% end %>
 
     
-    <p>Description</p>
+    <p><a name = "description">Description</a></p>
     <table>    
       <tr class="field">
         <td><%= form.label :title %></td>
@@ -32,7 +32,7 @@
       </tr>
     </table>
 
-    <p>Price</p>
+    <p><a name = "prices">Prices</a></p>
     <table>
       <tr class="field">
         <td><%= form.label :daily %></td>
@@ -60,26 +60,26 @@
       </tr>
     </table>
 
-    <p>Images</p>
+    <p><a name = "images">Images</a></p>
     <%= form.fields_for :photos do |builder| %>
       <%= render :template => 'photo/upload.html.erb', :locals => { :form => builder } %>
     <% end %>
 
     
-    <p>Details (Optional)</p>
+    <p><a name = "details">Details (Optional)</a></p>
     <%= form.fields_for :detail do |builder| %>
       <%= render :template => 'detail/_form.html.erb', :locals => { :form => builder } %>
     <% end %>
     
-    <p>Address</p>
+    <p><a name = "address">Address</a></p>
     <%= form.fields_for :address do |builder| %>
       <%= render :template => 'address/_form.html.erb', :locals => { :form => builder } %>
     <% end %>
     
     <table>
       <tr class="actions">
-        <td></td>
-        <td><%= form.submit %></td>
+        <td><%= form.submit 'Save Place'%></td>
+        <td><%= form.submit 'Create Place'%></td>
       </tr>
     </table>
   <% end %>

@@ -4,25 +4,18 @@ class DealController < ApplicationController
   end
 
   def create
-    
-    [:start_date, :end_date].each do |date|
-      params[:deal][date] = Date.new(params[:deal][date.to_s + "(1i)"].to_i, params[:deal][date.to_s + "(2i)"].to_i, params[:deal][date.to_s + "(3i)"].to_i)
-      params[:deal].delete(date.to_s + "(3i)")
-      params[:deal].delete(date.to_s + "(2i)")
-      params[:deal].delete(date.to_s + "(1i)")
-    end
-
     @deal = Deal.new(params[:deal])
     @deal.cancel = false
+    @deal.place_id = params[:place_id]
     @deal.user_id = session[:user_id]
-    @deal.place_id = session[:place_id]
 
-    session[:place_id] = nil
-
+    @deal.price = DealHelper.calculate_price(@deal, @deal.place)
 
     respond_to do |format|
-      if @deal.save
-        format.html { redirect_to deal_path(@deal.id) }
+      if(params[:commit] == "Book Place" and @deal.save)
+        format.html { redirect_to place_path(@deal.place.id) }
+      else
+        format.html { render "new" }
       end
     end
   end
@@ -32,6 +25,7 @@ class DealController < ApplicationController
 
     if(params[:perform] == :accept)
       res = true
+      @deal.user.wallet -= @deal.price 
     else
       res = false
     end
@@ -52,6 +46,5 @@ class DealController < ApplicationController
     @deal.cancel = true
   end
 
-  def show
-  end
+  
 end

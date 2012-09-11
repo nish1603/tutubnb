@@ -1,2 +1,20 @@
-<h1>Review#new</h1>
-<p>Find me in app/views/review/new.html.erb</p>
+<%= form_for(@review, :url => "/place/#{@place.id}", :method => :post, :remote => true) do |form| %>
+  <table>    
+    <tr class="field">
+      <td><%= form.label :subject %></td>
+      <td><%= form.text_field :subject %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :description %></td>
+      <td><%= form.text_area :description, :rows => 10 %></td>
+    </tr>
+    <tr class="field">
+      <td><%= form.label :ratings %></td>
+      <td><%= form.text_field :ratings %></td>
+    </tr>
+    <tr class="action">
+      <td></td>
+      <td><%= form.submit 'Submit' %></td>
+    </tr>
+  </table>
+<% end %>

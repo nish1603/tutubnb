@@ -1,6 +1,31 @@
 // Place all the styles related to the place controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#side {
+  background : pink;
+  border : 1px solid magenta;
+  float : left;
+  width : 20%;
+  height : 100%;
+  display : table-cell;
+
+  td {
+    text-align : left;
+    padding-left : 5%;
+    padding-top : 5%;
+    text-decoration : none;
+    color : magenta;
+
+    a:hover {
+      color : black;
+
+    }
+
+  }
+}
+
+
 .place-info {
   height : 100%;
   background : lightblue;
@@ -26,5 +51,52 @@
   td {
     padding-left : 10%;
     padding-top : 2%;
+  }
+
+  .actions {
+    td {
+      padding-left : 100%;
+
+    }
+  }
+}
+
+.place-information {
+  background : lightblue;
+  width : 80%;
+
+  iframe {
+    width : 60%;
+    margin-left : 20%;
+    margin-top : 20px;
+    height : 400px;
+
+  }
+  
+  img.small {
+    width : 100px;
+    height : 100px;
+  }
+
+  li {
+    background : blue;
+    z-index : 3px;
+    display : inline;
+
+    a {
+      color : white;
+      padding : 2px;
+      text-decoration: none;
+    }
+  } 
+
+  table {
+    background : lightgreen;
+    border : 2px solid blue;
+    color : blue;
+    margin-left : 2%;
+    width : 90%;
+    margin-top : -17px;
+    height : 200px;
   }
 }

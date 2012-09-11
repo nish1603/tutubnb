@@ -4,15 +4,20 @@
     	<% @places.each do |place| %>
     	  <tr class = "<%= cycle("odd_place_row", "even_place_row") %> selected-place" >
           <td class = "left-cell">
-            <%= image_tag 'place.jpg', :class => "place_pic", :height => '100px', :width => '95%' %>
+            <%= image_tag place.photos.first.avatar, :class => "place_pic", :height => '100px', :width => '95%' %>
           </td>
           <td class = "mid-cell">
-            <%= image_tag 'user.png', :class => "profile_pic", :height => '25px', :width => '25px' %>
     	  	  <p class = "title"><a href ="<%= place_path(place.id) %>"><%= place.title %></a><p>
-    	  	  <p class = "property-type"><%= place.property_type %></p>
+    	  	  <p class = "property-type"><%= place.property_type + " - " + place.room_type %></p>
           </td>
           <td class = "last-cell">
-          </td>
+          <% if(session[:admin] == true) %>
+            <%= link_to 'Delete', place_path(place.id), :method => :delete %>
+            <% if(place.verified == false) %>
+              <%= link_to 'Verify', verify_place_path(place.id) %>
+            <% end %>
+          <% end %>
+        </td>
     	  </tr>
       <% end %>
     </table>

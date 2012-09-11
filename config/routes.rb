@@ -10,9 +10,9 @@ Tutubnb2::Application.routes.draw do
 
   get "photo/upload"
 
-  get "deal/new"
+  match "/deal/new/:place_id" => "deal#new", :via => :get, :as => :deal_new
 
-  match "deal/create" => "deal#create", :via => :post, :as => :deals
+  match "/deal/create/:place_id" => "deal#create", :via => :post, :as => :deals
 
   get "deal/accept"
 
@@ -30,11 +30,17 @@ Tutubnb2::Application.routes.draw do
 
   match  "/user/:id" => "user#update", :via => :put
 
+  match  "/user/:id" => "user#delete", :via => :delete, :as => :user
+
   match  "/user/:id/update_dp" => "user#update_dp", :via => :put
 
   match  "/user/:id" => "user#show", :via => :get, :as => :user
 
-  match  "/user/listings/:id" => "user#listings", :via => :get, :as => :user_listings
+  match  "/user/wallet/:id" => "user#wallet", :via => :post, :as => :user_wallet  
+
+  match "/admin/user" => "display#user", :via => :get, :as => :admin_users
+
+  match  "/user/visits/:id" => "user#visits", :via => :get, :as => :user_visits
 
   match  "/user/requests/:id" => "user#requests", :via => :get, :as => :user_requests
 
@@ -54,11 +60,16 @@ Tutubnb2::Application.routes.draw do
   match "/details" => "detail#create", :via => :post
   resources :detail, :controller => 'detail'
 
+  match "/reviews" => "review#create", :via => :post
+  resources :review, :controller => 'review'
+
 
   match "/prices" => "price#create", :via => :post
   resources :price, :controller => 'price'
 
 
+  match  "/place/verify/:id" => "place#verify", :via => :get, :as => :verify_place
+  match  "/place/:id" => "place#show", :via => :post, :as => :place
   match "/places" => "place#create", :via => :post
   resources :place, :controller => 'place'
 
@@ -69,6 +80,8 @@ Tutubnb2::Application.routes.draw do
 
   get "profile/login"
 
+  match "profile/authenticate" => "profile#authenticate", :via => :get, :as => :authenticate
+
   get "profile/logout"
 
   get "profile/signup"
@@ -77,7 +90,6 @@ Tutubnb2::Application.routes.draw do
 
   post "profile/save"
 
-  #match "/profile/validate_user" => "profile#validate_user", as: "validate_user"
   post "profile/validate_user"
 
   

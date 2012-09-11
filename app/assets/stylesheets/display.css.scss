@@ -20,16 +20,11 @@
     }
   }
 
-  .display-options {
-    width : 15%;
-    background : pink;
-    float : left;
-  }
-  .display-places {
-    width : 85%;
+  .display-places, .display-users {
+    width : 100%;
     background : lightblue;
-    margin-left : 15%;
-    .selected-place {
+    //margin-left : 10%;
+    .selected-place, .selected-user {
     	
       .left-cell {
         width : 25%;
@@ -37,14 +32,10 @@
 
 
       .mid-cell {
-        width : 60%;
-
-        img {
-          margin-left : 5%;
-        }
+        width : 50%;
 
         .title {
-          margin : 5%;
+          margin : 15%;
           color : blue;
           text-weight : bold;
           display : inline;
@@ -56,17 +47,17 @@
       }   
 
       .right-cell {
-        width : 15%;
+        width : 25%;
       }
 
 
     }
 
-    .odd_place_row {
+    .odd_place_row, .odd_user_row {
       background : lightgrey;
     }
 
-    .even_place_row {
+    .even_place_row, .even_place_row {
       background : lightgreen;
     }
   }

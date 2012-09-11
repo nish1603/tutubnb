@@ -1,4 +1,4 @@
-<%= form_for(@deal) do |form| %>
+<%= form_for(@deal, :url => deals_path(params[:place_id])) do |form| %>
   <table>
     <tr class="field">
       <td><%= form.label :start_date %></td>
@@ -10,7 +10,7 @@
     </tr>
     <tr class="field">
       <td><%= form.label :guests %></td>
-      <td><%= form.number_field :guests %></td>
+      <td><%= form.text_field :guests %></td>
     </tr>
     <tr class="field">
       <td><%= form.label :price %></td>
@@ -18,7 +18,8 @@
     </tr>
     <tr class="actions">
       <td></td>
-      <td><%= form.submit %></td>
+      <td><%= form.submit 'Calculate Price' %></td>
+      <td><%= form.submit 'Book Place' %></td>
     </tr>
   </table>
 <% end %>

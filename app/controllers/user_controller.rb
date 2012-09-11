@@ -4,7 +4,7 @@ class UserController < ApplicationController
   end
 
   def update_func
-    update_func
+    update_func("edit", "details")
   end
 
   def change_dp
@@ -12,7 +12,7 @@ class UserController < ApplicationController
   end
 
   def update_dp
-    update_func
+    update_func("change_dp", "profile pic")
   end
 
   def visits
@@ -69,15 +69,35 @@ class UserController < ApplicationController
     end
   end
 
-  def update_func
+  def update_func(render_option, message)
     @user = User.find(params[:id])
     
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to user_edit_path(params[:id]), notice: 'Updated' }
+        format.html { redirect_to user_edit_path(params[:id]), notice: "Your #{message} has been updated." }
       else
-        format.html { render action: "edit" }
+        format.html { render :action => render_option }
       end
+    end
+  end
+
+  def wallet
+    @user = User.find(params[:id])
+
+    update_wallet
+    
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to admin_users_path }
+      end
+    end 
+  end
+
+  def update_wallet
+    if params[:commit] == "Add"
+      @user.wallet = @user.wallet + params[:amount].to_f
+    else
+      @user.wallet = @user.wallet - params[:amount].to_f
     end
   end
 end

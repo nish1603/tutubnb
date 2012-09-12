@@ -53,6 +53,11 @@
     padding-top : 2%;
   }
 
+  img {
+    width : 100px;
+    height : 100px;
+  }
+
   .actions {
     td {
       padding-left : 100%;
@@ -81,7 +86,7 @@
   li {
     background : blue;
     z-index : 3px;
-    display : inline;
+    list-style-type : none;
 
     a {
       color : white;
@@ -96,7 +101,7 @@
     color : blue;
     margin-left : 2%;
     width : 90%;
-    margin-top : -17px;
-    height : 200px;
+    height : 100%;
+    overflow : auto;
   }
 }

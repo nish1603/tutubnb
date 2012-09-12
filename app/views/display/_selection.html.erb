@@ -1,5 +1,5 @@
 
-  <div id = "display-div">
+  
     <table class = "display-places">
     	<% @places.each do |place| %>
     	  <tr class = "<%= cycle("odd_place_row", "even_place_row") %> selected-place" >
@@ -9,16 +9,18 @@
           <td class = "mid-cell">
     	  	  <p class = "title"><a href ="<%= place_path(place.id) %>"><%= place.title %></a><p>
     	  	  <p class = "property-type"><%= place.property_type + " - " + place.room_type %></p>
+            <p class = "property-price">Daily : &#8377;<%=  place.daily.to_s %> - Weekend : &#8377;<%= place.weekend.to_s %> - Weekly : &#8377;<%= place.weekly.to_s %></p>
           </td>
           <td class = "last-cell">
           <% if(session[:admin] == true) %>
             <%= link_to 'Delete', place_path(place.id), :method => :delete %>
             <% if(place.verified == false) %>
-              <%= link_to 'Verify', verify_place_path(place.id) %>
+              <%= link_to 'Activate', activate_place_path('active', place.id) %>
+            <% else %>
+              <%= link_to 'Deactivate', activate_place_path('deactive', place.id) %>
             <% end %>
           <% end %>
         </td>
     	  </tr>
       <% end %>
     </table>
-  </div>

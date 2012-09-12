@@ -9,38 +9,37 @@
   </div>
 
   <ul>
-    <li><%= link_to 'Description' %></li>
-    <li><%= link_to 'Details' %></li>
-    <li><%= link_to 'House Rules' %></li>
-    <li><%= link_to 'Amenties' %></li>
+    <li><a class = "place-info-list">Description</a></li>
+    <div class = "place-details">
+      <%= render 'description' %>
+    </div>
+    <li><a class = "place-info-list">Details</a></li>
+    <div class = "place-details">
+      <%= render :template =>'detail/show.html.erb' %>
+    </div>
+    <li><a class = "place-info-list">Rules</a></li>
+    <div class = "place-details">
+      <%= render :template => 'rule/show.html.erb' %>
+    </div>
+    <li><a class = "place-info-list">Price</a></li>
+    <div class = "place-details">
+      <%= render 'price' %>
+    </div>
+    <li><a class = "place-info-list">Address</a></li>
+    <div class = "place-details">
+      <%= render :template => 'address/show.html.erb' %>
+    </div>
   </ul>
 
-    <table>
-      <tr class="field">
-        <td><%= "Title:" %></td>
-        <td><%= @place.title %></td>
-      </tr>
-      <tr class="field">
-        <td><%= "Description:" %></td>
-        <td><%= @place.description %></td>
-      </tr>
-      <tr class="field">
-        <td><%= "Property Type:" %></td>
-        <td><%= @place.property_type %></td>
-      </tr>
-      <tr class="field">
-        <td><%= "Room Type:" %></td>
-        <td><%= @place.room_type %></td>
-      </tr>
-    </table>
-
+    <td>Average Ratings : <%= average_ratings() %></td> 
     <% if(session[:user_id] && session[:user_id] == @place.user_id) %>
-      <%= link_to 'Edit', edit_place_path(@place.id) %>
-    <% else %>
-      <%= button_to 'Request Place', deal_new_path(@place.id), :method => :get %> 
+      <td><%= link_to 'Edit', edit_place_path(@place.id) %></td>
+    <% elsif session[:user_id] %>
+      <td><%= button_to 'Request Place', deal_new_path(@place.id), :method => :get %></td> 
     <% end %>
 
   <div id = "place-reviews">
     <%= render 'reviews' %>
   </div>
 </div>
+<script type="text/javascript" src = "/assets/place.js"></script>

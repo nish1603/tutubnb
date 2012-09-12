@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909115847) do
+ActiveRecord::Schema.define(:version => 20120912063339) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address_line1"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20120909115847) do
     t.boolean  "cancel",     :default => false
     t.boolean  "accept"
     t.boolean  "request",    :default => true
+    t.boolean  "complete",   :default => false
   end
 
   create_table "details", :force => true do |t|
@@ -94,14 +95,22 @@ ActiveRecord::Schema.define(:version => 20120909115847) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "rules", :force => true do |t|
+    t.string   "rules"
+    t.string   "availables"
+    t.integer  "place_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
     t.string   "password_digest"
     t.string   "gender"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.date     "birth_date"
     t.string   "school"
     t.text     "describe"
@@ -112,9 +121,10 @@ ActiveRecord::Schema.define(:version => 20120909115847) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.float    "wallet"
-    t.boolean  "admin"
+    t.float    "wallet",              :default => 0.0
+    t.boolean  "admin",               :default => false
     t.string   "activation_link"
+    t.boolean  "activated",           :default => true
   end
 
 end

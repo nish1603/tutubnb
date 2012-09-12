@@ -1,16 +1,16 @@
 <%= form_for(@review, :url => "/place/#{@place.id}", :method => :post, :remote => true) do |form| %>
   <table>    
     <tr class="field">
+      <td><%= form.label :ratings %></td>
+      <td><%= form.select :ratings, Review::RATINGS %></td>
+    </tr>
+    <tr class="field">
       <td><%= form.label :subject %></td>
       <td><%= form.text_field :subject %></td>
     </tr>
     <tr class="field">
       <td><%= form.label :description %></td>
       <td><%= form.text_area :description, :rows => 10 %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label :ratings %></td>
-      <td><%= form.text_field :ratings %></td>
     </tr>
     <tr class="action">
       <td></td>

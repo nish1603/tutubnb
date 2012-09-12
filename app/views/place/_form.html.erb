@@ -1,8 +1,8 @@
 <div class="place-info">
-  <%= form_for(@place, :html => { :multipart => true }) do |form| %>
+  <%= nested_form_for(@place, :html => { :multipart => true }) do |form| %>
     <% if @place.errors.any? %>
       <div id="error_explanation">
-        <h2><%= pluralize(@place.errors.count, "error") %>prohibited this product from being saved:</h2>
+        <h2><%= pluralize(@place.errors.count, "error") %> prohibited this product from being saved:</h2>
           <ul>
             <% @place.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
@@ -11,23 +11,22 @@
       </div>
     <% end %>
 
-    
     <p><a name = "description">Description</a></p>
     <table>    
       <tr class="field">
-        <td><%= form.label :title %></td>
+        <td><%= form.label 'Title *' %></td>
         <td><%= form.text_field :title %></td>
       </tr>
       <tr class="field">
-        <td><%= form.label :description %></td>
+        <td><%= form.label 'Description *' %></td>
         <td><%= form.text_area :description, :rows => 10 %></td>
       </tr>
       <tr class="field">
-        <td><%= form.label :property_type %></td>
+        <td><%= form.label 'Property type *' %></td>
         <td><%= form.select :property_type, Place::PROPERTY_TYPE, prompt: "Select Property Type" %></td>
       </tr>
       <tr class="field">
-        <td><%= form.label :room_type %></td>
+        <td><%= form.label 'Room type *' %></td>
         <td><%= form.select :room_type, Place::ROOM_TYPE, prompt: "Select Room Type" %></td>
       </tr>
     </table>
@@ -35,7 +34,7 @@
     <p><a name = "prices">Prices</a></p>
     <table>
       <tr class="field">
-        <td><%= form.label :daily %></td>
+        <td><%= form.label 'Daily *' %></td>
         <td><%= form.text_field :daily %></td>
       </tr>
       <tr class="field">
@@ -60,10 +59,22 @@
       </tr>
     </table>
 
+
     <p><a name = "images">Images</a></p>
+
+    <span> Please Choose Minimum Two pics of your Place to register it </span>
+    <% @place.photos.each do |photo| %>
+      <% if(photo.avatar.exists?) %>
+        <%= image_tag photo.avatar %>
+        <%= link_to 'Remove', photo_delete_path(photo.id), :method => :delete %>
+      <% end %>
+    <% end %>
     <%= form.fields_for :photos do |builder| %>
       <%= render :template => 'photo/upload.html.erb', :locals => { :form => builder } %>
+      <%= builder.link_to_remove "Remove this task" %>
     <% end %>
+    <%= form.link_to_add "Add a task", :photos %>
+    
 
     
     <p><a name = "details">Details (Optional)</a></p>
@@ -74,6 +85,11 @@
     <p><a name = "address">Address</a></p>
     <%= form.fields_for :address do |builder| %>
       <%= render :template => 'address/_form.html.erb', :locals => { :form => builder } %>
+    <% end %>
+
+    <p><a name = "rules">Rules</a></p>
+    <%= form.fields_for :rules do |builder| %>
+      <%= render :template => 'rule/_form.html.erb', :locals => { :form => builder } %>
     <% end %>
     
     <table>

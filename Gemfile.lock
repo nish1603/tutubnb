@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/ryanb/nested_form.git
+  revision: 74a8683c1e2569f575f828b7f9dd84957a47ee67
+  specs:
+    nested_form (0.2.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -117,6 +123,7 @@ DEPENDENCIES
   bcrypt-ruby (~> 3.0)
   coffee-rails (~> 3.2.1)
   jquery-rails
+  nested_form!
   paperclip (~> 3.0.0)
   rails (= 3.2.8)
   sass-rails (~> 3.2.3)

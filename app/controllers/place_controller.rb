@@ -7,6 +7,7 @@ class PlaceController < ApplicationController
   	@place = Place.new
     @place.detail = Detail.new
     @place.address = Address.new
+    @place.rules = Rules.new
     2.times { @place.photos << Photo.new }
   end
 
@@ -14,20 +15,30 @@ class PlaceController < ApplicationController
   	@place = Place.new(params[:place])
     @place.user_id = session[:user_id]
 
-    @place.weekly = @place.daily * 7 if @place.weekly.nil?
-    @place.weekend = @place.daily if @place.weekend.nil?
-    @place.monthly = @place.daily * 30 if @place.monthly.nil?
+    @place.weekend = @place.daily if @place.weekend.nil? and @place.daily
+    @place.weekly = @place.daily * 5 + @place.weekend * 2 if @place.weekly.nil? and @place.daily 
+    @place.monthly = @place.daily * 30 if @place.monthly.nil? and @place.daily
 
-    if(params[:commit]) == "Save Place"
+    if(params[:commit] == "Save Place")
       validate = false
       @place.hidden = true
     else
       validate = true
     end
 
+    photos = 0
+    params[:place][:photos_attributes].each do |key, value|
+      if(!value[:avatar].nil?)
+        photos += 1
+      end
+    end
+
   	respond_to do |format|
-      if @place.save(:validate => validate)
+      if photos >= 2 and @place.save(:validate => validate)
         format.html { redirect_to display_show_path }
+      elsif photos < 2
+        @place.errors.add(:base, "Photos should be at least 2")
+        format.html { render action: "new" }
       else
         format.html { render action: "new" }
       end
@@ -46,6 +57,9 @@ class PlaceController < ApplicationController
 
   def show
     @place = Place.find(params[:id])
+    @detail = @place.detail
+    @rules = @place.rules
+    @address = @place.address
     @reviews = @place.reviews
     @review = Review.new
 
@@ -65,9 +79,15 @@ class PlaceController < ApplicationController
     end
   end
 
-  def verify
+  def activate
     @place = Place.find(params[:id])
-    @place.verified = true
+
+    if(params[:flag] == 'active')
+      active = true
+    else
+      active = false
+    end
+    @place.verified = active
 
     respond_to do |format|
       if @place.save
@@ -75,6 +95,7 @@ class PlaceController < ApplicationController
       else
         flash[:error] = "#{@place.title} has not been verified"
       end
+      format.html { redirect_to display_show_path }
     end
   end
 end

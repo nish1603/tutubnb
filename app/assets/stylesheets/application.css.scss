@@ -40,10 +40,35 @@
     margin-top : 10px;
     
   }
-  div.notice {
+
+}
+
+div#notice {
+    border : 1px solid black;
+    background : lightgreen;
+    color : green;
+    text-align : center;
+  }
+
+  div#error {
     border : 1px solid black;
     background : pink;
     color : magenta;
     text-align : center;
   }
-}
+
+  div#error_explanation {
+      h2 {
+        color : white;
+        background-color : red;
+        font-size : 14px;
+      }
+
+      ul {
+      li {
+        background : pink;
+        font_size : 12px;
+        list-style-type : none;
+      }
+    }
+  }

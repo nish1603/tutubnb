@@ -1,11 +1,13 @@
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :first_name, :gender, :last_name, :password, :describe, :work, :live, :birth_date, :school, :avatar
+  attr_accessible :email, :first_name, :gender, :last_name, :password, :password_confirmation, :describe, :work, :live, :birth_date, :school, :avatar, :admin, :wallet, :activate
 
   validates :first_name, :last_name, :email, :gender, presence: true, :on => :create
-  validates :password, presence: true, :on => :create
+  validates :password, presence: true, :on => :create, :if => :password
+  validates :password, :length => { :minimum => 6 }, :confirmation => true, :if => :password
   validates :avatar, presence: true, :on => :update_dp
-  validates :email, uniqueness: true 
+  validates :email, uniqueness: true, format: { :with => /^([a-zA-Z]([a-zA-Z0-9+.\-][.]?)*@[a-zA-Z0-9]+.[a-zA-Z]{2,4}.[a-zA-Z]{0,3})$/, :message => "Invalid Email Address" }
+
   has_secure_password
   has_attached_file :avatar
   validates_format_of :avatar, :with => %r{\.(jpg|png|gif|jpeg)}i, :message => "Image only of .jpg, .jpeg, .gif and .png format is allowed."
@@ -13,7 +15,14 @@ class User < ActiveRecord::Base
   has_many :places, :dependent => :delete_all
   has_many :trips, :class_name => 'Deal', :dependent => :nullify
   has_many :deals, :through => :places
-  has_many :reviews
+  has_many :reviews, :dependent => :delete_all
 
   GENDER = ['Male', 'Female', 'Other']
+  TYPE = ['Activated', 'Deactivated', 'Not Verified', 'All']
+
+  scope :admin, where(:admin => true)
+  scope :by_email, lambda{ |user| where(:email => user.email)}
+  scope :activated, where(:verfied => true, :activated => true)
+  scope :deactivated, where(:activated => false)
+  scope :not_verified, where(:verified => false)
 end

@@ -3,6 +3,8 @@ class Address < ActiveRecord::Base
 
   validates :address_line1, :address_line2, :city, :state, :country, :pincode, presence: true
 
+  validates :pincode, numericality: true
+
   belongs_to :place
 
   scope :a_city, lambda { |city| where(:city => city) }

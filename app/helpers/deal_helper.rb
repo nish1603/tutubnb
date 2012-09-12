@@ -17,7 +17,7 @@ module DealHelper
     amount += weeks * place.weekly
     amount += months * place.monthly
 
-    (deal.start_date..(deal.start_date+days)).to_a.each do |date|
+    (deal.start_date...(deal.start_date+days)).to_a.each do |date|
       if(date.sunday? or date.saturday?)
         amount += place.weekend
       else
@@ -29,6 +29,21 @@ module DealHelper
         amount += (deal.guests - place.add_guests) * place.add_price
       end
 
-    amount + (amount * 0.1)
+    amount
+  end
+
+  def self.check_deal(deal, place)
+    if(place.detail.accomodation != "" and deal.guests and deal.guests > place.detail.accomodation.to_i)
+      false
+      #flash[:error] = "Maximum Accomodation for this space is #{place.details.accomodation}"
+    elsif(deal.start_date and deal.start_date < Date.current)
+      false
+      #flash[:error] = "You can't register a past event"
+    elsif(deal.end_date and deal.end_date <= deal.start_date)
+      false
+      #flash[:error] = "End date should be future with Start date"
+    else
+      true
+    end
   end
 end

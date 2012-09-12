@@ -5,7 +5,9 @@
     <td><%= text_field_tag :country, nil, :placeholder => 'country' %></td>
     <td><%= 'Property type : ' %><%= select_tag(:property_type, options_for_select(Place::PROPERTY_TYPE)) %></td>
     <td><%= 'Room Type : ' %><%= select_tag(:room_type, options_for_select(Place::ROOM_TYPE)) %></td>
-    <td><%= text_field_tag :guests %></td>
+    <% if(session[:admin] == true) %>
+      <td><%= select_tag :type, options_for_select(Place::PLACE_TYPE), :prompt => 'Select Place Type' %></td>
+    <% end %>
     <td><%= submit_tag :Search %></td>
   </tr>
 </table>

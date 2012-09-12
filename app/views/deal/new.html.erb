@@ -14,7 +14,9 @@
     </tr>
     <tr class="field">
       <td><%= form.label :price %></td>
-      <td><%= form.text_field :price %></td>
+      <% if(@deal.price) %>
+        <td>&#8377;<%= (@deal.price * 1.1).round(2) %></td>
+      <% end %>
     </tr>
     <tr class="actions">
       <td></td>

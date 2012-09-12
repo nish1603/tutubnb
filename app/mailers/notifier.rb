@@ -17,9 +17,10 @@ class Notifier < ActionMailer::Base
   #
   #   en.notifier.notification.subject
   #
-  def notification
-    @greeting = "Hi"
-
-    mail to: "to@example.org"
+  def notification(text, link, sender_email, sender_name, subject)
+    @text = text
+    @link = link
+    @sender_name = sender_name
+    mail to: sender_email, subject: subject
   end
 end

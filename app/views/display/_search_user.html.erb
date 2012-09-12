@@ -1,0 +1,9 @@
+<%= form_tag('/admin/user', :method => :post, :remote => :true) do %>
+<table class = "search-options">
+  <tr>
+    <td><%= text_field_tag :email, nil, :placeholder => 'email' %></td>
+    <td><%= 'User type : ' %><%= select_tag(:type, options_for_select(User::TYPE), :prompt => 'Select User Type') %></td>
+    <td><%= submit_tag :Search %></td>
+  </tr>
+</table>
+<% end %>

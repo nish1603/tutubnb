@@ -1,13 +1,17 @@
 class Place < ActiveRecord::Base
-  attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :max_guests, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes
+  attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :max_guests, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes
   
-  validates :title, :description, :property_type, :room_type, presence: true
+  validates :title, :description, :property_type, :room_type, :daily, presence: true
+
+  #validate :require_two_photos, :except => :create
 
   PROPERTY_TYPE = ['Appartment', 'House', 'Castle', 'Villa', 'Cabin', 'Bed & Breakfast', 'Boat', 'Plane', 'Light House', 'Tree House', 'Earth House', 'Other']
   ROOM_TYPE = ['Private room', 'Shared room', 'Entire Home/apt']
+  PLACE_TYPE = ['Activated', 'Deactivated']
 
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
+  has_one :rules, :dependent => :delete
   has_many :photos, :dependent => :delete_all
   has_many :deals, :dependent => :nullify
   has_many :reviews, :dependent => :delete_all
@@ -17,6 +21,7 @@ class Place < ActiveRecord::Base
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :detail
   accepts_nested_attributes_for :photos
+  accepts_nested_attributes_for :rules
 
 
   scope :by_city, lambda{ |city| joins(:address).where('addresses.city = ?', city) }
@@ -29,6 +34,6 @@ class Place < ActiveRecord::Base
   
   private
     def require_two_photos
-      errors.add(:base, "You must provide at least two photos") if photos.count < 2
+      errors.add(:base, "You must provide at least two photos") if self.photos.count < 2
     end
 end

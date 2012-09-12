@@ -1,0 +1,19 @@
+<table class = "display-deals">
+  	<% @deals.each do |deal| %>
+   	  <tr class = "<%= cycle("odd_deal_row", "even_deal_row") %> selected-deal" >
+        <td class = "left-cell">
+          <%= image_tag deal.place.photos.first.avatar, :class => "user_pic", :height => '100px', :width => '95%' %>
+        </td>
+        <td class = "mid-cell">
+          <p class = "Name">Visitor Name : <%= deal.user.first_name + " " + deal.user.last_name %></a><p>
+          <p class = "address">Place Location : <%= deal.place.title + ", " + deal.place.address.city + ", " + deal.place.address.country %></a><p>
+          <p class = "price">Price : &#8377;<%= deal.price %>
+        </td>
+        <td class = "right-cell">
+          <% if(deal.end_date < Date.current and deal.complete == false) %>
+            <%= link_to "Transfer #{deal.price * 0.9} to owner", deal_complete_path(deal.id) %>
+          <% end %>
+        </td>
+  	  </tr>
+     <% end %>
+  </table>

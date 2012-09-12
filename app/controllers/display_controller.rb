@@ -3,7 +3,7 @@ class DisplayController < ApplicationController
   skip_before_filter :authorize
   
   def show
-    if(session[:admin] == false)
+    if(session[:admin] != true)
   	  @places = Place.visible
     else
       @places = Place.admin_visible | Place.visible
@@ -20,6 +20,20 @@ class DisplayController < ApplicationController
 
   def user
     @users = User.all
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def deals
+    @deals = Deal.all
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   

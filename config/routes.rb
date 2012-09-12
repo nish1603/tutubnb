@@ -10,9 +10,13 @@ Tutubnb2::Application.routes.draw do
 
   get "photo/upload"
 
+  match "photo/delete/:id" => "photo#delete", :via => :delete, :as => :photo_delete
+
   match "/deal/new/:place_id" => "deal#new", :via => :get, :as => :deal_new
 
   match "/deal/create/:place_id" => "deal#create", :via => :post, :as => :deals
+
+  match "/deal/complete/:id" => "deal#complete", :via => :post, :as => :deal_complete
 
   get "deal/accept"
 
@@ -30,19 +34,29 @@ Tutubnb2::Application.routes.draw do
 
   match  "/user/:id" => "user#update", :via => :put
 
-  match  "/user/:id" => "user#delete", :via => :delete, :as => :user
+  match  "/user/:id" => "user#destroy", :via => :delete, :as => :user
 
   match  "/user/:id/update_dp" => "user#update_dp", :via => :put
 
   match  "/user/:id" => "user#show", :via => :get, :as => :user
 
-  match  "/user/wallet/:id" => "user#wallet", :via => :post, :as => :user_wallet  
+  match  "/user/wallet/:id" => "user#wallet", :via => :post, :as => :user_wallet
+
+  match "/user/activate/:flag/:id" => "user#activate", :via => :get, :as => :user_activate  
 
   match "/admin/user" => "display#user", :via => :get, :as => :admin_users
+
+  match "/admin/deals" => "display#deals", :via => :get, :as => :admin_deals
 
   match  "/user/visits/:id" => "user#visits", :via => :get, :as => :user_visits
 
   match  "/user/requests/:id" => "user#requests", :via => :get, :as => :user_requests
+
+  match  "/user/:id" => "user#destroy", :via => :delete, :as => :user
+
+  match "/user/change_password/:id" => "user#change_password", :via => :get, :as => :user_change_password
+
+  match "/user/update_password/:id" => "user#update_password", :via => :post, :as => :user_update_password
 
   match  "/user/trips/:id" => "user#trips", :via => :get, :as => :user_trips  
 
@@ -60,6 +74,9 @@ Tutubnb2::Application.routes.draw do
   match "/details" => "detail#create", :via => :post
   resources :detail, :controller => 'detail'
 
+  match "/rules" => "rule#create", :via => :post
+  resources :rules, :controller => 'rule'
+
   match "/reviews" => "review#create", :via => :post
   resources :review, :controller => 'review'
 
@@ -68,7 +85,7 @@ Tutubnb2::Application.routes.draw do
   resources :price, :controller => 'price'
 
 
-  match  "/place/verify/:id" => "place#verify", :via => :get, :as => :verify_place
+  match  "/place/activate/:flag/:id" => "place#activate", :via => :get, :as => :activate_place
   match  "/place/:id" => "place#show", :via => :post, :as => :place
   match "/places" => "place#create", :via => :post
   resources :place, :controller => 'place'
@@ -87,6 +104,8 @@ Tutubnb2::Application.routes.draw do
   get "profile/signup"
 
   get "profile/save"
+
+  get "profile/forget_password"
 
   post "profile/save"
 

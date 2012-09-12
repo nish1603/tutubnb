@@ -9,15 +9,20 @@ class ProfileController < ApplicationController
     user = User.find_by_email(params[:email])
     
     respond_to do |format|
-      if user and user.authenticate(params[:password]) and user.verified == true
+      if user and user.authenticate(params[:password]) and user.verified == true and user.activated == true
         session[:user_id] = user.id
         session[:user_name] = user.first_name
         session[:admin] = user.admin
         format.html { redirect_to display_show_path }
       elsif user and user.verified == false
-        format.html { redirect_to display_show_path, notice: 'You have not verified your user account.' }
+        format.html { redirect_to display_show_path }
+        flash[:notice] = 'You have not verified your user account.'
+      elsif user and user.activated == false
+        format.html { redirect_to display_show_path }
+        flash[:error] = 'You are blocked by the admin of this site.'
       else 
-        format.html { redirect_to profile_login_path, notice: 'E-mail Address/Password doesn\'t match.' }
+        format.html { redirect_to profile_login_path }
+        flash[:error] = 'E-mail Address/Password doesn\'t match.'
       end 
     end
   end
@@ -43,8 +48,9 @@ class ProfileController < ApplicationController
     respond_to do |format|
       if @user.save
         link = authenticate_url + "?id=#{@user.id}&activation_link=#{@user.activation_link}"
-        a = Notifier.verification(link, @user.email, @user.first_name).deliver
-        format.html { redirect_to display_show_path, notice: "An Email has been sent ot your e-mail address for verification." }
+        Notifier.verification(link, @user.email, @user.first_name).deliver
+        flash[:notice] = "An Email has been sent at your e-mail address for verification."
+        format.html { redirect_to display_show_path }
       else
         format.html { render action: "signup" }
       end	
@@ -67,13 +73,33 @@ class ProfileController < ApplicationController
       session[:user_name] = user.first_name
       user.verified = true
       user.save(:validate => false)
-      flash[:notice] = "You have verified your account successfully. #{user.save(:validate => false)}"
+      flash[:notice] = "You have verified your account successfully."
     else
       flash[:notice] = "Your account has not been not verified."
     end
 
     respond_to do |format|
       format.html{ redirect_to display_show_path }
+    end
+  end
+
+  def forget_password
+
+    if(params[:email].nil?)
+      redirect_to profile_login_path
+      flash[:error] = "Please enter your e-mail id"
+    end
+    
+    @user = User.find_by_email(params[:email])
+    @user.activation_link = BCrypt::Password.create("activation_link")
+    link = authenticate_url + "?id=#{@user.id}&activation_link=#{@user.activation_link}"
+    Notifier.verification(link, @user.email, @user.first_name).deliver
+    @user.verified = false
+    @user.save
+
+    respond_to do |format|
+      format.html { user_login_path }
+      flash[:notice] = "An Email has been send to your account"
     end
   end
 end

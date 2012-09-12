@@ -1,13 +1,10 @@
 
 
-<% if(notice) %>
-  <div class = "notice"><%= notice %><%= link_to 'Resend Email' %></div>
-<% end %> 
-
-
 <div class = "display-showroom">
   <%= render 'search' %>
 
-  <%= render 'selection' %>
+  <div id = "display-div">
+    <%= render 'selection' %>
+  </div>
 
 </div>

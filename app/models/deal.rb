@@ -2,9 +2,9 @@ class Deal < ActiveRecord::Base
   attr_accessible :end_date, :price, :start_date, :guests, :cancel, :accept, :request
   
   validates :end_date, :price, :start_date, :guests, :presence => true
-  # validates :dates_valid, :on_or_after => lambda{ Date.current }
-  # validates :end_date, :after => lambda{ start_date + 1 }
   validate :user_have_amount
+
+  TYPE = ['Accepted', 'Rejected', 'Requests', 'To Complete', 'Completed']
 
   belongs_to :user
   belongs_to :place
@@ -16,10 +16,14 @@ class Deal < ActiveRecord::Base
   scope :find_visits_of_user, lambda { |user| user.deals.accepted(true).canceled(false) }
   scope :find_requests_of_user, lambda { |user| user.deals.requested(true).canceled(false) }
   scope :find_trips_of_user, lambda { |user| user.deals.requested(false).canceled(false) }
+  scope :to_complete, lambda { |flag| where(:complete => flag).where(:end_date < Date.current) }
+  scope :completed, lambda { |flag| where(:complete => flag) }
+
 
   private
     def user_have_amount
-      if(self.user.wallet < price)
-        errors.add("Sorry, You don't have enough amount to pay in your wallet.")
+      if(self.user.wallet < (price*1.1))
+        errors.add(:base, "Sorry, You don't have enough amount to pay in your wallet.")
+      end
     end  
 end

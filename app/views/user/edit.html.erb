@@ -27,6 +27,10 @@
           <td><%= form.text_field :email %></td>
         </tr>
         <tr class="field">
+          <td><%= form.label :wallet %></td>
+          <td>&#8377;<%= @user.wallet %></td>
+        </tr>
+        <tr class="field">
           <td><%= form.label :birth_date %></td>
           <td><%= form.date_select(:birth_date, :start_year => Time.new.year - 80, :end_year => Time.new.year - 18) %></td>
         </tr>

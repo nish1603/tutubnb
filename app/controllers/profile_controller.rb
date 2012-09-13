@@ -15,11 +15,11 @@ class ProfileController < ApplicationController
         session[:admin] = user.admin
         format.html { redirect_to display_show_path }
       elsif user and user.verified == false
-        format.html { redirect_to display_show_path }
-        flash[:notice] = 'You have not verified your user account.'
+        format.html { redirect_to profile_login_path }
+        flash[:alert] = 'You have not verified your user account.'
       elsif user and user.activated == false
-        format.html { redirect_to display_show_path }
-        flash[:error] = 'You are blocked by the admin of this site.'
+        format.html { redirect_to profile_login_path }
+        flash[:alert] = 'You are blocked by the admin of this site.'
       else 
         format.html { redirect_to profile_login_path }
         flash[:error] = 'E-mail Address/Password doesn\'t match.'
@@ -49,7 +49,7 @@ class ProfileController < ApplicationController
       if @user.save
         link = authenticate_url + "?id=#{@user.id}&activation_link=#{@user.activation_link}"
         Notifier.verification(link, @user.email, @user.first_name).deliver
-        flash[:notice] = "An Email has been sent at your e-mail address for verification."
+        flash[:alert] = "An Email has been sent at your e-mail address for verification."
         format.html { redirect_to display_show_path }
       else
         format.html { render action: "signup" }
@@ -84,12 +84,25 @@ class ProfileController < ApplicationController
   end
 
   def forget_password
-
     if(params[:email].nil?)
       redirect_to profile_login_path
       flash[:error] = "Please enter your e-mail id"
     end
     
+    @user = User.find_by_email(params[:email])
+    @user.activation_link = BCrypt::Password.create("activation_link")
+    link = authenticate_url + "?id=#{@user.id}&activation_link=#{@user.activation_link}"
+    Notifier.verification(link, @user.email, @user.first_name).deliver
+    @user.verified = false
+    @user.save
+
+    respond_to do |format|
+      format.html { user_login_path }
+      flash[:notice] = "An Email has been send to your account"
+    end
+  end
+
+  def send_activation_link
     @user = User.find_by_email(params[:email])
     @user.activation_link = BCrypt::Password.create("activation_link")
     link = authenticate_url + "?id=#{@user.id}&activation_link=#{@user.activation_link}"

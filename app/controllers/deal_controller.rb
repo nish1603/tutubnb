@@ -9,7 +9,7 @@ class DealController < ApplicationController
     @deal.place_id = params[:place_id]
     @deal.user_id = session[:user_id]
 
-    event_validate = DealHelper.check_deal(@deal, @deal.place)
+    event_validate, key, msg = DealHelper.check_deal(@deal, @deal.place)
 
     @deal.price = DealHelper.calculate_price(@deal, @deal.place) if event_validate == true
 
@@ -18,10 +18,12 @@ class DealController < ApplicationController
         owner = User.find(@deal.place.user_id)
         text = "A User requested your place."
         link = user_requests_url(owner.id)
+        flash[:notice] = "You have successfully booked the place."
 
         Notifier.notification(text, link, owner.email, owner.first_name, 'New Request').deliver
         format.html { redirect_to place_path(@deal.place.id) }
       else
+        flash[key] = msg
         format.html { render "new" }
       end
     end

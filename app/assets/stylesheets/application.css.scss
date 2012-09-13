@@ -57,6 +57,13 @@ div#notice {
     text-align : center;
   }
 
+  div#alert {
+    border : 1px solid black;
+    background : lightblue;
+    color : blue;
+    text-align : center;
+  }
+
   div#error_explanation {
       h2 {
         color : white;

@@ -4,9 +4,9 @@ class DisplayController < ApplicationController
   
   def show
     if(session[:admin] != true)
-  	  @places = Place.visible
+  	  @places = Place.visible(true)
     else
-      @places = Place.admin_visible | Place.visible
+      @places = Place.admin_visible | Place.visible(true)
     end
 
   	respond_to do |format|

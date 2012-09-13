@@ -18,6 +18,7 @@ class Deal < ActiveRecord::Base
   scope :find_trips_of_user, lambda { |user| user.deals.requested(false).canceled(false) }
   scope :to_complete, lambda { |flag| where(:complete => flag).where(:end_date < Date.current) }
   scope :completed, lambda { |flag| where(:complete => flag) }
+  scope :by_place, lambda { |place| where(:place_id => place.id, :accept => true)}
 
 
   private

@@ -37,6 +37,7 @@ class PlaceController < ApplicationController
       if photos >= 2 and @place.save(:validate => validate)
         format.html { redirect_to display_show_path }
       elsif photos < 2
+        @place.valid?
         @place.errors.add(:base, "Photos should be at least 2")
         format.html { render action: "new" }
       else

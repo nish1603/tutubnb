@@ -3,8 +3,6 @@ class Place < ActiveRecord::Base
   
   validates :title, :description, :property_type, :room_type, :daily, presence: true
 
-  #validate :require_two_photos, :except => :create
-
   PROPERTY_TYPE = ['Appartment', 'House', 'Castle', 'Villa', 'Cabin', 'Bed & Breakfast', 'Boat', 'Plane', 'Light House', 'Tree House', 'Earth House', 'Other']
   ROOM_TYPE = ['Private room', 'Shared room', 'Entire Home/apt']
   PLACE_TYPE = ['Activated', 'Deactivated']
@@ -29,7 +27,7 @@ class Place < ActiveRecord::Base
   scope :by_property_type, lambda{ |property_type| where(:property_type => property_type) }
   scope :by_room_type, lambda{ |room_type| where(:room_type => room_type) }
   scope :by_accomodates, lambda{ |accomodates| joins(:detail).where('detail.accomodates = ?', accomodates) }
-  scope :visible, where(:verified => true)
+  scope :visible, lambda{ |flag| where(:verified => flag) }
   scope :admin_visible, where(:hidden => false)
   
   private

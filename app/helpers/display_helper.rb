@@ -11,10 +11,10 @@ module DisplayHelper
     places = places_by_city & places_by_country & places_by_room_type & places_by_property_type
     places = places_by_city if places.empty?
 
-    if(params[:type] == 'Activated')
-      places = places & Place.find_all_by_verified(true)
+    if(session[:admin] == true and params[:type] == 'Activated')
+      places = places & Place.visible(true)
     elsif(params[:type] == 'Deactivated')
-      places = places & Place.find_all_by_verified(false)
+      places = places & Place.visible(false)
     end
     places
   end

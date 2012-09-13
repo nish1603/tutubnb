@@ -31,7 +31,7 @@
 
   <div class = "part">
     <% flash.each do |key, msg| %>
-      <% content_tag :div, msg, :id => key %>
+      <%= content_tag :div, msg, :id => key %>
     <% end %>
     <%= yield %>
   </div>

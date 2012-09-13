@@ -5,6 +5,6 @@ class AddBirthDateSchoolWorkDescribeLiveVerifiedToUsers < ActiveRecord::Migratio
   	add_column :users, :describe, :text
   	add_column :users, :live, :string
   	add_column :users, :work, :string
-  	add_column :users, :verified, :boolean
+  	add_column :users, :verified, :boolean, :default => false
   end
 end

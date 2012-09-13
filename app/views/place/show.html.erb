@@ -4,7 +4,7 @@
 
   <div class = "images">
     <% @place.photos.each do |photo| %>
-      <a href = "<%= photo.avatar.url %>" target = "image-frame"><%= image_tag photo.avatar, :class => :small %></a>
+      <a href = "<%= photo.avatar.url %>" target = "image-frame"><%= image_tag photo.avatar.url(:small), :class => :small %></a>
     <% end %>
   </div>
 

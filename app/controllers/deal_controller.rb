@@ -5,7 +5,6 @@ class DealController < ApplicationController
 
   def create
     @deal = Deal.new(params[:deal])
-    @deal.cancel = false
     @deal.place_id = params[:place_id]
     @deal.user_id = session[:user_id]
 
@@ -29,13 +28,7 @@ class DealController < ApplicationController
     @deal = Deal.find(params[:id])
     @deal.request = false
 
-    if(params[:perform] == "accept")
-      res = true
-      @admin, @requestor = DealHelper.transfer_to_admin(@admin)
-      DealHelper.reject_deals(@deal, @deal.place)
-    else
-      res = false
-    end
+    res, @admin, @requestor = DealHelper.perform(@deal)
     
     @deal.accept = res
 

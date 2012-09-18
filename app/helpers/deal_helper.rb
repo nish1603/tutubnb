@@ -3,7 +3,7 @@ module DealHelper
     
     days, weeks, months = calculate_days(deal)
 
-    amount, weekdays, weekends = calculate_price(days, weeks, months, deal, price)
+    amount, weekdays, weekends = calculate_amount(days, weeks, months, deal, place)
 
     
     msg = []
@@ -32,16 +32,16 @@ module DealHelper
     end
     months += years * 12
 
+    weeks = (days + 1) / 7
+    days = (days + 1) % 7
+
     return days, weeks, months
   end
 
-  def self.calculate_price(days, weeks, months, deal, place)
+  def self.calculate_amount(days, weeks, months, deal, place)
     amount = 0.0
     weekdays = 0
     weekends = 0
-
-    weeks = (days + 1) / 7
-    days = (days + 1) % 7
     
     amount += weeks * place.weekly
     amount += months * place.monthly
@@ -114,22 +114,33 @@ module DealHelper
     end
   end
 
-  def self.transer_from_admin(@deal)
-    @admin = User.admin.first  
-    @owner = @deal.place.user
+  def self.transer_from_admin(deal)
+    admin = User.admin.first  
+    owner = deal.place.user
 
-    @admin.wallet -= (@deal.price * 0.9)
-    @owner.wallet += (@deal.price * 0.9)
-    return @admin, @owner
+    admin.wallet -= (deal.price * 0.9)
+    owner.wallet += (deal.price * 0.9)
+    return admin, owner
   end
 
-  def self.transfer_to_admin(@deal)
-    @requestor = @deal.user
-    @admin = User.admin.first
+  def self.transfer_to_admin(deal)
+    requestor = deal.user
+    admin = User.admin.first
 
-    @requestor.wallet -= (@deal.price * 1.1) 
-    @admin.wallet += (@deal.price * 1.1)
+    requestor.wallet -= (deal.price * 1.1) 
+    admin.wallet += (deal.price * 1.1)
 
-    return @admin, @requestor
+    return admin, requestor
+  end
+
+  def self.perform(deal)
+    if(params[:perform] == "accept")
+      res = true
+      admin, requestor = transfer_to_admin(admin)
+      reject_deals(deal, deal.place)
+    else
+      res = false
+    end
+    return res, admin, requestor
   end
 end

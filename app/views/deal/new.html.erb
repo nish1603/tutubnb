@@ -22,7 +22,7 @@
       <tr class="actions">
         <td></td>
         <td><%= form.submit 'Calculate Price' %></td>
-        <td><%= form.submit 'Book Place' %></td>
+        <td><%= form.submit 'Book Place', :data => {:confirm => "Are you sure want to make this deal?"} %></td>
       </tr>
     </table>
   <% end %>

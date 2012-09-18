@@ -1,8 +1,21 @@
 module DealHelper
 	def self.calculate_price(deal, place)
-    amount = 0.0
-    weekdays = 0
-    weekends = 0
+    
+    days, weeks, months = calculate_days(deal)
+
+    amount, weekdays, weekends = calculate_price(days, weeks, months, deal, price)
+
+    
+    msg = []
+    msg << "No. of Months : #{months}, Price : #{months}x#{place.monthly} \n" if(months > 0)
+    msg << "No. of Weeks : #{weeks}, Price : #{weeks}x#{place.weekly} \n" if(weeks > 0)
+    msg << "No. of Weekdays : #{weekdays}, Price : #{weekdays}x#{place.daily} \n" if(weekdays > 0)
+    msg << "No. of Weekends : #{weekends}, Price : #{weekends}x#{place.weekend} \n" if(weekends > 0)
+    msg << "Total Amount : #{amount.round(2)} + 10% Service Charge : #{(0.1 * amount).round(2)}"
+    return amount, msg
+  end
+
+  def self.calculate_days(deal)
     days = deal.end_date.day - deal.start_date.day
     months = deal.end_date.month - deal.start_date.month
     years = deal.end_date.year - deal.start_date.year
@@ -18,6 +31,14 @@ module DealHelper
       months = (12 - deal.end_date.months) + deal.start_date.months
     end
     months += years * 12
+
+    return days, weeks, months
+  end
+
+  def self.calculate_price(days, weeks, months, deal, place)
+    amount = 0.0
+    weekdays = 0
+    weekends = 0
 
     weeks = (days + 1) / 7
     days = (days + 1) % 7
@@ -39,13 +60,7 @@ module DealHelper
       amount += (deal.guests - place.add_guests) * place.add_price
     end
 
-    msg = []
-    msg << "No. of Months : #{months}, Price : #{months}x#{place.monthly} \n" if(months > 0)
-    msg << "No. of Weeks : #{weeks}, Price : #{weeks}x#{place.weekly} \n" if(weeks > 0)
-    msg << "No. of Weekdays : #{weekdays}, Price : #{weekdays}x#{place.daily} \n" if(weekdays > 0)
-    msg << "No. of Weekends : #{weekends}, Price : #{weekends}x#{place.weekend} \n" if(weekends > 0)
-    msg << "Total Amount : #{amount.round(2)} + 10% Service Charge : #{(0.1 * amount).round(2)}"
-    return amount, msg
+    return amount, weekdays, weekends
   end
 
   def self.check_deal(deal, place)

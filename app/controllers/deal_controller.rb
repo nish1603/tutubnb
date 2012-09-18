@@ -16,11 +16,8 @@ class DealController < ApplicationController
     respond_to do |format|
       if(params[:commit]  == "Book Place" and event_validate == true and @deal.save)
         owner = User.find(@deal.place.user_id)
-        text = "A User requested your place."
-        link = user_requests_url(owner.id)
         flash[:notice] = "You have successfully booked the place."
 
-        Notifier.notification(text, link, owner.email, owner.first_name, 'New Request').deliver
         format.html { redirect_to place_path(@deal.place.id) }
       else
         flash[:error] = @deal.errors.full_messages.first if(@deal.errors.any?)
@@ -72,9 +69,6 @@ class DealController < ApplicationController
 
     respond_to do |format|
       if(@deal.save and @admin.save and @owner.save)
-        text = "#{@deal.price * 0.9} has been added to #{@owner.wallet} to your wallet."
-        link = ""
-        Notifier.notification(text, link, @owner.email, @owner.first_name, 'Deal Complete').deliver
         format.html { redirect_to admin_deals_path }
         flash[:notice] = "#{@deal.price * 0.9} has been added to #{@owner.first_name} to your wallet."
       end

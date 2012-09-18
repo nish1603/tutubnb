@@ -1,8 +1,8 @@
 module DisplayHelper
 	def selection()
     places = Place.admin_visible
-    places = places.by_location(places)
-    places = places.by_location(places)
+    places = places.by_option(:by_location, [:city, :country], places)
+    places = places.by_option(:by_property, [:property_type, :room_type], places)
     places = places.by_tags(places)
     
 
@@ -15,16 +15,9 @@ module DisplayHelper
     places & Place.admin_visible
   end
 
-  def by_location(places)
-    [:city, :country].each do |type|
-      places = places & Place.by_location(type, params[type]) unless(params[type].blank?)
-    end
-    places
-  end
-
-  def by_property(places)
-    [:property_type, :room_type].each do |type|
-      places = places & Place.by_property(type, params[type]) unless(params[type].blank?)
+  def by_option(scope_name, options, places)
+    options.each do |type|
+      places = places & Place.send(scope_name, type, params[type]) unless(params[type].blank?)
     end
     places
   end
@@ -42,16 +35,8 @@ module DisplayHelper
 
     users = User.find_all_by_email(params[:email])
 
-    if(params[:type] == 'Activated')
-        users = User.activated_and_verified
-    elsif(params[:type] == 'Deactivated')
-        users = User.deactivated
-    elsif(params[:type] == 'Not Verified')
-        users = User.not_verified
-    elsif(params[:type] == 'All')
-        users = User.all
-    else
-        users = User.all & users
+    if(params[:type] == 'Activated' || params[:type] == 'Deactivated' || params[:type] == 'Not Verified' || params[:type] == 'All')
+      users = User.send(params[:type].downcase)
     end
     users
   end

@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
 
   scope :admin, where(:admin => true)
   scope :by_email, lambda{ |user| where(:email => user.email)}
-  scope :activated_and_verified, where(:verified => true, :activated => true)
+  scope :activated, where(:verified => true, :activated => true)
   scope :deactivated, where(:activated => false)
   scope :not_verified, where(:verified => false)
 end

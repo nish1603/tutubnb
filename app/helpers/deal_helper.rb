@@ -49,14 +49,28 @@ module DealHelper
   end
 
   def self.check_deal(deal, place)
-    if(place.detail.accomodation != "" and deal.guests and deal.guests > place.detail.accomodation.to_i)
+    event_validate, key, msg = check_accomodate(deal, place)
+    event_validate, key, msg = check_dates(deal, place) if event_validate
+    
+    return check_place(deal, place) if event_validate
+    return event_validate, key, msg
+  end
+
+  def self.check_accomodate(deal, place)
+    if(deal.guests and deal.guests > place.detail.accomodation)
       return false, :alert, "Sorry, Maximum Accomodation for this space is #{place.details.accomodation}"
-    elsif(deal.start_date and deal.start_date < Date.current)
+    else
+      return true
+    end
+  end
+
+  def self.check_dates(deal, place)
+    if(deal.start_date and deal.start_date < Date.current)
       return false, :error, "You can't register a past event"
     elsif(deal.end_date and deal.end_date < deal.start_date)
       return false, :error, "End date should be more than with Start date"
     else
-      return check_place(deal, place)
+      return true
     end
   end
 

@@ -1,6 +1,8 @@
 module PlaceHelper
   def add_review()
-    @place.reviews.create(params[:review])
+  	@review = Review.new(params[:review])
+    @place.reviews << @review if(@review.valid?)
+    @review = Review.new if(@review.valid?)
   end
 
   def average_ratings()

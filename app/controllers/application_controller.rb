@@ -21,10 +21,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def update_attributes(to_update, type_to_update)
+  def update_attributes(to_update, photos, type_to_update)
     respond_to do |format|
-      if to_update.update_attributes(params[type_to_update])
+      if(photos >= 2 and to_update.update_attributes(params[type_to_update]))
+        @place.hidden = false
+        @place.save
         format.html { redirect_to to_update }
+      elsif photos < 2
+        to_update.valid?
+        to_update.errors.add(:base, "Photos should be at least 2")
+        format.html { render action: "new" }
       else
         format.html { render action: "edit"}
       end

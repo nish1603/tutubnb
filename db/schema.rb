@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120912063339) do
+ActiveRecord::Schema.define(:version => 20120913190326) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address_line1"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20120912063339) do
   end
 
   create_table "details", :force => true do |t|
-    t.string   "accomodation"
+    t.integer  "accomodation"
     t.integer  "bedrooms"
     t.integer  "beds"
     t.string   "bed_type"
@@ -85,6 +85,11 @@ ActiveRecord::Schema.define(:version => 20120912063339) do
     t.boolean  "hidden",        :default => false
   end
 
+  create_table "places_tags", :id => false, :force => true do |t|
+    t.integer "place_id"
+    t.integer "tag_id"
+  end
+
   create_table "reviews", :force => true do |t|
     t.string   "subject"
     t.text     "description"
@@ -103,6 +108,12 @@ ActiveRecord::Schema.define(:version => 20120912063339) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "tags", :force => true do |t|
+    t.string   "tag"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -116,7 +127,7 @@ ActiveRecord::Schema.define(:version => 20120912063339) do
     t.text     "describe"
     t.string   "live"
     t.string   "work"
-    t.boolean  "verified"
+    t.boolean  "verified",            :default => false
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"

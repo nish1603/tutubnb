@@ -1,3 +1,5 @@
+
+
 <div class="place-info">
   <%= nested_form_for(@place, :html => { :multipart => true }) do |form| %>
     <% if @place.errors.any? %>
@@ -51,7 +53,7 @@
       </tr>
       <tr class="field">
         <td><%= form.label :add_guests %></td>
-        <td><%= form.number_field :add_guests %></td>
+        <td><%= form.text_field :add_guests %></td>
       </tr>
       <tr class="field">
         <td><%= form.label :add_price %></td>
@@ -59,21 +61,13 @@
       </tr>
     </table>
 
-
     <p><a name = "images">Images</a></p>
 
     <span> Please Choose Minimum Two pics of your Place to register it </span>
-    <% @place.photos.each do |photo| %>
-      <% if(photo.avatar.exists?) %>
-        <%= image_tag photo.avatar %>
-        <%= link_to 'Remove', photo_delete_path(photo.id), :method => :delete %>
-      <% end %>
-    <% end %>
     <%= form.fields_for :photos do |builder| %>
       <%= render :template => 'photo/upload.html.erb', :locals => { :form => builder } %>
-      <%= builder.link_to_remove "Remove this task" %>
     <% end %>
-    <%= form.link_to_add "Add a task", :photos %>
+    <%= form.link_to_add "Add a Photo", :photos %>
     
 
     
@@ -87,6 +81,12 @@
       <%= render :template => 'address/_form.html.erb', :locals => { :form => builder } %>
     <% end %>
 
+    <table>
+      <tr class="field">
+        <td><%= form.hidden_field :tags_string %></td>
+      </tr>
+    </table>      
+
     <p><a name = "rules">Rules</a></p>
     <%= form.fields_for :rules do |builder| %>
       <%= render :template => 'rule/_form.html.erb', :locals => { :form => builder } %>
@@ -94,8 +94,12 @@
     
     <table>
       <tr class="actions">
-        <td><%= form.submit 'Save Place'%></td>
-        <td><%= form.submit 'Create Place'%></td>
+        <% if(params[:action] == "new" || params[:action] == "create") %>
+          <td><%= form.submit 'Save Place'%></td>
+          <td><%= form.submit 'Create Place'%></td>
+        <% else %>
+          <td><%= form.submit 'Update Place'%></td>
+        <% end %>
       </tr>
     </table>
   <% end %>

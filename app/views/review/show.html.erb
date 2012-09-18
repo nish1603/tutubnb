@@ -1,4 +1,5 @@
 <div id = "reviews-div">
+	<p>Average Ratings : <%= average_ratings() %></p>
   <table class = "display-reviews">
    	<% @reviews.each do |review| %>
       <tr class = "<%= cycle("odd_review_row", "even_review_row") %> selected-reviews" >

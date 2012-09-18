@@ -4,14 +4,14 @@
    	  <tr class = "<%= cycle("odd_user_row", "even_user_row") %> selected-user" >
         <td class = "left-cell">
           <% if(user.avatar.exists?) %>
-            <%= image_tag user.avatar, :class => "user_pic", :height => '100px', :width => '95%' %>
+            <%= image_tag user.avatar.url(:thumb), :class => "user_pic", :height => '100px', :width => '95%' %>
           <% else %>
             <%= image_tag 'missing.png', :class => "user_pic", :height => '100px', :width => '95%' %>
           <% end %>
         </td>
         <td class = "mid-cell">
           <p class = "Name"><%= user.first_name + " " + user.last_name %><p>
-          <p class = "wallet">&#8377;<%= user.wallet %></p>
+          <p class = "wallet">&#8377;<%= user.wallet.round(2) %></p>
           <p class = "Email Id"><%= user.email %></p>
         </td>
         <td class = "right-cell">

@@ -1,6 +1,14 @@
 <table>
-  <tr class="field">
-    <td><%= form.label 'Upload' %></td>
-    <td><%= form.file_field :avatar %></td>
-  </tr>
+  <% if form.object.new_record? %>
+    <tr class="field">
+      <td><%= form.label 'Upload' %></td>
+      <td><%= form.file_field :avatar %></td>
+      <td><%= form.link_to_remove "Remove this photo" %></td>
+    </tr>
+  <% else %>
+    <tr class="field">
+      <td><%= image_tag form.object.avatar.url(:small) %></td>
+      <td><%= form.link_to_remove "Remove this photo" %></td>
+    </tr>
+  <% end %>
 </table>

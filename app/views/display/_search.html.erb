@@ -1,13 +1,15 @@
-<%= form_tag('/display/show', :method => :post, :remote => :true) %>
+<%= form_tag('/display/show', :method => :post, :remote => :true) do %>
 <table class = "search-options">
   <tr>
     <td><%= text_field_tag :city, nil, :placeholder => 'city' %></td>
     <td><%= text_field_tag :country, nil, :placeholder => 'country' %></td>
-    <td><%= 'Property type : ' %><%= select_tag(:property_type, options_for_select(Place::PROPERTY_TYPE)) %></td>
-    <td><%= 'Room Type : ' %><%= select_tag(:room_type, options_for_select(Place::ROOM_TYPE)) %></td>
+    <td>Property Type : <%= select_tag(:property_type, options_for_select(Place::PROPERTY_TYPE)) %></td>
+    <td>Room Type : <%= select_tag(:room_type, options_for_select(Place::ROOM_TYPE)) %></td>
+    <td><%= hidden_field_tag :place_tags_string %></td>
     <% if(session[:admin] == true) %>
       <td><%= select_tag :type, options_for_select(Place::PLACE_TYPE), :prompt => 'Select Place Type' %></td>
     <% end %>
-    <td><%= submit_tag :Search %></td>
+    <td><%= submit_tag :Search, :class => "search_submit" %></td>
   </tr>
 </table>
+<% end %>

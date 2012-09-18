@@ -18,11 +18,11 @@ class PhotoController < ApplicationController
   def delete
     @photo = Photo.find(params[:id])
 
-    if(@photo.place.photos <= 2)
-      flash[:error] = "Photos should be more than 2."
+    if(@photo.place.photos.count <= 2)
+      flash[:error] = "Images should be more than 2."
     else
       @photo.destroy
-      flash[:notice] = "Photos deleted."
+      flash[:notice] = "Image deleted."
     end
 
     respond_to do |format|

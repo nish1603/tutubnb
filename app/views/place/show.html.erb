@@ -1,10 +1,11 @@
+
 <div class = "place-information">
-  <iframe name = "image-frame" src = "<%= @place.photos.first.avatar.url %>" >
+  <iframe name = "image-frame" src = "<%= @place.photos.first.avatar.url(:large) %>" >
   </iframe> 
 
   <div class = "images">
     <% @place.photos.each do |photo| %>
-      <a href = "<%= photo.avatar.url %>" target = "image-frame"><%= image_tag photo.avatar.url(:small), :class => :small %></a>
+      <a href = "<%= photo.avatar.url(:large) %>" target = "image-frame"><%= image_tag photo.avatar.url(:small), :class => :small %></a>
     <% end %>
   </div>
 
@@ -31,7 +32,6 @@
     </div>
   </ul>
 
-    <td>Average Ratings : <%= average_ratings() %></td> 
     <% if(session[:user_id] && session[:user_id] == @place.user_id) %>
       <td><%= link_to 'Edit', edit_place_path(@place.id) %></td>
     <% elsif session[:user_id] %>
@@ -42,4 +42,3 @@
     <%= render 'reviews' %>
   </div>
 </div>
-<script type="text/javascript" src = "/assets/place.js"></script>

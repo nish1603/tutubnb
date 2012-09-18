@@ -1,8 +1,4 @@
 
-<% if(notice) %>
-  <div class = "notice"><%= notice %></div>
-<% end %>
-
 <div class = "outer-user-info">
   
   <%= render 'form' %>
@@ -20,21 +16,24 @@
         </tr>
         <tr class="field">
           <td><%= "price:" %></td>
-          <td>&8377;<%= request.price %></td>
+          <td>&#8377;<%= request.price %></td>
         </tr>
         <tr class="field">
           <td><%= "User_name:" %></td>
-          <td><%= request.user_id %></td>
+          <td><%= request.user.first_name + " " + request.user.last_name %></td>
         </tr>
         <tr class="field">
-          <td><%= "Place_name:" %></td>
-          <td><%= request.place_id %></td>
+          <td><%= "Place Title:" %></td>
+          <td><%= request.place.title %></td>
         </tr>
         <tr class="action">
           <td><%= button_to('Accept', deal_reply_path(:accept, request.id), :method => :get) %></td>
           <td><%= button_to('Reject', deal_reply_path(:reject, request.id), :method => :get) %></td>
         </tr>
       </table>
+    <% end %>
+    <% if(@requests.empty?) %>
+      <%= render :text => "No requests as of now." %>
     <% end %>
   </div>
 </div>

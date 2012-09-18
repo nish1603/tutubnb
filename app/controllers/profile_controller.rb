@@ -47,7 +47,7 @@ class ProfileController < ApplicationController
     
     respond_to do |format|
       if @user.save
-        link = authenticate_url + "?id=#{@user.id}&activation_link=#{@user.activation_link}"
+        link = authenticate_url + "?email=#{@user.email}&activation_link=#{@user.activation_link}"
         Notifier.verification(link, @user.email, @user.first_name).deliver
         flash[:alert] = "An Email has been sent at your e-mail address for verification."
         format.html { redirect_to display_show_path }
@@ -59,20 +59,21 @@ class ProfileController < ApplicationController
 
   def authenticate
     params = request.parameters
-    id = params[:id]
+    email = params[:email]
     activation_link = params[:activation_link]
 
-    if id
-      user = User.find(id)
+    if email
+      user = User.find_by_email(email)
     else
       redirect_to display_show_path
+      flash[:error] = "You are not authorized to log in."
     end
     
     if user and user.activation_link = params[:activation_link]
       session[:user_id] = user.id
       session[:user_name] = user.first_name
       user.verified = true
-      user.save(:validate => false)
+      user.save!(:validate => false)
       flash[:notice] = "You have verified your account successfully."
     else
       flash[:notice] = "Your account has not been not verified."
@@ -84,35 +85,60 @@ class ProfileController < ApplicationController
   end
 
   def forget_password
-    if(params[:email].nil?)
-      redirect_to profile_login_path
-      flash[:error] = "Please enter your e-mail id"
-    end
-    
-    @user = User.find_by_email(params[:email])
-    @user.activation_link = BCrypt::Password.create("activation_link")
-    link = authenticate_url + "?id=#{@user.id}&activation_link=#{@user.activation_link}"
-    Notifier.verification(link, @user.email, @user.first_name).deliver
-    @user.verified = false
-    @user.save
-
-    respond_to do |format|
-      format.html { user_login_path }
-      flash[:notice] = "An Email has been send to your account"
-    end
   end
 
   def send_activation_link
-    @user = User.find_by_email(params[:email])
-    @user.activation_link = BCrypt::Password.create("activation_link")
-    link = authenticate_url + "?id=#{@user.id}&activation_link=#{@user.activation_link}"
-    Notifier.verification(link, @user.email, @user.first_name).deliver
-    @user.verified = false
-    @user.save
+    user = User.find_by_email(params[:email])
+    
+    if(user)
+      user.activation_link = BCrypt::Password.create("activation_link")
+      link = change_password_url + "?email=#{user.email}&activation_link=#{user.activation_link}"
+      user.verified = false
+      user.save
+    end
 
     respond_to do |format|
-      format.html { user_login_path }
-      flash[:notice] = "An Email has been send to your account"
+      if(user and user.save)
+        Notifier.verification(link, user.email, user.first_name).deliver
+        format.html { redirect_to profile_login_path }
+        flash[:notice] = "An Email has been send to your account"
+      else
+        flash[:error] = "Not a valid E-mail Address, Please check your e-mail address."
+      end
+    end
+  end
+
+  def change_password
+    params = request.parameters
+    if(params[:email])
+      @user = User.find_by_email(params[:email])
+    else
+      redirect_to display_show_path
+    end
+
+    respond_to do |format|
+      if(@user and @user.activation_link == params[:activation_link] and @user.verified == false)
+        format.html
+      else
+        flash[:error] = "Invalid URL."
+        format.html { redirect_to display_show_path }
+      end
+    end
+  end
+
+  def update_password
+    @user = User.find(params[:id])
+      
+    respond_to do |format|
+      if(@user and @user.update_attributes(params[:user]))
+        @user.verified = true
+        @user.save
+        format.html { redirect_to display_show_path }
+        flash[:notice] = "Password has been successfully updated."
+      else
+        format.html {  render action: "change_password" }
+        flash[:error] = "Password doesn't match."
+      end
     end
   end
 end

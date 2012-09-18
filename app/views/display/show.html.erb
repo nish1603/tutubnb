@@ -3,6 +3,14 @@
 <div class = "display-showroom">
   <%= render 'search' %>
 
+  <div class = "side">
+  	<form id = "enter_tags">
+      <%= text_field_tag :tags_string %>
+    </form>
+    <div id = "show_tags">
+    </div>
+  </div>
+
   <div id = "display-div">
     <%= render 'selection' %>
   </div>

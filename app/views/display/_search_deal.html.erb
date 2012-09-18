@@ -1,4 +1,5 @@
-<%= form_tag('/admin/deals', :method => :post, :remote => :true) do %>
+
+<%= form_tag('/admin/deals', :method => :get, :remote => :true) do %>
 <table class = "search-options">
   <tr>
     <td><%= 'Deal type : ' %><%= select_tag(:type, options_for_select(Deal::TYPE), :prompt => 'Select Deals Type') %></td>

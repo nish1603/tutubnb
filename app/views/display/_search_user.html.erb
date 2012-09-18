@@ -1,4 +1,4 @@
-<%= form_tag('/admin/user', :method => :post, :remote => :true) do %>
+<%= form_tag('/admin/user', :method => :get, :remote => :true) do %>
 <table class = "search-options">
   <tr>
     <td><%= text_field_tag :email, nil, :placeholder => 'email' %></td>

@@ -1,14 +1,19 @@
 
-
-<% if(notice) %>
-  <div class = "notice"><%= notice %></div>
-<% end %>
-
 <div class = "outer-user-info">
   <%= render 'form' %>
 
   <div class = "user-info">
     <%= form_for(@user) do |form| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this product from being saved:</h2>
+          <ul>
+            <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+      </div>
+    <% end %>
       <table>
         <tr class="field">
           <td><%= form.label :first_name %></td>
@@ -24,11 +29,11 @@
         </tr>
         <tr class="field">
           <td><%= form.label :email %></td>
-          <td><%= form.text_field :email %></td>
+          <td><%= @user.email %></td>
         </tr>
         <tr class="field">
           <td><%= form.label :wallet %></td>
-          <td>&#8377;<%= @user.wallet %></td>
+          <td>&#8377;<%= @user.wallet.round(2) %></td>
         </tr>
         <tr class="field">
           <td><%= form.label :birth_date %></td>

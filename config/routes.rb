@@ -18,15 +18,9 @@ Tutubnb2::Application.routes.draw do
 
   match "/deal/complete/:id" => "deal#complete", :via => :post, :as => :deal_complete
 
-  get "deal/accept"
-
-  get "deal/reject"
-
-  get "deal/cancel"
-
   match  "/deal/:id" => "deal#show", :via => :get, :as => :deal
 
-  match  "/deal/:perform/:id" => "deal#reply", :via => :get, :as => :deal_reply
+  match  "/deal/reply/:perform/:id" => "deal#reply", :via => :get, :as => :deal_reply
 
   match  "/user/:id/edit" => "user#edit", :via => :get, :as => :user_edit
 
@@ -52,11 +46,15 @@ Tutubnb2::Application.routes.draw do
 
   match  "/user/requests/:id" => "user#requests", :via => :get, :as => :user_requests
 
+  match  "/user/requested_trips/:id" => "user#requested_trips", :via => :get, :as => :user_requested_trips
+
   match  "/user/:id" => "user#destroy", :via => :delete, :as => :user
 
   match "/user/change_password/:id" => "user#change_password", :via => :get, :as => :user_change_password
 
-  match "/user/update_password/:id" => "user#update_password", :via => :post, :as => :user_update_password
+  match "/user/places/:id" => "user#places", :via => :get, :as => :user_places
+
+  match "/user/update_password/:id" => "user#update_password", :via => :put, :as => :user_update_password
 
   match  "/user/trips/:id" => "user#trips", :via => :get, :as => :user_trips  
 
@@ -86,6 +84,7 @@ Tutubnb2::Application.routes.draw do
 
 
   match  "/place/activate/:flag/:id" => "place#activate", :via => :get, :as => :activate_place
+  match  "/place/operation/:flag/:id" => "place#operation", :via => :get, :as => :operation_place
   match  "/place/:id" => "place#show", :via => :post, :as => :place
   match "/places" => "place#create", :via => :post
   resources :place, :controller => 'place'
@@ -107,9 +106,15 @@ Tutubnb2::Application.routes.draw do
 
   get "profile/forget_password"
 
+  match "/change_password" => "profile#change_password", :via => :get, :as => :change_password
+
+  match "/update_password/:id" => "profile#update_password", :via => :put, :as => :profile_update_password
+
   post "profile/save"
 
   post "profile/validate_user"
+
+  post "profile/send_activation_link"
 
   
 

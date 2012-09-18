@@ -1,7 +1,7 @@
 class Deal < ActiveRecord::Base
   attr_accessible :end_date, :price, :start_date, :guests, :cancel, :accept, :request
   
-  validates :end_date, :price, :start_date, :guests, :presence => true
+  validates :price, :guests, :presence => true, :numericality => { :greater_than_or_equal_to => 1 }
   validate :user_have_amount
 
   TYPE = ['Accepted', 'Rejected', 'Requests', 'To Complete', 'Completed']
@@ -15,10 +15,11 @@ class Deal < ActiveRecord::Base
   scope :requests, lambda { |user| user.deals.requested(false).canceled(false) }
   scope :find_visits_of_user, lambda { |user| user.deals.accepted(true).canceled(false) }
   scope :find_requests_of_user, lambda { |user| user.deals.requested(true).canceled(false) }
-  scope :find_trips_of_user, lambda { |user| user.deals.requested(false).canceled(false) }
-  scope :to_complete, lambda { |flag| where(:complete => flag).where(:end_date < Date.current) }
+  scope :find_trips_of_user, lambda { |user| user.trips.requested(false).canceled(false) }
+  scope :find_requested_trips_of_user, lambda { |user| user.trips.requested(true).canceled(false) }
+  scope :to_complete, lambda { |flag| where(:complete => flag) }
   scope :completed, lambda { |flag| where(:complete => flag) }
-  scope :by_place, lambda { |place| where(:place_id => place.id, :accept => true)}
+  scope :by_place, lambda { |place| where(:place_id => place.id)}
 
 
   private

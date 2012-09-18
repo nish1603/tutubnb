@@ -1,6 +1,3 @@
-<% if(notice) %>
-  <div class = "notice"><%= notice %></div>
-<% end %>
 
 <div class = "outer-user-info">
   
@@ -20,17 +17,20 @@
         </tr>
         <tr class="field">
           <td><%= "price:" %></td>
-          <td><%= trip.price %></td>
+          <td>&#8377;<%= trip.price %></td>
         </tr>
         <tr class="field">
           <td><%= "User Name:" %></td>
-          <td><%= trip.user_id %></td>
+          <td><%= trip.user.first_name + " " + trip.user.last_name %></td>
         </tr>
         <tr class="field">
           <td><%= "Place Name:" %></td>
-          <td><%= trip.place_id %></td>
+          <td><%= trip.place.title %></td>
         </tr>
       </table>
+    <% end %>
+    <% if(@trips.empty?) %>
+      <%= render :text => "No trips as of now." %>
     <% end %>
   </div>
 </div>

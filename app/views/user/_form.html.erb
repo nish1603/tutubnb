@@ -4,7 +4,7 @@
 
   <div class = "profile-pic">
     <% if(@user.avatar.exists?) %>
-      <%= image_tag(@user.avatar) %>
+      <%= image_tag(@user.avatar.url(:thumb)) %>
     <% else %>
       <%= image_tag('missing.png') %>
     <% end %>
@@ -13,8 +13,14 @@
 
 	<ul>
     <li><%= link_to 'Edit', user_edit_path(session[:user_id]) %></li>
+    <li><%= link_to 'Change Password', user_change_password_path(session[:user_id]) %></li>
+    <li><%= link_to 'My Places', user_places_path(session[:user_id]) %></li>
     <li><%= link_to 'My Visits', user_visits_path(session[:user_id]) %></li>
     <li><%= link_to 'Requests', user_requests_path(session[:user_id]) %></li>
     <li><%= link_to 'My Trips', user_trips_path(session[:user_id]) %></li>
+    <li><%= link_to 'My Requested Trips', user_requested_trips_path(session[:user_id]) %></li>
+    <% if(@user.admin == false) %>
+      <li><%= link_to 'Delete My Account', user_path(session[:user_id]), :method => :delete %></li>
+    <% end %>
   </ul>
 </div>

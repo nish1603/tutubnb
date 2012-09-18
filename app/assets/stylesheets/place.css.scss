@@ -2,7 +2,24 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#side {
+ul.ui-autocomplete {
+  background : white;
+  overflow : auto;
+  max-height : 75px;
+  width : 14%;
+
+  li {
+    color : black;
+    list-style-type : none;
+  }
+
+  a:active {
+    color : white;
+    background : orange;
+  }
+}
+
+div.side {
   background : pink;
   border : 1px solid magenta;
   float : left;
@@ -19,9 +36,31 @@
 
     a:hover {
       color : black;
-
     }
+  }
 
+  input[type = "text"] {
+    margin-top : 10%;
+    margin-left : 5%;
+    width : 90%;
+  }
+
+  div#show_tags {
+    height : 300px;
+    overflow : auto;
+      div.tag_name {
+        color : white;
+        height : 20px;
+        margin : 10px;
+        z-index : -1px;
+        float : left;
+        display : block;
+        background : purple;
+        
+      div {
+        display : inline;
+      }
+    }
   }
 }
 
@@ -53,17 +92,30 @@
     padding-top : 2%;
   }
 
-  img {
-    width : 100px;
-    height : 100px;
-  }
-
   .actions {
     td {
       padding-left : 100%;
 
     }
   }
+
+/*  
+div#suggestions {
+    background : white;
+    overflow : auto;
+    height : 100px;
+    display : none;
+    p {
+      background : white;
+      color : black;
+      height : 20%;
+      font-weight : normal;
+      border : none;
+      z-index : +2px;
+      padding : 0px;
+    }
+  }
+*/
 }
 
 .place-information {

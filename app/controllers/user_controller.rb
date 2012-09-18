@@ -5,8 +5,8 @@ class UserController < ApplicationController
     edit_func
   end
 
-  def update_func
-    update_func("edit", "details")
+  def update
+    update_func("edit", "Details")
   end
 
   def change_dp
@@ -14,7 +14,7 @@ class UserController < ApplicationController
   end
 
   def update_dp
-    update_func("change_dp", "profile pic")
+    update_func("change_dp", "Profile Pic")
   end
 
   def visits
@@ -44,6 +44,15 @@ class UserController < ApplicationController
     end
   end
 
+  def requested_trips
+    @user = User.find(params[:id])
+    @requested_trips = Deal.find_requested_trips_of_user(@user)
+
+    respond_to do |format|
+      format.html
+    end
+  end  
+
   def show
   end
 
@@ -59,7 +68,13 @@ class UserController < ApplicationController
     @user = User.find(params[:id])
     
     respond_to do |format|
-      format.html { render :action => render_option }
+      if(@user.update_attributes(params[:user]))
+        flash[:notice] = "#{message} updated."
+        format.html { redirect_to user_edit_path(@user.id) }
+      else
+        flash[:error] = "#{message} not updated."
+        format.html { render :action => render_option }
+      end
     end
   end
 
@@ -117,25 +132,38 @@ class UserController < ApplicationController
       session[:admin] = nil
     end
 
+    @user.places.each do |place|
+      place.destroy
+    end
+
     @user.destroy
 
     respond_to do |format|
       format.html { redirect_to admin_users_path }
       format.json { head :no_content }
     end
+  end
 
-    def change_password
-      @user = User.find(params[:id])
-    end
+  def change_password
+    @user = User.find(params[:id])
+  end
 
-    def update_password
-      @user = User.find(params[:id])
+  def update_password
+    @user = User.find(params[:id])
       
-      respond_to do |format|
-        if(@user and @user.authenticate(:old_password) and @user.update_attributes(params[:user]))
-          format.html { redirect_to display_show_path }
-        end
+    respond_to do |format|
+      if(@user and @user.authenticate(params[:old_password]) and @user.update_attributes(params[:user]))
+        format.html { redirect_to display_show_path }
+        flash[:notice] = "Password has been successfully updated."
+      else
+        format.html {  render action: "change_password" }
+        flash[:error] = "Password doesn't match."
       end
     end
+  end
+
+  def places
+    @user = User.find(params[:id])
+    @places = @user.places
   end
 end

@@ -1,7 +1,7 @@
 
   <table>
     <tr class="field">
-      <td><%= form.label :accomodation %></td>
+      <td><%= form.label "accomodation *" %></td>
       <td><%= form.text_field :accomodation %></td>
     </tr>
     <tr class="field">
@@ -23,10 +23,7 @@
     <tr class="field">
       <td><%= form.label :size %></td>
       <td><%= form.text_field :size %></td>
-    </tr>
-    <tr class="field">
-      <td><%= form.label :unit %></td>
-      <td><%= form.text_field :unit %></td>
+      <td><%= form.select :unit, Detail::UNITS %>
     </tr>
     <tr class="field">
       <td><%= form.label :pets %></td>

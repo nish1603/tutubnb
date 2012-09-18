@@ -6,4 +6,16 @@
   	<tr><td><a href = "#details">Details</a></td></tr>
   	<tr><td><a href = "#address">Address</a></td></tr>
   </table>
+
+  <form id = "enter_tags">
+    <%= text_field_tag :tags_string %>
+  </form>
+
+    <div id = "show_tags">
+      <% @place.tags_string.split(', ').each do |place_tag| %>
+        <div class = "tag_name"><span><%= place_tag %></span><div><%= image_tag "close_icon.gif", :class => "tag_close_image"%></div></div>
+      <% end %>
+    </div>
 </div>
+
+

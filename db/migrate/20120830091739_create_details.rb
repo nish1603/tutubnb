@@ -1,7 +1,7 @@
 class CreateDetails < ActiveRecord::Migration
   def change
     create_table :details do |t|
-      t.string :accomodation
+      t.integer :accomodation
       t.integer :bedrooms
       t.integer :beds
       t.string :bed_type

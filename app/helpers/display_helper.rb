@@ -1,16 +1,10 @@
 module DisplayHelper
 	def selection()
     places = Place.admin_visible
-    places = places & Place.by_city(params[:city]) unless(params[:city].blank?)
-    places = places & Place.by_country(params[:country]) unless(params[:country].blank?)
-    places = places & Place.by_property_type(params[:property_type]) unless(params[:property_type].blank?)
-    places = places & Place.by_room_type(params[:room_type]) unless(params[:room_type].blank?)
+    places = places.by_location(places)
+    places = places.by_location(places)
+    places = places.by_tags(places)
     
-    tags = params[:place_tags_string].split(", ").reject{ |tag| tag.nil? or tag.blank? }
-    tags.each do |place_tag|
-      places_by_tag = Tag.find_by_tag(place_tag.strip)
-      places = places_by_tag.places & places unless places_by_tag.nil?
-    end
 
     if(session[:admin] != true or params[:type] == 'Activated')
       places = places & Place.visible(true)
@@ -21,9 +15,32 @@ module DisplayHelper
     places & Place.admin_visible
   end
 
+  def by_location(places)
+    [:city, :country].each do |type|
+      places = places & Place.by_location(type, params[type]) unless(params[type].blank?)
+    end
+    places
+  end
+
+  def by_property(places)
+    [:property_type, :room_type].each do |type|
+      places = places & Place.by_property(type, params[type]) unless(params[type].blank?)
+    end
+    places
+  end
+
+  def by_tags(places)
+    tags = params[:place_tags_string].split(", ").reject{ |tag| tag.nil? or tag.blank? }
+    tags.each do |place_tag|
+      places_by_tag = Tag.find_by_tag(place_tag.strip)
+      places = places_by_tag.places & places unless places_by_tag.nil?
+    end
+    places
+  end
+
   def select_users()
 
-    users = [User.find_by_email(params[:email])]
+    users = User.find_all_by_email(params[:email])
 
     if(params[:type] == 'Activated')
         users = User.activated_and_verified

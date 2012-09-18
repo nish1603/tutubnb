@@ -113,4 +113,23 @@ module DealHelper
       end
     end
   end
+
+  def self.transer_from_admin(@deal)
+    @admin = User.admin.first  
+    @owner = @deal.place.user
+
+    @admin.wallet -= (@deal.price * 0.9)
+    @owner.wallet += (@deal.price * 0.9)
+    return @admin, @owner
+  end
+
+  def self.transfer_to_admin(@deal)
+    @requestor = @deal.user
+    @admin = User.admin.first
+
+    @requestor.wallet -= (@deal.price * 1.1) 
+    @admin.wallet += (@deal.price * 1.1)
+
+    return @admin, @requestor
+  end
 end

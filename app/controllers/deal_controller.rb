@@ -15,9 +15,7 @@ class DealController < ApplicationController
 
     respond_to do |format|
       if(params[:commit]  == "Book Place" and event_validate == true and @deal.save)
-        owner = User.find(@deal.place.user_id)
         flash[:notice] = "You have successfully booked the place."
-
         format.html { redirect_to place_path(@deal.place.id) }
       else
         flash[:error] = @deal.errors.full_messages.first if(@deal.errors.any?)
@@ -29,14 +27,11 @@ class DealController < ApplicationController
 
   def reply
     @deal = Deal.find(params[:id])
-    @requestor = @deal.user
-    @admin = User.admin.first
     @deal.request = false
 
     if(params[:perform] == "accept")
       res = true
-      @requestor.wallet -= (@deal.price * 1.1) 
-      @admin.wallet += (@deal.price * 1.1)
+      @admin, @requestor = DealHelper.transfer_to_admin(@admin)
       DealHelper.reject_deals(@deal, @deal.place)
     else
       res = false
@@ -45,7 +40,7 @@ class DealController < ApplicationController
     @deal.accept = res
 
     respond_to do |format|
-      if @deal.save and @requestor.save and @admin.save
+      if(@deal.save and (res == false or (@requestor.save and @admin.save)))
         flash[:notice] = "Deal has been #{params[:perform]}ed."
         format.html { redirect_to user_requests_path(session[:user_id])}
       end
@@ -60,12 +55,9 @@ class DealController < ApplicationController
 
   def complete
     @deal = Deal.find(params[:id])
-    @admin = User.admin.first  
-    @owner = @deal.place.user
     @deal.complete = true
 
-    @admin.wallet -= (@deal.price * 0.9)
-    @owner.wallet += (@deal.price * 0.9)
+    @admin, @owner = DealHelper.transfer_from_admin(@deal)
 
     respond_to do |format|
       if(@deal.save and @admin.save and @owner.save)

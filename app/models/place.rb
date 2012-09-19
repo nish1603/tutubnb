@@ -8,6 +8,10 @@ class Place < ActiveRecord::Base
   ROOM_TYPE = ['Private room', 'Shared room', 'Entire Home/apt']
   PLACE_TYPE = ['Activated', 'Deactivated']
 
+  before_save :set_prices
+  before_update :set_prices
+  before_validation :check_photos
+
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
   has_one :rules, :dependent => :delete
@@ -37,6 +41,20 @@ class Place < ActiveRecord::Base
     place_tags = string.split(", ").reject{ |tag| tag.nil? or tag.blank? }
     self.tags = place_tags.map do |tag|
       Tag.find_or_initialize_by_tag(tag.strip)
+    end
+  end
+
+  def set_prices
+    if(self.valid?)
+      self.weekend = self.daily if self.weekend.nil?
+      self.weekly = self.daily * 5 + self.weekend * 2 if self.weekly.nil? 
+      self.monthly = self.daily * 30 if self.monthly.nil?
+    end
+  end
+
+  def check_photos
+    if(self.photos.count < 2)
+      errors.add(:base, "Photos should be more than 2")
     end
   end
 end

@@ -25,42 +25,17 @@ class PlaceController < ApplicationController
     if(params[:commit] == "Save Place")
       validate = false
       @place.hidden = true
+      notice = "Your place has been saved. But it is hidden from the outside world."
     else
       validate = true
-    end
-
-    photos = 0
-    params[:place][:photos_attributes].each do |key, value|
-      unless(value[:avatar].nil?)
-        photos += 1
-      end
+      notice = "Your place has been created."
     end
 
   	respond_to do |format|
-      if((validate == false or photos >= 2) and @place.save(:validate => validate))
-        if(@place.daily and @place.daily >= 0)
-          @place.weekend = @place.daily if @place.weekend.nil?
-          @place.weekly = @place.daily * 5 + @place.weekend * 2 if @place.weekly.nil? 
-          @place.monthly = @place.daily * 30 if @place.monthly.nil?
-        end
-        logger.info "hi"
-        logger.info params
-        @place.save(:validate => validate)
+      if @place.save(:validate => validate)
         format.html { redirect_to display_show_path }
-        if(validate == true)
-          flash[:notice] = "Your place has been created."
-        else
-          flash[:notice] = "Your place has been saved. But it is hidden from the outside world."
-        end
-      elsif photos < 2
-        logger.info "hi"
-        logger.info params
-        @place.valid?
-        @place.errors.add(:base, "Photos should be at least 2")
-        format.html { render action: "new" }
+        flash[:notice] = notice
       else
-        logger.info "hi"
-        logger.info params
         format.html { render action: "new" }
       end
     end 

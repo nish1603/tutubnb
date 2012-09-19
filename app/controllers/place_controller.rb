@@ -33,9 +33,6 @@ class PlaceController < ApplicationController
     params[:place][:photos_attributes].each do |key, value|
       unless(value[:avatar].nil?)
         photos += 1
-      else
-        value["_destroy"] = true
-        logger.info params[:place][:photos_attributes]
       end
     end
 

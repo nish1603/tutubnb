@@ -71,7 +71,7 @@
     
 
     
-    <p><a name = "details">Details (Optional)</a></p>
+    <p><a name = "details">Details</a></p>
     <%= form.fields_for :detail do |builder| %>
       <%= render :template => 'detail/_form.html.erb', :locals => { :form => builder } %>
     <% end %>

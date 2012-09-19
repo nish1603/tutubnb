@@ -6,7 +6,7 @@
     <% if(@user.avatar.exists?) %>
       <%= image_tag(@user.avatar.url(:thumb)) %>
     <% else %>
-      <%= image_tag('missing.png') %>
+      <%= image_tag('missing.png', :height => "150px", :width => "150px") %>
     <% end %>
     <%= link_to 'Change Profile Pic', user_change_dp_path(session[:user_id]), :class => 'change-pic' %>
   </div>

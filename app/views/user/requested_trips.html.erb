@@ -17,7 +17,7 @@
         </tr>
         <tr class="field">
           <td><%= "price:" %></td>
-          <td>&#8377;<%= requested_trip.price %></td>
+          <td>&#8377;<%= (requested_trip.price*1.1).round(2) %>(inlusive tutubnb commission)</td>
         </tr>
         <tr class="field">
           <td><%= "User Name:" %></td>

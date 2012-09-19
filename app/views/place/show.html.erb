@@ -42,3 +42,9 @@
     <%= render 'reviews' %>
   </div>
 </div>
+
+<div id = "show_tags">
+  <% @place.tags_string.split(', ').each do |place_tag| %>
+    <div class = "tag_name"><span><%= place_tag %></span></div></div>
+  <% end %>
+</div>

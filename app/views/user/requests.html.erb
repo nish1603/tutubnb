@@ -16,7 +16,7 @@
         </tr>
         <tr class="field">
           <td><%= "price:" %></td>
-          <td>&#8377;<%= request.price %></td>
+          <td>&#8377;<%= (request.price*0.9).round(2) %>(after reducing 10% commission)</td>
         </tr>
         <tr class="field">
           <td><%= "User_name:" %></td>

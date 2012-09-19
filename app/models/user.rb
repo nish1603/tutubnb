@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   has_many :reviews, :dependent => :delete_all
 
   GENDER = ['Male', 'Female', 'Other']
-  TYPE = ['Activated', 'Deactivated', 'Not Verified', 'All']
+  TYPE = ['Activated', 'Deactivated', 'Not_Verified', 'All']
 
   scope :admin, where(:admin => true)
   scope :by_email, lambda{ |user| where(:email => user.email)}

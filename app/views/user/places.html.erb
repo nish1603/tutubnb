@@ -5,7 +5,9 @@
     	<% @places.each do |place| %>
     	  <tr class = "<%= cycle("odd_place_row", "even_place_row") %> selected-place" >
           <td class = "left-cell">
-            <%= image_tag place.photos.first.avatar(:medium), :class => "place_pic" %>
+            <% unless(place.photos.empty?) %>
+              <%= image_tag place.photos.first.avatar(:medium), :class => "place_pic" %>
+            <% end %>
           </td>
           <td class = "mid-cell">
     	  	  <p class = "title"><a href ="<%= place_path(place.id) %>"><%= place.title %></a><p>

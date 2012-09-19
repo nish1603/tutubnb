@@ -20,12 +20,16 @@ class Place < ActiveRecord::Base
 
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :detail
-  accepts_nested_attributes_for :photos, :allow_destroy => true
+  accepts_nested_attributes_for :photos, :reject_if => lambda { |photo| photo[:avatar].blank?  }
   accepts_nested_attributes_for :rules
 
 
-  scope :by_location, lambda{ |type, location| joins(:address).where("addresses.#{type} = ?", location) }
-  scope :by_property, lambda{ |type, type_value| where(type => type_value) }
+  # scope :by_location, lambda{ |type, location| joins(:address).where("addresses.#{type} = ?", location) }
+  # scope :by_property, lambda{ |type, type_value| where(type => type_value) }
+  scope :by_city, lambda{ |city| joins(:address).where('addresses.city LIKE ?', "%#{city}%") }
+  scope :by_country, lambda{ |country| joins(:address).where('addresses.country LIKE ?', "%#{country}") }
+  scope :by_property_type, lambda{ |property_type| where(:property_type => property_type) }
+  scope :by_room_type, lambda{ |room_type| where(:room_type => room_type) }
   scope :visible, lambda{ |flag| where(:verified => flag) }
   scope :admin_visible, where(:hidden => false)
 

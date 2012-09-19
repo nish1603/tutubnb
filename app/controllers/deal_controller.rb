@@ -28,7 +28,13 @@ class DealController < ApplicationController
     @deal = Deal.find(params[:id])
     @deal.request = false
 
-    res, @admin, @requestor = DealHelper.perform(@deal)
+    if(params[:perform] == "accept")
+      res = true
+      @admin, @requestor = DealHelper.transfer_to_admin(@deal)
+      DealHelper.reject_deals(@deal, @deal.place)
+    else
+      res = false
+    end
     
     @deal.accept = res
 

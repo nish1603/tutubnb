@@ -43,10 +43,37 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def user_activated
-    if(self.user.activated == false)
+  def owner_activated
+    place = Place.find(params[:id])
+    if(place.user.activated == false)
       flash[:alert] = "Owner of this place is deactivated. Please activate him first."
       redirect_to admin_user_path
+    end
+  end
+
+  def user_exist_by_email
+    user = User.find_by_email(params[:email])
+    respond_to do |format|
+      if(user.nil?)
+        format.html { render :template => profile_login_path }
+        flash[:error] = 'Invalid E-mail Address.'
+      end
+    end
+  end
+
+  def user_verified
+    user = User.find_by_email(params[:email])
+    if(user.verified == false)
+      render :template => profile_login_path
+      flash[:alert] = 'You have not verified your user account.'
+    end
+  end
+
+  def user_activated
+    user = User.find_by_email(params[:email])
+    if(user.activated == false)
+      render :template => profile_login_path
+      flash[:alert] = 'You are deactivated by the admin of this site.'
     end
   end 
 end

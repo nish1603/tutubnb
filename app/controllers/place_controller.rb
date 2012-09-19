@@ -1,6 +1,7 @@
 class PlaceController < ApplicationController
 
   skip_before_filter :authorize, only: :show
+  before_filter :owner_activated, :only => :activate
 
  
   def new
@@ -96,8 +97,8 @@ class PlaceController < ApplicationController
     else
       active = false
     end
-    
-      @place.verified = active
+
+    @place.verified = active
 
     respond_to do |format|
       if(@place.save)

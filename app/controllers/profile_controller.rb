@@ -1,6 +1,9 @@
 class ProfileController < ApplicationController
   
   skip_before_filter :authorize
+  before_filter :user_exist_by_email, :only => [:validate_user]
+  before_filter :user_verified, :only => [:validate_user]
+  before_filter :user_activated, :only => [:validate_user]
 
   def login
   end
@@ -9,17 +12,11 @@ class ProfileController < ApplicationController
     user = User.find_by_email(params[:email])
     
     respond_to do |format|
-      if user and user.authenticate(params[:password]) and user.verified == true and user.activated == true
+      if(user.authenticate(params[:password]))
         session[:user_id] = user.id
         session[:user_name] = user.first_name
         session[:admin] = user.admin
         format.html { redirect_to display_show_path }
-      elsif user and user.verified == false
-        format.html { redirect_to profile_login_path }
-        flash[:alert] = 'You have not verified your user account.'
-      elsif user and user.activated == false
-        format.html { redirect_to profile_login_path }
-        flash[:alert] = 'You are blocked by the admin of this site.'
       else 
         format.html { redirect_to profile_login_path }
         flash[:error] = 'E-mail Address/Password doesn\'t match.'

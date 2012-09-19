@@ -97,14 +97,10 @@ class PlaceController < ApplicationController
       active = false
     end
     
-    if(@place.user.activated == true)
       @place.verified = active
-    end
 
     respond_to do |format|
-      if(@place.user.activated == false)
-        flash[:alert] = "Owner of this place is deactivated. Please activate him first."
-      elsif(@place.save)
+      if(@place.save)
         flash[:notice] = "#{@place.title} is now #{params[:flag]}"
       else
         flash[:error] = "#{@place.title} has not been verified"

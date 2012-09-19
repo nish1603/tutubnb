@@ -43,5 +43,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def 
+  def user_activated
+    if(self.user.activated == false)
+      flash[:alert] = "Owner of this place is deactivated. Please activate him first."
+      redirect_to admin_user_path
+    end
+  end 
 end

@@ -42,4 +42,6 @@ class ApplicationController < ActionController::Base
       redirect_to display_show_path
     end
   end
+
+  def 
 end

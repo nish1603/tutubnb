@@ -48,16 +48,20 @@ class PlaceController < ApplicationController
 
   def update
     @place = Place.find(params[:id])
+    
+    notice = "Successfully updated."
+    if(@place.hidden == true)
+      notice += "It is still hidden, you can make it visible on My Places."
+    end
 
-    photos = 0
-    params[:place][:photos_attributes].each do |key, value|
-      if(!value[:avatar].nil?)
-        photos += 1
+    respond_to do |format|
+      if(@place.update_attributes(params[:place]))
+        flash[:notice] = notice
+        format.html { redirect_to @place }
       else
-        params[:place][:photos_attributes].delete(key)
+        format.html { render action: "edit"}
       end
     end
-    update_attributes @place, photos, :place
   end
 
   def show

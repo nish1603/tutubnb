@@ -39,9 +39,4 @@ class Place < ActiveRecord::Base
       Tag.find_or_initialize_by_tag(tag.strip)
     end
   end
-
-  private
-    def require_two_photos
-      errors.add(:base, "You must provide at least two photos") if self.photos.count < 2
-    end
 end

@@ -32,7 +32,6 @@ module DisplayHelper
   end
 
 
-
   def select_users()
 
     users = User.find_all_by_email(params[:email])

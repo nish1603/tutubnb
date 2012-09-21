@@ -19,12 +19,22 @@
           <td>&#8377;<%= (request.price*0.9).round(2) %>(after reducing 10% commission)</td>
         </tr>
         <tr class="field">
-          <td><%= "User_name:" %></td>
-          <td><%= request.user.first_name + " " + request.user.last_name %></td>
+          <td><%= "User Name:" %></td>
+          <% if(request.user) %>
+            <td><%= request.user.first_name + " " + request.user.last_name %></td>
+          <% else %>
+            <td><%= "The user has deleted his account." %></td>
+          <% end %>
         </tr>
         <tr class="field">
-          <td><%= "Place Title:" %></td>
-          <td><%= request.place.title %></td>
+          <td><%= "Place Name:" %></td>
+          <% if(request.place && request.place.verified && (reuest.place.hidden == false)) %>
+            <td><%= link_to(request.place.title, place_path(reuest.place.id)) %></td>
+          <% elsif(request.place.nil?) %>
+            <td><%= The place has been deleted %></td>
+          <% else %>
+            <td><%= request.place.title %></td>
+          <% end %>
         </tr>
         <tr class="action">
           <td><%= button_to('Accept', deal_reply_path(:accept, request.id), :method => :get) %></td>

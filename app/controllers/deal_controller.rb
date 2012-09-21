@@ -31,15 +31,20 @@ class DealController < ApplicationController
     if(params[:perform] == "accept")
       res = true
       @admin, @requestor = DealHelper.transfer_to_admin(@deal)
+      notify_visitor = "Your request for {@deal.place.title} has been accepted."
+      link_visitor = user_visitor_url(@requestor.id)
       DealHelper.reject_deals(@deal, @deal.place)
     else
       res = false
+      notify_visitor = "Your request for {@deal.place.title} has been rejected by the owner."
+      link_visitor = user_visits_url(@deal.user.id)
     end
     
     @deal.accept = res
 
     respond_to do |format|
       if(@deal.save and (res == false or (@requestor.save and @admin.save)))
+        Notifier.notification(notify_visitor, link_visitor, @deal.user.email, @deal.user.first_name, 'Deal #{params[:perform].capitalize}ed.').deliver
         flash[:notice] = "Deal has been #{params[:perform]}ed."
         format.html { redirect_to user_requests_path(session[:user_id])}
       end
@@ -56,10 +61,18 @@ class DealController < ApplicationController
     @deal = Deal.find(params[:id])
     @deal.complete = true
 
-    @admin, @owner = DealHelper.transfer_from_admin(@deal)
+    notify_visitor = "#{(@deal.price*0.9).round(2)} has been added to your wallet for the deal at #{@deal.place.title} from #{@deal.start_date} to #{@deal.end_date}."
+    link_visitor = ''
+
+    @admin = User.admin.first  
+    @owner = @deal.place.user
+
+    @admin.wallet -= (@deal.price * 0.9)
+    @owner.wallet += (@deal.price * 0.9)
 
     respond_to do |format|
       if(@deal.save and @admin.save and @owner.save)
+        Notifier.notification(notify_visitor, link_visitor, @deal.place.user.email, @deal.place.user.first_name, "Deal #{params[:perform].capitalize}ed.").deliver
         format.html { redirect_to admin_deals_path }
         flash[:notice] = "#{@deal.price * 0.9} has been added to #{@owner.first_name} to your wallet."
       end

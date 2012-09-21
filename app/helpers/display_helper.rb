@@ -13,6 +13,7 @@ module DisplayHelper
     end
     
     places & Place.admin_visible
+    places
   end
 
   def by_option(scope_name, options, places)

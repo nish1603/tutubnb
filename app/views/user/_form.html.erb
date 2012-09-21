@@ -20,7 +20,7 @@
     <li><%= link_to 'My Trips', user_trips_path(session[:user_id]) %></li>
     <li><%= link_to 'My Requested Trips', user_requested_trips_path(session[:user_id]) %></li>
     <% if(@user.admin == false) %>
-      <li><%= link_to 'Delete My Account', user_path(session[:user_id]), :method => :delete %></li>
+      <li><%= link_to 'Delete My Account', user_path(session[:user_id]), :method => :delete, :data => { :confirm => "Are you sure?"} %></li>
     <% end %>
   </ul>
 </div>

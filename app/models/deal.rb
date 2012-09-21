@@ -3,9 +3,12 @@ class Deal < ActiveRecord::Base
   
   validates :price, :presence => true, :numericality => { :greater_than_or_equal_to => 0 }
   validates :guests, :presence => true, :numericality => { :greater_than_or_equal_to => 1, :only_integer => true }
-  validate :user_have_amount
-  validate :user_have_wallet
-  
+  # validate :user_have_amount
+  # validate :user_have_wallet
+  # validate :valid_start_date
+  # validate :valid_end_date
+  # validate :less_than_max_guests
+
   TYPE = ['Accepted', 'Rejected', 'Requests', 'To Complete', 'Completed']
 
   belongs_to :user
@@ -35,6 +38,25 @@ class Deal < ActiveRecord::Base
       amount = amount + self.price
       if(self.user.wallet < (amount*1.1))
         errors.add(:base, "Sorry, You have requested places upto the limit of your wallet.")
+      end
+    end
+
+    def valid_start_date
+      if(start_date >= Date.current)
+        errors.add(:base, "Start date should be more than or equal to current date.")
+      end
+    end
+
+    def valid_end_date
+      if(end_date >= start_date)
+        errors.add(:base, "End date should be more than or equal to Start date.")
+      end
+    end
+
+    def less_than_max_guests
+      max_guests = self.place.detail.accomodation
+      if(max_guests < self.guests)
+        errors.add(:base, "Guests can't be more than #{max_users}")
       end
     end
 end

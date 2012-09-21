@@ -46,6 +46,7 @@ module DealHelper
     msg << "No. of Weeks : #{weeks}, Price : #{weeks}x#{place.weekly} \n" if(weeks > 0)
     msg << "No. of Weekdays : #{weekdays}, Price : #{weekdays}x#{place.daily} \n" if(weekdays > 0)
     msg << "No. of Weekends : #{weekends}, Price : #{weekends}x#{place.weekend} \n" if(weekends > 0)
+    msg << "Additional guests : #{place.add_guests}, Price : #{place.add_guests}x#{place.add_price}" if(place.add_guests and deal.guests >= place.add_guests)
     msg << "Total Amount : #{amount.round(2)} + 10% Service Charge : #{(0.1 * amount).round(2)}"
     return amount, msg
   end

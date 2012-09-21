@@ -3,9 +3,11 @@
 one:
   start_date: 2012-09-01
   end_date: 2012-09-01
-  price: 1.5
+  price: 2000.39
+  guests: 9
 
 two:
   start_date: 2012-09-01
   end_date: 2012-09-01
-  price: 1.5
+  price: 0.0
+  guests: 9

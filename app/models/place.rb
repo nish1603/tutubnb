@@ -10,7 +10,7 @@ class Place < ActiveRecord::Base
 
   before_save :set_prices
   before_update :set_prices
-  before_validation :check_photos
+  #around_save :check_photos
 
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
@@ -24,7 +24,7 @@ class Place < ActiveRecord::Base
 
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :detail
-  accepts_nested_attributes_for :photos, :reject_if => lambda { |photo| photo[:avatar].blank?  }
+  accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => lambda { |photo| photo[:avatar].blank? }
   accepts_nested_attributes_for :rules
 
 
@@ -53,8 +53,10 @@ class Place < ActiveRecord::Base
   end
 
   def check_photos
-    if(self.photos.count < 2)
-      errors.add(:base, "Photos should be more than 2")
+    if(photos.count < 2)
+      errors.add(:base, "Photos should be atleast 2")
+      return false
     end
+    yield
   end
 end

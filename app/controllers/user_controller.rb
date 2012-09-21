@@ -126,21 +126,21 @@ class UserController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     
-    if(session[:admin] != true)
-      session[:user_id] = nil
-      session[:user_name] = nil
-      session[:admin] = nil
-    end
-
-    @user.places.each do |place|
-      place.destroy
-    end
-
-    @user.destroy
-
-    respond_to do |format|
-      format.html { redirect_to admin_users_path }
-      format.json { head :no_content }
+    if(@user.deals.completed(false).requested(true).empty? && @user.trips.completed(false).requested(true).empty?)
+      @user.places.each do |place|
+        place.destroy
+      end
+      @user.destroy
+      redirect_to profile_login_path
+      flash[:error] = "You have successfully deleted your account."
+      if(session[:admin] == false)
+        session[:user_id] = nil
+        session[:user_name] = nil
+        session[:admin] = nil
+      end
+    else
+      redirect_to user_edit_path(@user.id)
+      flash[:error] = "You can't delete your account, when you have pending requests."
     end
   end
 

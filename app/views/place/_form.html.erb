@@ -1,4 +1,6 @@
-
+<%= params %>
+<%= @place.photos.count %>
+<%= @place.address %>
 
 <div class="place-info">
   <%= nested_form_for(@place, :html => { :multipart => true }) do |form| %>

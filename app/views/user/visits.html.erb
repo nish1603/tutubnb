@@ -21,15 +21,21 @@
         </tr>
         <tr class="field">
           <td><%= "User Name:" %></td>
-          <td><%= visit.user.first_name + " " + visit.user.last_name %></td>
+          <% if(visit.user) %>
+            <td><%= visit.user.first_name + " " + visit.user.last_name %></td>
+          <% else %>
+            <td><%= "The user has deleted his account." %></td>
+          <% end %>
         </tr>
         <tr class="field">
           <td><%= "Place Name:" %></td>
-          <td><%= visit.place.title %></td>
-        </tr>
-        <tr class="field">
-          <td><%= "Email - ID of Visitor " %></td>
-          <td><%= visit.user.email %></td>
+          <% if(visit.place && visit.place.verified && (visit.place.hidden == false)) %>
+            <td><%= link_to(visit.place.title, place_path(visit.place.id)) %></td>
+          <% elsif(visit.place.nil?) %>
+            <td><%= "The place has been deleted" %></td>
+          <% else %>
+            <td><%= visit.place.title %></td>
+          <% end %>
         </tr>
       </table>
     <% end %>

@@ -31,11 +31,22 @@ class PlaceController < ApplicationController
       validate = true
       notice = "Your place has been created."
     end
+    
+    photos = 0
+    params[:place][:photos_attributes].each do |key, photo|
+      unless(photo[:avatar].blank?)
+        photos += 1
+      end
+    end
 
   	respond_to do |format|
-      if @place.save(:validate => validate)
+      if photos >= 2 && @place.save(:validate => validate)
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
+      elsif(photos < 2)
+        @place.valid?
+        @place.errors.add(:base, "Photos should be atleast 2")
+        format.html { render action: "new" }
       else
         format.html { render action: "new" }
       end
@@ -55,10 +66,24 @@ class PlaceController < ApplicationController
       notice += "It is still hidden, you can make it visible on My Places."
     end
 
+    photos = @place.photos.count
+    params[:place][:photos_attributes].each do |key, photo|
+      if(!photo[:avatar].blank?)
+        photos += 1
+      elsif(photo["_destroy"] == "1")
+        photos -= 1
+      end
+    end
+
+
     respond_to do |format|
-      if(@place.update_attributes(params[:place]))
+      if(photos >= 2 && @place.update_attributes(params[:place]))
         flash[:notice] = notice
         format.html { redirect_to @place }
+      elsif(photos < 2)
+        @place.valid?
+        @place.errors.add(:base, "Photos should be atleast 2")
+        format.html { render action: "edit"}
       else
         format.html { render action: "edit"}
       end
@@ -81,10 +106,16 @@ class PlaceController < ApplicationController
 
   def destroy
     @place = Place.find(params[:id])
-    @place.destroy
+    
+    if(@place.deals.completed(false).requested(true).empty?)
+      @place.destroy
+      flash[:notice] = "This place has been deleted"
+    else
+      flash[:error] = "This place can't be deleted because it has some pending details."
+    end
 
     respond_to do |format|
-      format.html { redirect_to display_show_path }
+      format.html { redirect_to request.referrer }
       format.json { head :no_content }
     end
   end
@@ -106,7 +137,7 @@ class PlaceController < ApplicationController
       else
         flash[:error] = "#{@place.title} has not been verified"
       end
-      format.html { redirect_to display_show_path }
+      format.html { redirect_to request.referrer }
     end
   end
 
@@ -129,9 +160,9 @@ class PlaceController < ApplicationController
       if(@place.save)
         flash[:notice] = "#{@place.title} is now #{result}"
       else
-        flash[:error] = "#{@place.title} has not been verified."
+        flash[:error] = "#{@place.title} is not #{result}."
       end
-      format.html { redirect_to display_show_path }
+      format.html { redirect_to request.referrer }
     end
   end
 end

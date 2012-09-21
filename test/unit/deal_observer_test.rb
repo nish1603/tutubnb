@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PriceTest < ActiveSupport::TestCase
+class DealObserverTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

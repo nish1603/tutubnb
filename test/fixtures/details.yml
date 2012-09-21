@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  accomodation: MyString
+  accomodation: 9
   bedrooms: 1
   beds: 1
   bed_type: MyString
@@ -11,7 +11,7 @@ one:
   pets: false
 
 two:
-  accomodation: MyString
+  accomodation: 7
   bedrooms: 1
   beds: 1
   bed_type: MyString

@@ -58,7 +58,7 @@ Tutubnb2::Application.routes.draw do
 
   match  "/user/trips/:id" => "user#trips", :via => :get, :as => :user_trips  
 
-  get "user/requests"
+  match "user/requests/:id" => "user#reuests", :via => :get, :as => :user_requests
 
   match  "/addresses" => "address#create", :via => :post
   match  "/address/:id/edit" => "address#edit", :via => :get, :as => :edit_address

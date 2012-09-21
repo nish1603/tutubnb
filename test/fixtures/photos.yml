@@ -1,9 +1,1 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
-one:
-  image_url: MyString
-  profile_flag: 
-
-two:
-  image_url: MyString
-  profile_flag: 

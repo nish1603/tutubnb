@@ -21,11 +21,30 @@
         </tr>
         <tr class="field">
           <td><%= "User Name:" %></td>
-          <td><%= trip.user.first_name + " " + trip.user.last_name %></td>
+          <% if(trip.user) %>
+            <td><%= trip.user.first_name + " " + trip.user.last_name %></td>
+          <% else %>
+            <td><%= "The user has deleted his account." %></td>
+          <% end %>
         </tr>
         <tr class="field">
           <td><%= "Place Name:" %></td>
-          <td><%= trip.place.title %></td>
+          <% if(trip.place && trip.place.verified && (trip.place.hidden == false)) %>
+            <td><%= link_to(trip.place.title, place_path(trip.place.id)) %></td>
+          <% elsif(trip.place.nil?) %>
+            <td><%= "The place has been deleted" %></td>
+          <% else %>
+            <td><%= trip.place.title %></td>
+          <% end %>
+          
+        </tr>
+        <tr class="field">
+          <p>The deal was
+          <% if(trip.accept == true) %>
+            <%= 'accepted' %>
+          <% else %>
+            <%= 'rejected' %>
+          <% end %></p>
         </tr>
       </table>
     <% end %>

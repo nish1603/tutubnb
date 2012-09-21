@@ -26,6 +26,8 @@ gem 'jquery-rails'
 gem 'bcrypt-ruby', '~> 3.0'
 gem 'paperclip', '~> 3.0.0'
 gem "nested_form", :git => 'https://github.com/ryanb/nested_form.git'
+gem 'will_paginate', '~> 3.0'
+
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 

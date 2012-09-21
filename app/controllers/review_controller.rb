@@ -8,7 +8,6 @@ class ReviewController < ApplicationController
   	respond_to do |format|
         @review.save
         format.html { render action: "new" }
-      end
-    end 
-  end
+    end
+  end 
 end

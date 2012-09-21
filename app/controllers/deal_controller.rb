@@ -7,18 +7,16 @@ class DealController < ApplicationController
     @deal = Deal.new(params[:deal])
     @deal.place_id = params[:place_id]
     @deal.user_id = session[:user_id]
+    @deal.price = 0.0
 
-    event_validate, key, msg = DealHelper.check_deal(@deal, @deal.place)
-
-    @deal.price, @division = DealHelper.calculate_price(@deal, @deal.place) if event_validate == true
+    @deal.price, @division = DealHelper.calculate_price(@deal, @deal.place) if @deal.valid?
 
     respond_to do |format|
-      if(params[:commit]  == "Book Place" and event_validate == true and @deal.save)
+      if(params[:commit]  == "Book Place" && @deal.save)
         flash[:notice] = "You have successfully booked the place."
         format.html { redirect_to place_path(@deal.place.id) }
       else
         flash[:error] = @deal.errors.full_messages.first if(@deal.errors.any?)
-        flash[key] = msg
         format.html { render "new" }
       end
     end

@@ -95,8 +95,4 @@ module DealHelper
 
     return admin, requestor
   end
-
-  def self.perform(deal)
-  end
-    
 end

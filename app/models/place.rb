@@ -10,7 +10,6 @@ class Place < ActiveRecord::Base
 
   before_save :set_prices
   before_update :set_prices
-  #around_save :check_photos
 
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
@@ -50,13 +49,5 @@ class Place < ActiveRecord::Base
       self.weekly = self.daily * 5 + self.weekend * 2 if self.weekly.nil? 
       self.monthly = self.daily * 30 if self.monthly.nil?
     end
-  end
-
-  def check_photos
-    if(photos.count < 2)
-      errors.add(:base, "Photos should be atleast 2")
-      return false
-    end
-    yield
   end
 end

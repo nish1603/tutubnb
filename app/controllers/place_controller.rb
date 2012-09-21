@@ -32,12 +32,7 @@ class PlaceController < ApplicationController
       notice = "Your place has been created."
     end
     
-    photos = 0
-    params[:place][:photos_attributes].each do |key, photo|
-      unless(photo[:avatar].blank?)
-        photos += 1
-      end
-    end
+    photos = check_photos(params)
 
   	respond_to do |format|
       if photos >= 2 && @place.save(:validate => validate)
@@ -66,28 +61,34 @@ class PlaceController < ApplicationController
       notice += "It is still hidden, you can make it visible on My Places."
     end
 
-    photos = @place.photos.count
-    params[:place][:photos_attributes].each do |key, photo|
-      if(!photo[:avatar].blank?)
-        photos += 1
-      elsif(photo["_destroy"] == "1")
-        photos -= 1
-      end
-    end
-
+    photos = check_photos(params)
 
     respond_to do |format|
-      if(photos >= 2 && @place.update_attributes(params[:place]))
+      if photos >= 2 && @place.save(:validate => validate)
+        format.html { redirect_to display_show_path }
         flash[:notice] = notice
-        format.html { redirect_to @place }
       elsif(photos < 2)
         @place.valid?
         @place.errors.add(:base, "Photos should be atleast 2")
-        format.html { render action: "edit"}
+        format.html { render action: "new" }
       else
-        format.html { render action: "edit"}
+        format.html { render action: "new" }
       end
     end
+  end
+
+  def check_photos(params)
+    photos = @place.photos.count
+    unless(params[:place][:photos_attributes].nil?)
+      params[:place][:photos_attributes].each do |key, photo|
+        if(!photo[:avatar].blank?)
+          photos += 1
+        elsif(photo["_destroy"] == "1")
+          photos -= 1
+        end
+      end
+    end
+    photos
   end
 
   def show
@@ -111,7 +112,7 @@ class PlaceController < ApplicationController
       @place.destroy
       flash[:notice] = "This place has been deleted"
     else
-      flash[:error] = "This place can't be deleted because it has some pending details."
+      flash[:error] = "This place can't be deleted because it has some pending deals."
     end
 
     respond_to do |format|

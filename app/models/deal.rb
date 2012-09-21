@@ -3,11 +3,11 @@ class Deal < ActiveRecord::Base
   
   validates :price, :presence => true, :numericality => { :greater_than_or_equal_to => 0 }
   validates :guests, :presence => true, :numericality => { :greater_than_or_equal_to => 1, :only_integer => true }
-  # validate :user_have_amount
-  # validate :user_have_wallet
-  # validate :valid_start_date
-  # validate :valid_end_date
-  # validate :less_than_max_guests
+  validate :user_have_amount
+  validate :user_have_wallet
+  validate :valid_start_date
+  validate :valid_end_date
+  validate :less_than_max_guests
 
   TYPE = ['Accepted', 'Rejected', 'Requests', 'To Complete', 'Completed']
 

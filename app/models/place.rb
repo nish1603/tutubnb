@@ -10,11 +10,11 @@ class Place < ActiveRecord::Base
 
   before_save :set_prices
   before_update :set_prices
-
+  
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
   has_one :rules, :dependent => :delete
-  has_many :photos, :dependent => :delete_all
+  has_many :photos, :dependent => :delete_all, :autosave => true
   has_many :deals, :dependent => :nullify
   has_many :reviews, :dependent => :delete_all
   has_and_belongs_to_many :tags

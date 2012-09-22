@@ -53,18 +53,16 @@ class ApplicationController < ActionController::Base
 
   def user_exist_by_email
     user = User.find_by_email(params[:email])
-    respond_to do |format|
-      if(user.nil?)
-        format.html { render :template => profile_login_path }
-        flash[:error] = 'Invalid E-mail Address.'
-      end
+    if(user.nil?)
+      redirect_to profile_login_path
+      flash[:error] = 'Invalid E-mail Address.'
     end
   end
 
   def user_verified
     user = User.find_by_email(params[:email])
     if(user.verified == false)
-      render :template => profile_login_path
+      redirect_to profile_login_path
       flash[:alert] = 'You have not verified your user account.'
     end
   end
@@ -72,8 +70,15 @@ class ApplicationController < ActionController::Base
   def user_activated
     user = User.find_by_email(params[:email])
     if(user.activated == false)
-      render :template => profile_login_path
+      redirect_to profile_login_path
       flash[:alert] = 'You are deactivated by the admin of this site.'
+    end
+  end
+
+  def user_logged_in
+    if(session[:user_id])
+      redirect_to root_url
+      flash[:alert] = "Sorry, you are already logged in."
     end
   end 
 end

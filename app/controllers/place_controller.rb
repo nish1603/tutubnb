@@ -98,6 +98,7 @@ class PlaceController < ApplicationController
     @address = @place.address
     @reviews = @place.reviews
     @review = Review.new
+    @address_json = @address.to_gmaps4rails
 
     respond_to do |format|
       format.html

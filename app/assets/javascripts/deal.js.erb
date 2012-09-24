@@ -1,0 +1,11 @@
+$(document).ready(function(){
+  $("#deal_start_date").datepicker({ numberOfMonths : 2, minDate : new Date() });
+  $("#deal_end_date").datepicker({ numberOfMonths : 2, minDate : new Date() });
+
+  // $("#deal_start_date").datepicker({
+  // 	onSelect: function(date_text, inst) {
+  // 		$("#deal_end_date").datepicker({ numberOfMonths : 2, minDate : new Date($("#deal_start_date").val()) });
+  // 	} 
+  // })
+
+});

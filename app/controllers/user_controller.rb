@@ -115,7 +115,7 @@ class UserController < ApplicationController
     respond_to do |format|
       if(user.save)
         user.places.each { |place| place.save }
-        flash[:notice] = "Acoount #{user.first_name} has been activated"
+        flash[:notice] = "Account #{user.first_name} is now #{params[:flag]}"
       else
         flash[:error] = "Acoount #{user.first_name} has not been activated"
       end
@@ -132,15 +132,15 @@ class UserController < ApplicationController
       end
       @user.destroy
       redirect_to profile_login_path
-      flash[:error] = "You have successfully deleted your account."
+      flash[:error] = "The account ha been successfully deleted."
       if(session[:admin] == false)
         session[:user_id] = nil
         session[:user_name] = nil
         session[:admin] = nil
       end
     else
-      redirect_to user_edit_path(@user.id)
-      flash[:error] = "You can't delete your account, when you have pending requests."
+      redirect_to root_url
+      flash[:error] = "You can't delete the account, when it have pending requests."
     end
   end
 

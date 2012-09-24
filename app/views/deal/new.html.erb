@@ -3,15 +3,15 @@
     <table>
       <tr class="field">
         <td><%= form.label :start_date %></td>
-        <td><%= form.date_select :start_date %></td>
+        <td><%= form.text_field :start_date, :readonly => true %></td>
       </tr>
       <tr class="field">
         <td><%= form.label :end_date %></td>
-        <td><%= form.date_select :end_date %></td>
+        <td><%= form.text_field :end_date, :readonly => true %></td>
       </tr>
       <tr class="field">
         <td><%= form.label :guests %></td>
-        <td><%= form.text_field :guests %></td>
+        <td><%= form.select :guests, @no_guests %></td>
       </tr>
       <tr class="field">
         <td><%= form.label :price %></td>

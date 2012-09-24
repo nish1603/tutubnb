@@ -2,7 +2,7 @@
 <table class = "search-options">
   <tr>
     <td><%= text_field_tag :city, nil, :placeholder => 'city' %></td>
-    <td><%= text_field_tag :country, nil, :placeholder => 'country' %></td>
+    <td><%= country_select :country, 'country' %></td>
     <td><%= select_tag(:property_type, options_for_select(Place::PROPERTY_TYPE), :prompt => 'Select Property Type') %></td>
     <td><%= select_tag(:room_type, options_for_select(Place::ROOM_TYPE), :prompt => 'Select Room Type') %></td>
     <td><%= hidden_field_tag :place_tags_string %></td>

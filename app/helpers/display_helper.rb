@@ -1,9 +1,12 @@
 module DisplayHelper
 	def selection()
     places = Place.admin_visible
+    params[:country] = params[:country][:country]
     places = by_option(:by_location, [:city, :country], places)
     places = by_option(:by_property, [:property_type, :room_type], places)
     places = by_tags(places)
+
+    logger.info(params)
     
 
     if(session[:admin] != true or params[:type] == 'Activated')

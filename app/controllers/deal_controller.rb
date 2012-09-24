@@ -1,18 +1,22 @@
 class DealController < ApplicationController
   def new
   	@deal = Deal.new
+    @deal.place_id = params[:place_id]
+    @deal.user_id = session[:user_id]
+    @no_guests = (1..@deal.place.detail.accomodation).to_a
   end
 
   def create
     @deal = Deal.new(params[:deal])
     @deal.place_id = params[:place_id]
     @deal.user_id = session[:user_id]
+    @no_guests = (1..@deal.place.detail.accomodation).to_a
     @deal.price = 0.0
 
     @deal.price, @division = DealHelper.calculate_price(@deal, @deal.place) if @deal.valid?
 
     respond_to do |format|
-      if(params[:commit]  == "Book Place" && @deal.save)
+      if(params[:commit]  == "Book Place" and @deal.save)
         flash[:notice] = "You have successfully booked the place."
         format.html { redirect_to place_path(@deal.place.id) }
       else
@@ -30,7 +34,7 @@ class DealController < ApplicationController
       res = true
       @admin, @requestor = DealHelper.transfer_to_admin(@deal)
       notify_visitor = "Your request for {@deal.place.title} has been accepted."
-      link_visitor = user_visitor_url(@requestor.id)
+      link_visitor = user_visits_path(@requestor.id)
       DealHelper.reject_deals(@deal, @deal.place)
     else
       res = false

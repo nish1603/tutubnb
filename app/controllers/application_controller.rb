@@ -7,7 +7,8 @@ class ApplicationController < ActionController::Base
 
   def authorize
     unless User.find_by_id(session[:user_id])
-      redirect_to profile_login_path, notice: "Please log in"
+      redirect_to profile_login_path
+      flash[:alert] = "Please log in"
     end
   end
 
@@ -47,7 +48,7 @@ class ApplicationController < ActionController::Base
     place = Place.find(params[:id])
     if(place.user.activated == false)
       flash[:alert] = "Owner of this place is deactivated. Please activate him first."
-      redirect_to admin_user_path
+      redirect_to admin_users_path
     end
   end
 

@@ -8,17 +8,21 @@ class DealTest < ActiveSupport::TestCase
 
     user1 = User.new(:first_name => users(:one).first_name,
                     :last_name => users(:one).last_name,
-                    :email => users(:one).email,
+                    :email => 'adi@jmail.com',
+                    :password => 'hellos',
+                    :password_confirmation => 'hellos',
                     :gender => users(:one).gender)
 
-    user1.save
+    assert user1.save
 
     user2 = User.new(:first_name => users(:two).first_name,
                     :last_name => users(:two).last_name,
-                    :email => users(:two).email,
+                    :email => 'kd@jmail.com',
+                    :password => 'hellos',
+                    :password_confirmation => 'hellos',
                     :gender => users(:two).gender)
 
-    user2.save
+    assert user2.save
 
     place = Place.new(:title => places(:one).title,
                       :description => places(:one).description,
@@ -28,12 +32,12 @@ class DealTest < ActiveSupport::TestCase
 
     place.user_id = user1.id
 
-    place.save
+    assert place.save
 
     detail = Detail.new(:accomodation => details(:one).accomodation)
     detail.place_id = place.id
-    detail.save
-    place.save
+    assert detail.save
+    assert place.save
 
   	deal = Deal.new(:start_date => deals(:one).start_date,
   	                :end_date => deals(:one).end_date,

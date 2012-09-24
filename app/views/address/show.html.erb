@@ -1,4 +1,10 @@
-
+  <div id = "location-image">
+    <%= gmaps({
+      "map_options" => {"auto_zoom" => false, "zoom" => 10 },
+      "markers"     => {"data" => @address_json }
+    }) %>
+  </div>
+  
   <table>
     <tr class="field">
       <td><%= "Address Line 1:" %></td>

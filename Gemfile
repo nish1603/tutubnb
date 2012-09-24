@@ -21,12 +21,14 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'gmaps4rails'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0'
 gem 'paperclip', '~> 3.0.0'
 gem "nested_form", :git => 'https://github.com/ryanb/nested_form.git'
 gem 'will_paginate', '~> 3.0'
+gem "country_select", "~> 1.0.1"
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

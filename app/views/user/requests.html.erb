@@ -28,8 +28,8 @@
         </tr>
         <tr class="field">
           <td><%= "Place Name:" %></td>
-          <% if(request.place && request.place.verified && (reuest.place.hidden == false)) %>
-            <td><%= link_to(request.place.title, place_path(reuest.place.id)) %></td>
+          <% if(request.place && request.place.verified && (request.place.hidden == false)) %>
+            <td><%= link_to(request.place.title, place_path(request.place.id)) %></td>
           <% elsif(request.place.nil?) %>
             <td><%= The place has been deleted %></td>
           <% else %>

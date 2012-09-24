@@ -13,7 +13,7 @@ module DealHelper
       months = (12 - deal.start_date.month) + deal.end_date.month
     end
 
-    if(deal.end_date.day < (deal.start_date.day))
+    if(deal.end_date.day < (deal.start_date.day-1))
       months -= 1 
       days = deal.start_date.end_of_month.day - deal.start_date.day
       days += deal.end_date.day

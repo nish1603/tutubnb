@@ -3,6 +3,7 @@ class Place < ActiveRecord::Base
   
   validates :title, :description, :property_type, :room_type, :daily, presence: true
   validates :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
+  validates :title, :uniqueness => { :scope => [:user_id] }
 
   PROPERTY_TYPE = ['Appartment', 'House', 'Castle', 'Villa', 'Cabin', 'Bed & Breakfast', 'Boat', 'Plane', 'Light House', 'Tree House', 'Earth House', 'Other']
   ROOM_TYPE = ['Private room', 'Shared room', 'Entire Home/apt']
@@ -14,7 +15,7 @@ class Place < ActiveRecord::Base
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
   has_one :rules, :dependent => :delete
-  has_many :photos, :dependent => :delete_all, :autosave => true
+  has_many :photos, :dependent => :delete_all
   has_many :deals, :dependent => :nullify
   has_many :reviews, :dependent => :delete_all
   has_and_belongs_to_many :tags

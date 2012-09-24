@@ -64,7 +64,7 @@ class PlaceController < ApplicationController
     photos = check_photos(params)
 
     respond_to do |format|
-      if photos >= 2 && @place.save(:validate => validate)
+      if photos >= 2 && @place.update_attributes(params[:place])
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
       elsif(photos < 2)
@@ -109,7 +109,7 @@ class PlaceController < ApplicationController
   def destroy
     @place = Place.find(params[:id])
     
-    if(@place.deals.completed(false).requested(true).empty?)
+    if(Deal.completed_by_place(@place).empty?)
       @place.destroy
       flash[:notice] = "This place has been deleted"
     else

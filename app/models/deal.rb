@@ -27,7 +27,7 @@ class Deal < ActiveRecord::Base
   scope :to_complete, lambda { |flag| where(:complete => flag, :request => false) }
   scope :completed, lambda { |flag| where(:complete => flag) }
   scope :by_place, lambda { |place| where(:place_id => place.id)}
-  scope :completed_by_place lambda { |place| Deal.where(:place_id => place.id).completed(false).requested(true) }
+  scope :completed_by_place, lambda { |place| Deal.where(:place_id => place.id).completed(false).requested(true) }
   
   private
     def user_have_amount

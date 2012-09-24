@@ -55,27 +55,19 @@ class ProfileController < ApplicationController
 
   def authenticate
     params = request.parameters
-    email = params[:email]
-    activation_link = params[:activation_link]
-
-    if email
-      user = User.find_by_email(email)
-    else
-      redirect_to display_show_path
-      flash[:error] = "You are not authorized to log in."
-    end
+    user = User.find_by_email(params[:email])
     
-    if user and user.activation_link == params[:activation_link]
-      session[:user_id] = user.id
-      session[:user_name] = user.first_name
-      user.verified = true
-      user.save!(:validate => false)
-      flash[:notice] = "You have verified your account successfully."
-    else
-      flash[:error] = "Your account has not been not verified."
-    end
 
     respond_to do |format|
+      if(user and user.activation_link == params[:activation_link])
+        session[:user_id] = user.id
+        session[:user_name] = user.first_name
+        user.verified = true
+        user.save!(:validate => false)
+        flash[:notice] = "You have verified your account successfully."
+      else
+        flash[:error] = "Your account has not been verified."
+      end
       format.html{ redirect_to display_show_path }
     end
   end

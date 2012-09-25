@@ -1,16 +1,16 @@
 class Place < ActiveRecord::Base
   attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
   
-  validates :title, :description, :property_type, :room_type, :daily, presence: true
-  validates :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
-  validates :title, :uniqueness => { :scope => [:user_id] }
+  validates :description, :property_type, :room_type, presence: true
+  validates :add_guests, :add_price, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
+  validates :title, :presence => true, :uniqueness => { :scope => [:user_id] }
+  validates :daily, :presence => true, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
 
   PROPERTY_TYPE = ['Appartment', 'House', 'Castle', 'Villa', 'Cabin', 'Bed & Breakfast', 'Boat', 'Plane', 'Light House', 'Tree House', 'Earth House', 'Other']
   ROOM_TYPE = ['Private room', 'Shared room', 'Entire Home/apt']
   PLACE_TYPE = ['Activated', 'Deactivated']
 
   before_save :set_prices
-  before_update :set_prices
   
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
@@ -18,6 +18,7 @@ class Place < ActiveRecord::Base
   has_many :photos, :dependent => :delete_all
   has_many :deals, :dependent => :nullify
   has_many :reviews, :dependent => :delete_all
+  
   has_and_belongs_to_many :tags
 
   belongs_to :user
@@ -44,11 +45,30 @@ class Place < ActiveRecord::Base
     end
   end
 
-  def set_prices
+  def set_prices()
     if(self.valid?)
-      self.weekend = self.daily if self.weekend.nil?
-      self.weekly = self.daily * 5 + self.weekend * 2 if self.weekly.nil? 
-      self.monthly = self.daily * 30 if self.monthly.nil?
+      weekend = daily if weekend.nil?
+      weekly = daily * 5 + weekend * 2 if weekly.nil? 
+      monthly = daily * 30 if monthly.nil?
     end
   end
+
+  def check_photos(params)
+    photos_count = photos.count
+    unless(params[:place][:photos_attributes].nil?)
+      params[:place][:photos_attributes].each do |key, photo|
+        if(!photo[:avatar].blank?)
+          photos_count += 1
+        elsif(photo["_destroy"] == "1")
+          photos_count -= 1
+        end
+      end
+    end
+    
+    if(photos_count < 2)
+      errors.add(:base, "Photos should be more than or equal to 2")
+      return false
+    end
+  end
+
 end

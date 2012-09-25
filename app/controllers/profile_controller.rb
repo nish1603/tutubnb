@@ -63,7 +63,7 @@ class ProfileController < ApplicationController
         session[:user_id] = user.id
         session[:user_name] = user.first_name
         user.verified = true
-        user.save!(:validate => false)
+        user.save(:validate => false)
         flash[:notice] = "You have verified your account successfully."
       else
         flash[:error] = "Your account has not been verified."

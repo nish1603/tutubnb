@@ -1,7 +1,7 @@
 class PlaceController < ApplicationController
 
   skip_before_filter :authorize, only: :show
-  before_filter :owner_activated, :only => :activate
+  before_filter :owner_activated, :only => [:activate, :operation]
 
  
   def new
@@ -31,17 +31,13 @@ class PlaceController < ApplicationController
       validate = true
       notice = "Your place has been created."
     end
-    
-    photos = check_photos(params)
 
+    @place.check_photos(params)
+    
   	respond_to do |format|
-      if photos >= 2 && @place.save(:validate => validate)
+      if(@place.valid? && @place.save(:validate => validate))
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
-      elsif(photos < 2)
-        @place.valid?
-        @place.errors.add(:base, "Photos should be atleast 2")
-        format.html { render action: "new" }
       else
         format.html { render action: "new" }
       end
@@ -61,16 +57,12 @@ class PlaceController < ApplicationController
       notice += "It is still hidden, you can make it visible on My Places."
     end
 
-    photos = check_photos(params)
+    @place.check_photos(params)
 
     respond_to do |format|
-      if photos >= 2 && @place.update_attributes(params[:place])
+      if(@place.valid? && @place.update_attributes(params[:place]))
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
-      elsif(photos < 2)
-        @place.valid?
-        @place.errors.add(:base, "Photos should be atleast 2")
-        format.html { render action: "new" }
       else
         format.html { render action: "new" }
       end
@@ -154,9 +146,7 @@ class PlaceController < ApplicationController
       result = "visible"
     end
     
-    if(@place.user.activated == true)
-      @place.hidden = active
-    end
+    @place.hidden = active
 
     respond_to do |format|
       if(@place.save)

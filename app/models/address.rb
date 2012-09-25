@@ -7,7 +7,7 @@ class Address < ActiveRecord::Base
 
   belongs_to :place
 
-  acts_as_gmappable :lat => "latitude", :lng => "longitude", :check_process => true, :checker => "gmaps"
+  acts_as_gmappable :lat => "latitude", :lng => "longitude", :check_process => false
 
   def gmaps4rails_address
     "#{self.address_line1}, #{self.address_line2}, #{self.city}, #{self.state}, #{self.pincode}, #{self.country}" 

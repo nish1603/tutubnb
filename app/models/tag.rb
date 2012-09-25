@@ -1,7 +1,7 @@
 class Tag < ActiveRecord::Base
   attr_accessible :tag
 
-  validate :tag, :presence => true
+  validate :tag, :presence => true, :uniqueness => true
 
   has_and_belongs_to_many :places
 end

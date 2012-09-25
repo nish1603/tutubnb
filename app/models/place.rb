@@ -11,6 +11,7 @@ class Place < ActiveRecord::Base
   PLACE_TYPE = ['Activated', 'Deactivated']
 
   before_save :set_prices
+  before_destroy :check_current_deals
   
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
@@ -46,7 +47,7 @@ class Place < ActiveRecord::Base
   end
 
   def set_prices()
-    if(self.valid?)
+    if(valid?)
       weekend = daily if weekend.nil?
       weekly = daily * 5 + weekend * 2 if weekly.nil? 
       monthly = daily * 30 if monthly.nil?
@@ -69,6 +70,24 @@ class Place < ActiveRecord::Base
       errors.add(:base, "Photos should be more than or equal to 2")
       return false
     end
+    return true
   end
 
+  def check_current_deals
+    if(Deal.completed_by_place(self).empty?)
+      return true
+    else
+      return false
+    end
+  end
+
+  def check_commit(commit_type)
+    if(commit_type == "Save Place")
+      validate = false
+      notice = "Your place has been saved. But it is hidden from the outside world."
+    else
+      validate = true
+      notice = "Your place has been created."
+    end
+  end
 end

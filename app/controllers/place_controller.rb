@@ -22,20 +22,11 @@ class PlaceController < ApplicationController
   	@place = Place.new(params[:place])
     @place.user_id = session[:user_id]
 
-
-    if(params[:commit] == "Save Place")
-      validate = false
-      @place.hidden = true
-      notice = "Your place has been saved. But it is hidden from the outside world."
-    else
-      validate = true
-      notice = "Your place has been created."
-    end
-
-    @place.check_photos(params)
-    
+    validate, notice = @place.check_commit(params[:commit])
+    @place.hidden = true if(validate == false)
+  
   	respond_to do |format|
-      if(@place.valid? && @place.save(:validate => validate))
+      if((validate == false || (@place.valid? && @place.check_photos(params))) && @place.save(:validate => validate))
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
       else
@@ -53,14 +44,10 @@ class PlaceController < ApplicationController
     @place = Place.find(params[:id])
     
     notice = "Successfully updated."
-    if(@place.hidden == true)
-      notice += "It is still hidden, you can make it visible on My Places."
-    end
-
-    @place.check_photos(params)
+    notice += "It is still hidden, you can make it visible on My Places." if(@place.hidden == true)
 
     respond_to do |format|
-      if(@place.valid? && @place.update_attributes(params[:place]))
+      if(@place.valid? && @place.check_photos(params) && @place.update_attributes(params[:place]))
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
       else
@@ -87,16 +74,13 @@ class PlaceController < ApplicationController
   def destroy
     @place = Place.find(params[:id])
     
-    if(Deal.completed_by_place(@place).empty?)
-      @place.destroy
-      flash[:notice] = "This place has been deleted"
-    else
-      flash[:error] = "This place can't be deleted because it has some pending deals."
-    end
-
     respond_to do |format|
+      if(@place.destroy)
+        flash[:notice] = "This place has been deleted"
+      else
+        flash[:error] = "This place can't be deleted because it has some pending deals."
+      end
       format.html { redirect_to request.referrer }
-      format.json { head :no_content }
     end
   end
 

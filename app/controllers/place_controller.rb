@@ -69,20 +69,6 @@ class PlaceController < ApplicationController
     end
   end
 
-  def check_photos(params)
-    photos = @place.photos.count
-    unless(params[:place][:photos_attributes].nil?)
-      params[:place][:photos_attributes].each do |key, photo|
-        if(!photo[:avatar].blank?)
-          photos += 1
-        elsif(photo["_destroy"] == "1")
-          photos -= 1
-        end
-      end
-    end
-    photos
-  end
-
   def show
     @place = Place.find(params[:id])
     @detail = @place.detail

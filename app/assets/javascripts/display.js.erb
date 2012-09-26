@@ -8,10 +8,12 @@ $(document).ready(function(){
    var tag_names = [];
 
   $('input#tags_string').keyup(function(){
-    $.getJSON('/tag/index.json?tag='+$('input#tags_string').val(), function(data) {
-      tag_names = data;
-      onload(tag_names);
-    });
+    if($('input#tags_string').val().length > 0) {
+      $.getJSON('/tag/index.json?tag='+$('input#tags_string').val(), function(data) {
+        tag_names = data;
+        onload(tag_names);
+      });
+    }
   });
 
   function onload(tag_names) {

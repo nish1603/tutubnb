@@ -15,7 +15,7 @@ class ProfileController < ApplicationController
         session[:user_id] = user.id
         session[:user_name] = user.first_name
         session[:admin] = user.admin
-        format.html { redirect_to display_show_path }
+        format.html { redirect_to request.referrer }
       else 
         format.html { redirect_to profile_login_path }
         flash[:error] = 'E-mail Address/Password doesn\'t match.'
@@ -99,12 +99,8 @@ class ProfileController < ApplicationController
 
   def change_password
     params = request.parameters
-    if(params[:email])
-      @user = User.find_by_email(params[:email])
-    else
-      redirect_to display_show_path
-    end
-
+    @user = User.find_by_email(params[:email])
+    
     respond_to do |format|
       if(@user and @user.activation_link == params[:activation_link] and @user.verified == false)
         format.html
@@ -116,7 +112,7 @@ class ProfileController < ApplicationController
   end
 
   def update_password
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
       
     respond_to do |format|
       if(@user and @user.update_attributes(params[:user]))

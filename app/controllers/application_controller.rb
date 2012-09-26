@@ -12,30 +12,27 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def validating_owner(owner_id, show_path)
-  	respond_to do |format|
-      if session[:user_id] != owner_id
-  		  format.html { redirect_to show_path }
-      else
-        format.html
-      end
+  def validating_owner
+    place = Place.find_by_id(params[:id])
+    if(place.user_id != session[:user_id])
+      redirect_to root_url
     end
   end
 
   def update_attributes(to_update, photos, type_to_update)
-    respond_to do |format|
-      if(photos >= 2 and to_update.update_attributes(params[type_to_update]))
-        @place.hidden = false
-        @place.save
-        format.html { redirect_to to_update }
-      elsif photos < 2
-        to_update.valid?
-        to_update.errors.add(:base, "Photos should be at least 2")
-        format.html { render action: "new" }
-      else
-        format.html { render action: "edit"}
-      end
-    end
+    # respond_to do |format|
+    #   if(photos >= 2 and to_update.update_attributes(params[type_to_update]))
+    #     @place.hidden = false
+    #     @place.save
+    #     format.html { redirect_to to_update }
+    #   elsif photos < 2
+    #     to_update.valid?
+    #     to_update.errors.add(:base, "Photos should be at least 2")
+    #     format.html { render action: "new" }
+    #   else
+    #     format.html { render action: "edit"}
+    #   end
+    # end
   end
 
   def validate_account
@@ -45,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   def owner_activated
-    place = Place.find(params[:id])
+    place = Place.find_by_id(params[:id])
     if(place.user.activated == false)
       flash[:alert] = "Owner of this place is deactivated. Please activate him first."
       redirect_to admin_users_path
@@ -81,5 +78,18 @@ class ApplicationController < ActionController::Base
       redirect_to root_url
       flash[:alert] = "Sorry, you are already logged in."
     end
-  end 
+  end
+
+  def confirm_admin
+    if(session[:admin] == false)
+      redirect_to root_url
+    end
+  end
+
+  def place_exists
+    place = Place.find_by_id(params[:id])
+    if(place.nil?)
+      redirect_to root_url
+    end
+  end
 end

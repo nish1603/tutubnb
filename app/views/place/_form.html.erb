@@ -24,11 +24,11 @@
       </tr>
       <tr class="field">
         <td><%= form.label 'Property type *' %></td>
-        <td><%= form.select :property_type, Place::PROPERTY_TYPE, prompt: "Select Property Type" %></td>
+        <td><%= form.select :property_type_string, Place::PROPERTY_TYPE.keys, prompt: "Select Property Type" %></td>
       </tr>
       <tr class="field">
         <td><%= form.label 'Room type *' %></td>
-        <td><%= form.select :room_type, Place::ROOM_TYPE, prompt: "Select Room Type" %></td>
+        <td><%= form.select :room_type_string, Place::ROOM_TYPE.keys, prompt: "Select Room Type" %></td>
       </tr>
     </table>
 

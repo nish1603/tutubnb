@@ -1,3 +1,5 @@
+<%= params %>
+
 <div class = "signup">
 
   <%= form_for @user,:url => {:action => 'save', :controller => 'profile' } do |form| %>
@@ -39,7 +41,7 @@
 
 
     	<div>
-    		<%= form.select :gender, User::GENDER %>
+    		<%= form.select :gender_string, User::GENDER.keys %>
     	</div>
 
       <div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924053254) do
+ActiveRecord::Schema.define(:version => 20120926050215) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address_line1"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20120924053254) do
     t.boolean  "accept"
     t.boolean  "request",    :default => true
     t.boolean  "complete",   :default => false
+    t.boolean  "review",     :default => false
   end
 
   create_table "details", :force => true do |t|
@@ -50,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20120924053254) do
     t.string   "bed_type"
     t.integer  "bathrooms"
     t.float    "size"
-    t.string   "unit"
+    t.integer  "unit"
     t.boolean  "pets"
     t.integer  "place_id"
     t.datetime "created_at",   :null => false
@@ -73,8 +74,8 @@ ActiveRecord::Schema.define(:version => 20120924053254) do
   create_table "places", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.string   "property_type"
-    t.string   "room_type"
+    t.integer  "property_type"
+    t.integer  "room_type"
     t.float    "daily"
     t.float    "weekend"
     t.float    "weekly"
@@ -122,7 +123,7 @@ ActiveRecord::Schema.define(:version => 20120924053254) do
     t.string   "last_name"
     t.string   "email"
     t.string   "password_digest"
-    t.string   "gender"
+    t.integer  "gender"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.date     "birth_date"
@@ -139,7 +140,6 @@ ActiveRecord::Schema.define(:version => 20120924053254) do
     t.boolean  "admin",               :default => false
     t.string   "activation_link"
     t.boolean  "activated",           :default => true
-    t.boolean  "gmaps"
   end
 
 end

@@ -7,7 +7,7 @@ class CreateDetails < ActiveRecord::Migration
       t.string :bed_type
       t.integer :bathrooms
       t.float :size
-      t.string :unit
+      t.integer :unit
       t.boolean :pets
       t.integer :place_id
 

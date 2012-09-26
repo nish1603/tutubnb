@@ -3,8 +3,8 @@ class CreatePlaces < ActiveRecord::Migration
     create_table :places do |t|
       t.string :title
       t.text :description
-      t.string :property_type
-      t.string :room_type
+      t.integer :property_type
+      t.integer :room_type
       t.float :daily
       t.float :weekend
       t.float :weekly 

@@ -1,6 +1,6 @@
-class DisplayController < ApplicationController
-  
+class DisplayController < ApplicationController  
   skip_before_filter :authorize
+  before_filter :confirm_admin, :only => [:user, :deals]
   
   def show
     if(session[:admin] != true)

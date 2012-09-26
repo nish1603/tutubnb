@@ -2,6 +2,8 @@ class PlaceController < ApplicationController
 
   skip_before_filter :authorize, only: :show
   before_filter :owner_activated, :only => [:activate, :operation]
+  before_filter :place_exists, :only => [:edit, :operation, :show]
+  before_filter :validating_owner, :only => [:edit, :operation]
 
  
   def new
@@ -36,12 +38,11 @@ class PlaceController < ApplicationController
   end
 
   def edit
-    @place = Place.find(params[:id])
-    validating_owner @place.user_id, place_path(params[:id]) 
+    @place = Place.find_by_id(params[:id]) 
   end
 
   def update
-    @place = Place.find(params[:id])
+    @place = Place.find_by_id(params[:id])
     
     notice = "Successfully updated."
     notice += "It is still hidden, you can make it visible on My Places." if(@place.hidden == true)
@@ -57,7 +58,9 @@ class PlaceController < ApplicationController
   end
 
   def show
-    @place = Place.find(params[:id])
+    @place = Place.find_by_id(params[:id])
+    @user = User.find_by_id(session[:id])
+    @deal = Deal.unreviewed_by_user_on_place(@user, @place).first if(@user)
     @detail = @place.detail
     @rules = @place.rules
     @address = @place.address
@@ -72,7 +75,7 @@ class PlaceController < ApplicationController
   end
 
   def destroy
-    @place = Place.find(params[:id])
+    @place = Place.find_by_id(params[:id])
     
     respond_to do |format|
       if(@place.destroy)
@@ -85,7 +88,7 @@ class PlaceController < ApplicationController
   end
 
   def activate
-    @place = Place.find(params[:id])
+    @place = Place.find_by_id(params[:id])
 
     if(params[:flag] == 'active')
       active = true
@@ -106,7 +109,7 @@ class PlaceController < ApplicationController
   end
 
   def operation
-    @place = Place.find(params[:id])
+    @place = Place.find_by_id(params[:id])
 
     if(params[:flag] == 'hide')
       active = true

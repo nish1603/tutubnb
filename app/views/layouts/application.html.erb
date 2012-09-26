@@ -17,7 +17,7 @@
 	        <td class = "for_guest" ><%= link_to 'Log In', profile_login_path %></td>
           <td class = "for_guest" ><%= link_to 'Places', display_show_path %></td>
         <% else %>
-          <td class = "user_name" ><%= link_to session[:user_name], user_edit_path(session[:user_id])  %></td>
+          <td class = "user_name" ><%= link_to session[:user_name], edit_user_path(session[:user_id])  %></td>
 	        <td class = "for_user" ><%= link_to 'Log Out', profile_logout_path %></td>
           <td class = "for_user" ><%= link_to 'Places', display_show_path %></td>
           <% if(session[:admin] and session[:admin] == true) %>

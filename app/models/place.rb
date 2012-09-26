@@ -1,13 +1,13 @@
 class Place < ActiveRecord::Base
-  attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
+  attr_accessible :description, :property_type_string, :room_type_string, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
   
   validates :description, :property_type, :room_type, presence: true
   validates :add_guests, :add_price, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
   validates :title, :presence => true, :uniqueness => { :scope => [:user_id] }
   validates :daily, :presence => true, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
 
-  PROPERTY_TYPE = ['Appartment', 'House', 'Castle', 'Villa', 'Cabin', 'Bed & Breakfast', 'Boat', 'Plane', 'Light House', 'Tree House', 'Earth House', 'Other']
-  ROOM_TYPE = ['Private room', 'Shared room', 'Entire Home/apt']
+  PROPERTY_TYPE = {'Appartment' => 1, 'House' => 2, 'Castle' => 3, 'Villa' => 4, 'Cabin' => 5, 'Bed & Breakfast' => 6, 'Boat' => 7, 'Plane' => 8, 'Light House' => 9, 'Tree House' => 10, 'Earth House' => 11, 'Other' => 12}
+  ROOM_TYPE = {'Private room' => 1, 'Shared room' => 2, 'Entire Home/apt' => 3}
   PLACE_TYPE = ['Activated', 'Deactivated']
 
   before_save :set_prices
@@ -35,22 +35,39 @@ class Place < ActiveRecord::Base
   scope :visible, lambda{ |flag| where(:verified => flag) }
   scope :admin_visible, where(:hidden => false)
 
+  def property_type_string
+    Place::PROPERTY_TYPE.key(property_type)
+  end
+
+  def property_type_string=(string)
+    self.property_type = Place::PROPERTY_TYPE[string]
+  end
+
+  def room_type_string
+    Place::ROOM_TYPE.key(room_type)
+  end
+
+  def room_type_string=(string)
+    self.room_type = Place::ROOM_TYPE[string]
+  end
+
+
   def tags_string
     tags.map(&:tag).join(', ')
   end
 
   def tags_string=(string)
-    place_tags = string.split(", ").reject{ |tag| tag.nil? or tag.blank? }
+    place_tags = string.split(", ").reject{ |tag| tag.blank? }
     self.tags = place_tags.map do |tag|
       Tag.find_or_initialize_by_tag(tag.strip)
     end
   end
 
   def set_prices()
-    if(valid?)
-      weekend = daily if weekend.nil?
-      weekly = daily * 5 + weekend * 2 if weekly.nil? 
-      monthly = daily * 30 if monthly.nil?
+    if(self.valid?)
+      self.weekend = self.daily if self.weekend.nil?
+      self.weekly = self.daily * 5 + self.weekend * 2 if weekly.nil? 
+      self.monthly = self.daily * 30 if self.monthly.nil?
     end
   end
 

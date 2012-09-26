@@ -1,16 +1,30 @@
 Tutubnb2::Application.routes.draw do
 
-  get "review/new"
+  # get "review/new"
 
-  get "review/edit"
+  # get "review/edit"
 
-  get "review/show"
+  # get "review/show"
 
-  get "review/destroy"
+  # get "review/destroy"
 
-  get "photo/upload"
+  # get "photo/upload"
 
-  match "photo/delete/:id" => "photo#delete", :via => :delete, :as => :photo_delete
+  resources :review do
+    collection do
+      get :new
+      get :show
+    end
+  end
+
+  resources :review do
+    collection do
+      delete :delete
+      get :upload
+    end
+  end
+
+  #match "photo/delete/:id" => "photo#delete", :via => :delete, :as => :photo_delete
 
   match "/deal/new/:place_id" => "deal#new", :via => :get, :as => :deal_new
 
@@ -22,19 +36,38 @@ Tutubnb2::Application.routes.draw do
 
   match  "/deal/reply/:perform/:id" => "deal#reply", :via => :get, :as => :deal_reply
 
-  match  "/user/:id/edit" => "user#edit", :via => :get, :as => :user_edit
+  resources :user do
+    member do
+      get :edit, :as => :edit
+      get :change_dp, :as => :change_dp
+      put :update
+      put :update_dp
+      get :show
+      delete :destroy
+      post :wallet, :as => :wallet
+      get :visits, :as => :visits
+      get :requests, :as => :requests
+      get :requested_trips, :as => :requested_trips
+      get :trips, :as => :trips
+      get :change_password, :as => :change_password
+      get :places, :as => :places
+      put :update_password, :as => :update_password
+    end
+  end
 
-  match  "/user/:id/change_dp" => "user#change_dp", :via => :get, :as => :user_change_dp
+  # match  "/user/:id/edit" => "user#edit", :via => :get, :as => :user_edit
 
-  match  "/user/:id" => "user#update", :via => :put
+  # match  "/user/:id/change_dp" => "user#change_dp", :via => :get, :as => :user_change_dp
 
-  match  "/user/:id" => "user#destroy", :via => :delete, :as => :user
+  # match  "/user/:id" => "user#update", :via => :put
 
-  match  "/user/:id/update_dp" => "user#update_dp", :via => :put
+  # match  "/user/:id" => "user#destroy", :via => :delete, :as => :user
 
-  match  "/user/:id" => "user#show", :via => :get, :as => :user
+  # match  "/user/:id/update_dp" => "user#update_dp", :via => :put
 
-  match  "/user/wallet/:id" => "user#wallet", :via => :post, :as => :user_wallet
+  # match  "/user/:id" => "user#show", :via => :get, :as => :user
+
+  # match  "/user/wallet/:id" => "user#wallet", :via => :post, :as => :user_wallet
 
   match "/user/activate/:flag/:id" => "user#activate", :via => :get, :as => :user_activate  
 
@@ -42,23 +75,21 @@ Tutubnb2::Application.routes.draw do
 
   match "/admin/deals" => "display#deals", :via => :get, :as => :admin_deals
 
-  match  "/user/visits/:id" => "user#visits", :via => :get, :as => :user_visits
+  # match  "/user/visits/:id" => "user#visits", :via => :get, :as => :user_visits
 
-  match  "/user/requests/:id" => "user#requests", :via => :get, :as => :user_requests
+  # match  "/user/requests/:id" => "user#requests", :via => :get, :as => :user_requests
 
-  match  "/user/requested_trips/:id" => "user#requested_trips", :via => :get, :as => :user_requested_trips
+  # match  "/user/requested_trips/:id" => "user#requested_trips", :via => :get, :as => :user_requested_trips
 
   match  "/user/:id" => "user#destroy", :via => :delete, :as => :user
 
-  match "/user/change_password/:id" => "user#change_password", :via => :get, :as => :user_change_password
+  # match "/user/change_password/:id" => "user#change_password", :via => :get, :as => :user_change_password
 
-  match "/user/places/:id" => "user#places", :via => :get, :as => :user_places
+  # match "/user/places/:id" => "user#places", :via => :get, :as => :user_places
 
-  match "/user/update_password/:id" => "user#update_password", :via => :put, :as => :user_update_password
+  # match "/user/update_password/:id" => "user#update_password", :via => :put, :as => :user_update_password
 
-  match  "/user/trips/:id" => "user#trips", :via => :get, :as => :user_trips  
-
-  match "user/requests/:id" => "user#reuests", :via => :get, :as => :user_requests
+  # match  "/user/trips/:id" => "user#trips", :via => :get, :as => :user_trips  
 
   match  "/addresses" => "address#create", :via => :post
   match  "/address/:id/edit" => "address#edit", :via => :get, :as => :edit_address
@@ -94,27 +125,29 @@ Tutubnb2::Application.routes.draw do
 
   post "display/search"
 
-  get "profile/login"
-
   match "profile/authenticate" => "profile#authenticate", :via => :get, :as => :authenticate
 
-  get "profile/logout"
-
-  get "profile/signup"
-
-  get "profile/save"
-
-  get "profile/forget_password"
+  resources :profile do
+    collection do
+      get :login
+      get :logout
+      get :signup
+      post :save
+      post :validate_user
+      post :send_activation_link
+      get :forget_password
+    end
+  end
 
   match "/change_password" => "profile#change_password", :via => :get, :as => :change_password
 
   match "/update_password/:id" => "profile#update_password", :via => :put, :as => :profile_update_password
 
-  post "profile/save"
+  # post "profile/save"
 
-  post "profile/validate_user"
+  # post "profile/validate_user"
 
-  post "profile/send_activation_link"
+  # post "profile/send_activation_link"
 
   
 

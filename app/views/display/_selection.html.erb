@@ -7,7 +7,7 @@
           </td>
           <td class = "mid-cell">
     	  	  <p class = "title"><a href ="<%= place_path(place.id) %>"><%= place.title %></a><p>
-    	  	  <p class = "property-type"><%= place.property_type + " - " + place.room_type %></p>
+    	  	  <p class = "property-type"><%= place.property_type_string + " - " + place.room_type_string %></p>
             <p class = "property-price">Daily : &#8377;<%=  place.daily.to_s %> - Weekend : &#8377;<%= place.weekend.to_s %> - Weekly : &#8377;<%= place.weekly.to_s %></p>
             <p class = "tags"><%= place.tags_string %></p>
           </td>

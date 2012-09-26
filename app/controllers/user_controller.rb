@@ -57,7 +57,7 @@ class UserController < ApplicationController
   end
 
   def edit_func
-     @user = User.find(params[:id])
+     @user = User.find_by_id(params[:id])
     
     respond_to do |format|
       format.html
@@ -65,7 +65,7 @@ class UserController < ApplicationController
   end
 
   def update_func(render_option, message)
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
     
     respond_to do |format|
       if(@user.update_attributes(params[:user]))
@@ -145,25 +145,15 @@ class UserController < ApplicationController
   end
 
   def change_password
-    @user = User.find(params[:id])
+    edit_func
   end
 
   def update_password
-    @user = User.find(params[:id])
-      
-    respond_to do |format|
-      if(@user and @user.authenticate(params[:old_password]) and @user.update_attributes(params[:user]))
-        format.html { redirect_to display_show_path }
-        flash[:notice] = "Password has been successfully updated."
-      else
-        format.html {  render action: "change_password" }
-        flash[:error] = "Password doesn't match."
-      end
-    end
+    update_func("change_password", "Password")
   end
 
   def places
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
     @places = @user.places
   end
 end

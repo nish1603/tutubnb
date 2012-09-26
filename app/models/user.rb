@@ -1,6 +1,6 @@
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :first_name, :gender, :last_name, :password, :password_confirmation, :describe, :work, :live, :birth_date, :school, :avatar, :admin, :wallet, :activate
+  attr_accessible :email, :first_name, :gender, :gender_string, :last_name, :password, :password_confirmation, :describe, :work, :live, :birth_date, :school, :avatar, :admin, :wallet, :activate
 
   validates :first_name, :last_name, :gender, :presence => true
   validates :password, :presence => true, :length => { :minimum => 6 }, :confirmation => true, :if => :password
@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   has_many :deals, :through => :places
   has_many :reviews, :dependent => :delete_all
 
-  GENDER = ['Male', 'Female', 'Other']
+  GENDER = {'Male' => 1, 'Female' => 2, 'Other' => 3}
   TYPE = ['Activated', 'Deactivated', 'Not_Verified', 'All']
 
   scope :admin, where(:admin => true)
@@ -23,4 +23,13 @@ class User < ActiveRecord::Base
   scope :activated, where(:verified => true, :activated => true)
   scope :deactivated, where(:activated => false)
   scope :not_verified, where(:verified => false)
+
+  def gender_string
+    logger.info User::GENDER.key(gender)
+    User::GENDER.key(gender)
+  end
+
+  def gender_string=(string)
+    self.gender = User::GENDER[string]
+  end
 end

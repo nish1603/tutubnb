@@ -4,7 +4,7 @@
   </div>
 <% end %>
 
-<% if(session[:user_id] && session[:user_id] != @place.user_id) %>
+<% if(session[:user_id] && @deal) %>
   <tr class="action">
     <%= render :template => 'review/new.html.erb' %>
    </tr>

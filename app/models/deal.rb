@@ -19,6 +19,7 @@ class Deal < ActiveRecord::Base
   scope :canceled, lambda { |flag| where(cancel: flag) }
   scope :requested, lambda { |flag| where(request: flag) }
   scope :accepted, lambda { |flag| where(accept: flag) }
+  scope :reviewed, lambda { |flag| where(review: flag) }
   scope :requests, lambda { |user| user.deals.requested(false).canceled(false) }
   scope :find_visits_of_user, lambda { |user| user.deals.accepted(true).canceled(false) }
   scope :find_requests_of_user, lambda { |user| user.deals.requested(true).canceled(false) }
@@ -28,7 +29,8 @@ class Deal < ActiveRecord::Base
   scope :completed, lambda { |flag| where(:complete => flag) }
   scope :by_place, lambda { |place| where(:place_id => place.id)}
   scope :completed_by_place, lambda { |place| Deal.where(:place_id => place.id).completed(false).requested(true) }
-  
+  scope :unreviewed_by_user_on_place, lambda { |user, place| Deal.where(:place_id => place.id, :user_id => user.id).completed(true).reviewed(false) } 
+
   private
     def user_have_amount
       if(self.user.wallet < (price*1.1))

@@ -27,7 +27,7 @@ class DealController < ApplicationController
   end
 
   def reply
-    @deal = Deal.find(params[:id])
+    @deal = Deal.find_by_id(params[:id])
     @deal.request = false
 
     if(params[:perform] == "accept")

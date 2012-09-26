@@ -1,5 +1,7 @@
 Tutubnb2::Application.routes.draw do
 
+  get "tag/index"
+
   # get "review/new"
 
   # get "review/edit"
@@ -142,6 +144,8 @@ Tutubnb2::Application.routes.draw do
   match "/change_password" => "profile#change_password", :via => :get, :as => :change_password
 
   match "/update_password/:id" => "profile#update_password", :via => :put, :as => :profile_update_password
+
+  get 'tag/index'
 
   # post "profile/save"
 

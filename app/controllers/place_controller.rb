@@ -16,7 +16,7 @@ class PlaceController < ApplicationController
     2.times { @place.photos << Photo.new }
     respond_to do |format|
       format.html
-      format.json { render json: @tags }
+#      format.json { render json: @tags }
     end
   end
 

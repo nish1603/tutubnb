@@ -29,6 +29,7 @@ gem 'paperclip', '~> 3.0.0'
 gem "nested_form", :git => 'https://github.com/ryanb/nested_form.git'
 gem 'will_paginate', '~> 3.0'
 gem "country_select", "~> 1.0.1"
+gem "omniauth"
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

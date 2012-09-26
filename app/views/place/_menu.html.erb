@@ -9,7 +9,7 @@
 
   <form id = "enter_tags">
     <p>Specify Tags:</p>
-    <%= text_field_tag :tags_string %>
+    <%= text_field_tag :tags_string, params[:tags_string] %>
   </form>
 
     <div id = "show_tags">

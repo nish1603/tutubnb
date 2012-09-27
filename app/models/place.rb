@@ -1,5 +1,5 @@
 class Place < ActiveRecord::Base
-  attr_accessible :description, :property_type_string, :room_type_string, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
+  attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
   
   validates :description, :property_type, :room_type, presence: true
   validates :add_guests, :add_price, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
@@ -34,23 +34,6 @@ class Place < ActiveRecord::Base
   scope :by_property, lambda{ |type, type_value| where(type => type_value) }
   scope :visible, lambda{ |flag| where(:verified => flag) }
   scope :admin_visible, where(:hidden => false)
-
-  def property_type_string
-    Place::PROPERTY_TYPE.key(property_type)
-  end
-
-  def property_type_string=(string)
-    self.property_type = Place::PROPERTY_TYPE[string]
-  end
-
-  def room_type_string
-    Place::ROOM_TYPE.key(room_type)
-  end
-
-  def room_type_string=(string)
-    self.room_type = Place::ROOM_TYPE[string]
-  end
-
 
   def tags_string
     tags.map(&:tag).join(', ')

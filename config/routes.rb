@@ -1,6 +1,12 @@
 Tutubnb2::Application.routes.draw do
 
+  get "authenticate/create"
+  get "authenticate/index"
+  delete "authenticate/destroy"
+
   get "tag/index"
+
+  match '/auth/:provider/callback' => 'authenticate#create'
 
   # get "review/new"
 
@@ -131,13 +137,13 @@ Tutubnb2::Application.routes.draw do
 
   resources :profile do
     collection do
-      get :login
-      get :logout
-      get :signup
-      post :save
-      post :validate_user
-      post :send_activation_link
-      get :forget_password
+      get :login, :as => :login
+      get :logout, :as => :logout
+      get :signup, :as => :signup
+      post :save, :as => :save
+      post :validate_user, :as => :validate_user
+      post :send_activation_link, :as => :send_activation_link
+      get :forget_password, :as => :forget_password
     end
   end
 

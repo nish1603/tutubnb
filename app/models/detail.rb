@@ -6,4 +6,8 @@ class Detail < ActiveRecord::Base
   validates :accomodation, :bathrooms, :bedrooms, :beds, :numericality => { :greater_than_or_equal_to => 0 }, :allow_nil => true
 
   UNITS = {"sq. meters" => 1, "sq. feets" => 2}
+
+  def units_string
+  	Detail::UNITS.key(unit)
+  end
 end

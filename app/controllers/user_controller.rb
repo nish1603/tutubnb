@@ -70,7 +70,7 @@ class UserController < ApplicationController
     respond_to do |format|
       if(@user.update_attributes(params[:user]))
         flash[:notice] = "#{message} updated."
-        format.html { redirect_to user_edit_path(@user.id) }
+        format.html { redirect_to edit_user_path(@user.id) }
       else
         flash[:error] = "#{message} not updated."
         format.html { render :action => render_option }

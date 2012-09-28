@@ -8,17 +8,17 @@
     <% else %>
       <%= image_tag('missing.png', :height => "150px", :width => "150px") %>
     <% end %>
-    <%= link_to 'Change Profile Pic', user_change_dp_path(session[:user_id]), :class => 'change-pic' %>
+    <%= link_to 'Change Profile Pic', change_dp_user_path(session[:user_id]), :class => 'change-pic' %>
   </div>
 
 	<ul>
-    <li><%= link_to 'Edit', user_edit_path(session[:user_id]) %></li>
-    <li><%= link_to 'Change Password', user_change_password_path(session[:user_id]) %></li>
-    <li><%= link_to 'My Places', user_places_path(session[:user_id]) %></li>
-    <li><%= link_to 'My Visits', user_visits_path(session[:user_id]) %></li>
-    <li><%= link_to 'Requests', user_requests_path(session[:user_id]) %></li>
-    <li><%= link_to 'My Trips', user_trips_path(session[:user_id]) %></li>
-    <li><%= link_to 'My Requested Trips', user_requested_trips_path(session[:user_id]) %></li>
+    <li><%= link_to 'Edit', edit_user_path(session[:user_id]) %></li>
+    <li><%= link_to 'Change Password', change_password_user_path(session[:user_id]) %></li>
+    <li><%= link_to 'My Places', places_user_path(session[:user_id]) %></li>
+    <li><%= link_to 'My Visits', visits_user_path(session[:user_id]) %></li>
+    <li><%= link_to 'Requests', requests_user_path(session[:user_id]) %></li>
+    <li><%= link_to 'My Trips', trips_user_path(session[:user_id]) %></li>
+    <li><%= link_to 'My Requested Trips', requested_trips_user_path(session[:user_id]) %></li>
     <% if(@user.admin == false) %>
       <li><%= link_to 'Delete My Account', user_path(session[:user_id]), :method => :delete, :data => { :confirm => "Are you sure?"} %></li>
     <% end %>

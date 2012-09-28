@@ -15,9 +15,9 @@ class ProfileController < ApplicationController
         session[:user_id] = user.id
         session[:user_name] = user.first_name
         session[:admin] = user.admin
-        format.html { redirect_to request.referrer }
+        format.html { redirect_to display_show_path }
       else 
-        format.html { redirect_to profile_login_path }
+        format.html { redirect_to login_profile_index_path }
         flash[:error] = 'E-mail Address/Password doesn\'t match.'
       end 
     end

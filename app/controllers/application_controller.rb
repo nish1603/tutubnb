@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def authorize
     unless User.find_by_id(session[:user_id])
-      redirect_to profile_login_path
+      redirect_to login_profile_index_path
       flash[:alert] = "Please log in"
     end
   end

@@ -29,7 +29,11 @@
         </tr>
         <tr class="field">
           <td><%= form.label :email %></td>
-          <td><%= @user.email %></td>
+          <% if(@user.email) %>
+            <td><%= @user.email %></td>
+          <% else %>
+            <td><%= link_to 'Enter email address', '#' %></td>
+          <% end %> 
         </tr>
         <tr class="field">
           <td><%= form.label :wallet %></td>

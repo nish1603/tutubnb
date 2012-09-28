@@ -1,0 +1,11 @@
+<div>
+  <% @authentications.each do |authentication| %>
+	  <div>
+      <%= link_to @authentication.capitalize, '/auth/' + authentication.provider %>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to 'Login with facebook', '/auth/facebook' %>
+<%= link_to 'Login with twitter', '/auth/twitter' %>
+<%= link_to 'Login with linked in', '/auth/linkedin' %>

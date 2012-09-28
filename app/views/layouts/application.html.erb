@@ -3,22 +3,29 @@
 <head>
   <title>Tutubnb2</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
-  <link type="text/css" rel="stylesheet", src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/le-frog/jquery-ui.css" />
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body class = "<%= controller.controller_name %> main">
+  <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 	<div class = "header">
     <table>
       <tr>
 	      <% if session[:user_id].nil? %>
-          <td class = "user_name" ><%= link_to "Hi, Guest", profile_login_path  %></td>
-          <td class = "for_guest" ><%= link_to 'Sign Up', profile_signup_path %></td>
-	        <td class = "for_guest" ><%= link_to 'Log In', profile_login_path %></td>
+          <td class = "user_name" ><%= link_to "Hi, Guest", login_profile_index_path  %></td>
+          <td class = "for_guest" ><%= link_to 'Sign Up', signup_profile_index_path %></td>
+	        <td class = "for_guest" ><%= link_to 'Log In', login_profile_index_path %></td>
           <td class = "for_guest" ><%= link_to 'Places', display_show_path %></td>
         <% else %>
           <td class = "user_name" ><%= link_to session[:user_name], edit_user_path(session[:user_id])  %></td>
-	        <td class = "for_user" ><%= link_to 'Log Out', profile_logout_path %></td>
+	        <td class = "for_user" ><%= link_to 'Log Out', logout_profile_index_path %></td>
           <td class = "for_user" ><%= link_to 'Places', display_show_path %></td>
           <% if(session[:admin] and session[:admin] == true) %>
             <td class = "for_user" ><%= link_to 'Users', admin_users_path %></td>

@@ -17,8 +17,11 @@
         <%= submit_tag 'Log In' %>
       </div>
 
-      <%= link_to 'Need an Account?', profile_signup_path %>
-      <%= link_to 'Forgot Your Password?', profile_forget_password_path %>
+      <%= link_to 'Need an Account?', signup_profile_index_path %>
+      <%= link_to 'Forgot Your Password?', forget_password_profile_index_path %>
+      <%= link_to 'Login with facebook', '/auth/facebook' %>
+      <%= link_to 'Login with twitter', '/auth/twitter' %>
+      <%= link_to 'Login with linked in', '/auth/linkedin' %>
 
     </fieldset>
   <% end %>

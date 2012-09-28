@@ -90,4 +90,12 @@ class Place < ActiveRecord::Base
       notice = "Your place has been created."
     end
   end
+
+  def property_type_string
+    PROPERTY_TYPE.key(property_type)
+  end
+  
+  def room_type_string
+    ROOM_TYPE.key(room_type) 
+  end
 end

@@ -1,46 +1,12 @@
 module DealHelper
 	
   def self.calculate_price(deal, place)
-    amount = 0.0
-    weekdays = 0
-    weekends = 0
-    days = deal.end_date.day - deal.start_date.day
-    months = deal.end_date.month - deal.start_date.month
-    years = deal.end_date.year - deal.start_date.year
-
-    if(deal.end_date.month < (deal.start_date.month))
-      years -= 1
-      months = (12 - deal.start_date.month) + deal.end_date.month
-    end
-
-    if(deal.end_date.day < (deal.start_date.day-1))
-      months -= 1 
-      days = deal.start_date.end_of_month.day - deal.start_date.day
-      days += deal.end_date.day
-    end
-
-    months += years * 12
-
-    weeks = (days + 1) / 7
-    days = (days + 1) % 7
     
-    amount += weeks * place.weekly
-    amount += months * place.monthly
+    days, weeks, months = calculate_days_weeks_months(deal.start_date, deal.end_date)
 
-    (deal.start_date...(deal.start_date+days)).to_a.each do |date|
-      if(date.sunday? or date.saturday?)
-        amount += place.weekend
-        weekends += 1
-      else
-        amount += place.daily
-        weekdays += 1
-      end
-    end
-
-    if(place.add_guests and deal.guests >= place.add_guests)
-      amount += (deal.guests - place.add_guests) * place.add_price
-    end
-
+    amount, weekdays, weekends = calculate_amount(days, weeks, months, deal.guests, place)
+    
+    
     msg = []
     msg << "No. of Months : #{months}, Price : #{months}x#{place.monthly} \n" if(months > 0)
     msg << "No. of Weeks : #{weeks}, Price : #{weeks}x#{place.weekly} \n" if(weeks > 0)
@@ -51,6 +17,55 @@ module DealHelper
     return amount, msg
   end
 
+  def self.calculate_days_weeks_months(start_date, end_date)
+    days = end_date.day - start_date.day
+    months = end_date.month - start_date.month
+    years = end_date.year - start_date.year
+
+    if(end_date.month < (start_date.month))
+      years -= 1
+      months = (12 - start_date.month) + end_date.month
+    end
+
+    if(end_date.day < (start_date.day-1))
+      months -= 1 
+      days = start_date.end_of_month.day - start_date.day
+      days += end_date.day
+    end
+
+    months += years * 12
+
+    weeks = (days + 1) / 7
+    days = (days + 1) % 7
+    
+    return days, weeks, months
+  end
+
+  def self.calculate_amount(days, weeks, months, place)
+    amount = 0.0
+    weekdays = 0
+    weekends = 0
+
+    amount += weeks * place.weekly
+    amount += months * place.monthly
+
+    (deal.start_date...(deal.start_date+days)).to_a.each do |date|
+      if(date.sunday? or date.saturday?)
+        weekends += 1
+      else
+        weekdays += 1
+      end
+    end
+
+    amount += (weekends * place.weekend)
+    amount += (weekdays * place.daily)
+
+    if(place.add_guests and guests >= place.add_guests)
+      amount += (guests - place.add_guests) * place.add_price
+    end
+    return amount, weekdays, weekends
+
+  end
 
   def self.check_place(deal, place)
     place_deals = Deal.by_place(place).accepted(true)

@@ -85,9 +85,9 @@ class ApplicationController < ActionController::Base
       redirect_to root_url
     end
   end
-
+ 
   def place_exists
-    place = Place.find_by_id(params[:id])
+  place = Place.find_by_id(params[:id])
     if(place.nil?)
       redirect_to root_url
     end

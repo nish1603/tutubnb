@@ -28,7 +28,6 @@ class AddressController < ApplicationController
   def update
     @address = Address.find(params[:id])
     update_attributes @address, :address
-
   end
 
   def show

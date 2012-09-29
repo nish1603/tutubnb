@@ -12,9 +12,7 @@ class ProfileController < ApplicationController
     
     respond_to do |format|
       if(user.authenticate(params[:password]))
-        session[:user_id] = user.id
-        session[:user_name] = user.first_name
-        session[:admin] = user.admin
+        set_session(user.id)
         format.html { redirect_to display_show_path }
       else 
         format.html { redirect_to login_profile_index_path }
@@ -24,9 +22,7 @@ class ProfileController < ApplicationController
   end
 
   def logout
-    session[:user_id] = nil
-    session[:user_name] = nil
-    session[:admin] = nil
+    clear_session()
 
     respond_to do |format|
       format.html { redirect_to display_show_path }
@@ -60,8 +56,7 @@ class ProfileController < ApplicationController
 
     respond_to do |format|
       if(user and user.activation_link == params[:activation_link])
-        session[:user_id] = user.id
-        session[:user_name] = user.first_name
+        set_session(user.id)
         user.verified = true
         user.save(:validate => false)
         flash[:notice] = "You have verified your account successfully."

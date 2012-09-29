@@ -81,7 +81,7 @@ class UserController < ApplicationController
   def wallet
     @user = User.find(params[:id])
    
-    update_wallet()
+    @user.update_wallet(params[:commit], params[:amount].to_f)
     
     respond_to do |format|
       if @user.save
@@ -90,31 +90,11 @@ class UserController < ApplicationController
     end 
   end
 
-  def update_wallet
-    if params[:commit] == "Add"
-      @user.wallet = @user.wallet + params[:amount].to_f
-    else
-      @user.wallet = @user.wallet - params[:amount].to_f
-    end
-  end
-
   def activate
-    user = User.find(params[:id])
-    if(params[:flag] == 'active')
-      active = true
-    else
-      active = false
-    end
-
-    user.activated = active
-
-    user.places.each do |place|
-      place.verified = active
-    end
-
+    @user = User.find(params[:id])
+    
     respond_to do |format|
-      if(user.save)
-        user.places.each { |place| place.save }
+      if(@user.save)
         flash[:notice] = "Account #{user.first_name} is now #{params[:flag]}"
       else
         flash[:error] = "Acoount #{user.first_name} has not been activated"
@@ -126,18 +106,16 @@ class UserController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     
-    if(@user.deals.completed(false).requested(true).empty? && @user.trips.completed(false).requested(true).empty?)
-      @user.places.each do |place|
-        place.destroy
-      end
-      @user.destroy
-      redirect_to profile_login_path
+    if(@user.destroy)
+      redirect_to root_url
       flash[:error] = "The account ha been successfully deleted."
+      
       if(session[:admin] == false)
         session[:user_id] = nil
         session[:user_name] = nil
         session[:admin] = nil
       end
+    
     else
       redirect_to root_url
       flash[:error] = "You can't delete the account, when it have pending requests."

@@ -11,12 +11,10 @@ class PlaceController < ApplicationController
     @place.detail = Detail.new
     @place.address = Address.new
     @place.rules = Rules.new
-    @tags = Tag.all.map(&:tag)
 
     2.times { @place.photos << Photo.new }
     respond_to do |format|
       format.html
-#      format.json { render json: @tags }
     end
   end
 
@@ -25,10 +23,9 @@ class PlaceController < ApplicationController
     @place.user_id = session[:user_id]
 
     validate, notice = @place.check_commit(params[:commit])
-    @place.hidden = true if(validate == false)
-  
+    
   	respond_to do |format|
-      if((validate == false || (@place.valid? && @place.check_photos(params))) && @place.save(:validate => validate))
+      if(@place.save)  
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
       else
@@ -48,7 +45,7 @@ class PlaceController < ApplicationController
     notice += "It is still hidden, you can make it visible on My Places." if(@place.hidden == true)
 
     respond_to do |format|
-      if(@place.valid? && @place.check_photos(params) && @place.update_attributes(params[:place]))
+      if(@place.update_attributes(params[:place]))
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
       else

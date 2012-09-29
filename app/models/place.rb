@@ -1,10 +1,14 @@
+require 'photovalidator'
+
 class Place < ActiveRecord::Base
   attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
   
-  validates :description, :property_type, :room_type, presence: true
+  validates :description, :property_type, :title, :daily, :room_type, presence: true
   validates :add_guests, :add_price, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
-  validates :title, :presence => true, :uniqueness => { :scope => [:user_id] }
-  validates :daily, :presence => true, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
+  validates :title, :uniqueness => { :scope => [:user_id] }, :unless => proc { |place| place.title.blank? }
+  validates :daily, :numericality => { :greater_than_or_equal_to => 0}, :unless => proc{ |place| place.daily.blank? }
+  validates_with PhotoValidator
+  validate :check_tags
 
   PROPERTY_TYPE = {'Appartment' => 1, 'House' => 2, 'Castle' => 3, 'Villa' => 4, 'Cabin' => 5, 'Bed & Breakfast' => 6, 'Boat' => 7, 'Plane' => 8, 'Light House' => 9, 'Tree House' => 10, 'Earth House' => 11, 'Other' => 12}
   ROOM_TYPE = {'Private room' => 1, 'Shared room' => 2, 'Entire Home/apt' => 3}
@@ -16,7 +20,7 @@ class Place < ActiveRecord::Base
   has_one :detail, :dependent => :delete
   has_one :address, :dependent => :delete
   has_one :rules, :dependent => :delete
-  has_many :photos, :dependent => :delete_all
+  has_many :photos, :dependent => :delete_all, :inverse_of => :place
   has_many :deals, :dependent => :nullify
   has_many :reviews, :dependent => :delete_all
   
@@ -40,7 +44,7 @@ class Place < ActiveRecord::Base
   end
 
   def tags_string=(string)
-    place_tags = string.split(", ").reject{ |tag| tag.blank? }
+    place_tags = string.split(",").reject{ |tag| tag.blank? }
     self.tags = place_tags.map do |tag|
       Tag.find_or_initialize_by_tag(tag.strip)
     end
@@ -54,23 +58,16 @@ class Place < ActiveRecord::Base
     end
   end
 
-  def check_photos(params)
-    photos_count = photos.count
-    unless(params[:place][:photos_attributes].nil?)
-      params[:place][:photos_attributes].each do |key, photo|
-        if(!photo[:avatar].blank?)
-          photos_count += 1
-        elsif(photo["_destroy"] == "1")
-          photos_count -= 1
-        end
-      end
+  def check_photos()
+    if(self.photos.length < 2)
+      errors.add(:photos, "Photos should be atleast 2")
     end
-    
-    if(photos_count < 2)
-      errors.add(:base, "Photos should be more than or equal to 2")
-      return false
+  end
+
+  def check_tags
+    if(self.tags.length > 10)
+      self.errors.add(:tags, "You can specify maximum 10 tags")
     end
-    return true
   end
 
   def check_current_deals
@@ -84,6 +81,7 @@ class Place < ActiveRecord::Base
   def check_commit(commit_type)
     if(commit_type == "Save Place")
       validate = false
+      self.hidden = true
       notice = "Your place has been saved. But it is hidden from the outside world."
     else
       validate = true
@@ -99,3 +97,4 @@ class Place < ActiveRecord::Base
     ROOM_TYPE.key(room_type) 
   end
 end
+

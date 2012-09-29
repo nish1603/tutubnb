@@ -40,9 +40,7 @@ class AuthenticateController < ApplicationController
 
   def sign_in_and_redirect(user)
     respond_to do |format|
-      session[:user_id] = user.id
-      session[:user_name] = user.first_name
-      session[:admin] = user.admin
+      set_session(user.id)
       format.html { redirect_to root_url } 
     end
   end

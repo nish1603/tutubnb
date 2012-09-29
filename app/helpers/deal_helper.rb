@@ -3,7 +3,6 @@ module DealHelper
   def self.calculate_price(deal, place)
     
     days, weeks, months = calculate_days_weeks_months(deal.start_date, deal.end_date)
-
     amount, weekdays, weekends = calculate_amount(days, weeks, months, deal.guests, place)
     
     

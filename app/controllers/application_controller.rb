@@ -87,9 +87,24 @@ class ApplicationController < ActionController::Base
   end
  
   def place_exists
-  place = Place.find_by_id(params[:id])
+    place = Place.find_by_id(params[:id])
     if(place.nil?)
       redirect_to root_url
     end
   end
+
+  def set_session(user_id)
+    user = User.find(user_id)
+    session[:user_id] = user.id
+    session[:user_name] = user.first_name
+    session[:admin] = user.admin
+  end
+
+  def clear_session
+    session[:user_id] = nil
+    session[:user_name] = nil
+    session[:admin] = nil
+  end
+
+
 end

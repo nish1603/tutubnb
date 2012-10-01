@@ -21,6 +21,8 @@ class AuthenticateController < ApplicationController
         flash[:alert] = "You have already linked this account"
       end
     else
+      user = authentication.find_or_initialize_user_by_email(auth['info']['email'])
+
       if(session[:user_id].nil?)
         user = User.new
         flash[:notice] = "Account created and signed in successfully."

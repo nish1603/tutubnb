@@ -92,12 +92,13 @@ class UserController < ApplicationController
 
   def activate
     @user = User.find(params[:id])
+    @user.activate_or_deactivate_user(params[:flag])
     
     respond_to do |format|
-      if(@user.save)
-        flash[:notice] = "Account #{user.first_name} is now #{params[:flag]}"
+      if(@user.save!)
+        flash[:notice] = "Account #{@user.first_name} is now #{params[:flag]}"
       else
-        flash[:error] = "Acoount #{user.first_name} has not been activated"
+        flash[:error] = "Acoount #{@user.first_name} has not been activated"
       end
       format.html { redirect_to admin_users_path }
     end
@@ -107,19 +108,12 @@ class UserController < ApplicationController
     @user = User.find(params[:id])
     
     if(@user.destroy)
-      redirect_to root_url
+      clear_session() unless(session[:admin])      
       flash[:error] = "The account ha been successfully deleted."
-      
-      if(session[:admin] == false)
-        session[:user_id] = nil
-        session[:user_name] = nil
-        session[:admin] = nil
-      end
-    
     else
-      redirect_to root_url
       flash[:error] = "You can't delete the account, when it have pending requests."
     end
+    redirect_to root_url
   end
 
   def change_password

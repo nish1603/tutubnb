@@ -37,7 +37,7 @@ class Place < ActiveRecord::Base
   scope :by_location, lambda{ |type, location| joins(:address).where("addresses.#{type} LIKE ?", "%#{location}%") }
   scope :by_property, lambda{ |type, type_value| where(type => type_value) }
   scope :visible, lambda{ |flag| where(:verified => flag) }
-  scope :admin_visible, where(:hidden => false)
+  scope :hidden, lambda{ |flag| where(:hidden => flag) }
 
   def tags_string
     tags.map(&:tag).join(', ')

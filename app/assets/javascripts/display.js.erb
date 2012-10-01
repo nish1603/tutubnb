@@ -9,7 +9,7 @@ $(document).ready(function(){
 
   $('input#tags_string').keyup(function(){
     if($('input#tags_string').val().length > 0) {
-      $.getJSON('/tag/index.json?tag='+$('input#tags_string').val(), function(data) {
+      $.getJSON('/tag/index.json?tag=' + $('input#tags_string').val(), function(data) {
         tag_names = data;
         onload(tag_names);
       });

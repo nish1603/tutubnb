@@ -1,5 +1,6 @@
 class TagController < ApplicationController
   skip_before_filter :authorize
+
   def index
   	params = request.parameters
   	@tags = []

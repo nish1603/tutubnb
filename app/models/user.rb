@@ -31,6 +31,8 @@ class User < ActiveRecord::Base
   scope :not_verified, where(:verified => false)
 
   def apply_omniauth(auth)
+    if(User.find_by_email(auth['info']['email']))
+    else
     self.email = auth['info']['email']
     self.first_name = auth['info']['screen_name']
     authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'])
@@ -38,9 +40,9 @@ class User < ActiveRecord::Base
 
   def update_wallet(commit_type, amount)
     if(commit_type == "Add")
-      wallet = wallet + amount
+      self.wallet += amount
     else
-      wallet = wallet - amount
+      self.wallet -= amount
     end
   end
 
@@ -57,10 +59,11 @@ class User < ActiveRecord::Base
       active = false
     end
 
-    activated = active
+    self.activated = active
 
     places.each do |place|
       place.verified = active
+      place.save
     end
   end
 end

@@ -1,6 +1,6 @@
 module DisplayHelper
 	def selection()
-    places = Place.admin_visible
+    places = Place.hidden(false)
     params[:country] = params[:country][:country]
     places = by_option(:by_location, [:city, :country], places)
     places = by_option(:by_property, [:property_type, :room_type], places)
@@ -15,7 +15,7 @@ module DisplayHelper
       places = places & Place.visible(false)
     end
     
-    places & Place.admin_visible
+    places & Place.hidden(false)
     places
   end
 

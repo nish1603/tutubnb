@@ -1,8 +1,10 @@
 class Deal < ActiveRecord::Base
   attr_accessible :end_date, :price, :start_date, :guests, :cancel, :accept, :request
   
-  validates :price, :presence => true, :numericality => { :greater_than_or_equal_to => 0 }
-  validates :guests, :presence => true, :numericality => { :greater_than_or_equal_to => 1, :only_integer => true }
+  validates :price, :presence => true
+  validates :price, :numericality => { :greater_than_or_equal_to => 0 }, :unless => proc { |deal| deal.price.blank? }
+  validates :guests, :presence => true
+  validates :guests, :numericality => { :greater_than_or_equal_to => 1, :only_integer => true }, :unless => proc { |deal| deal.guests.blank? }
   
   before_save :user_have_amount
   before_save :user_have_wallet

@@ -3,7 +3,7 @@ class Detail < ActiveRecord::Base
   belongs_to :place
 
   validates :accomodation, :presence => true
-  validates :accomodation, :bathrooms, :bedrooms, :beds, :numericality => { :greater_than_or_equal_to => 0 }, :allow_nil => true
+  validates :accomodation, :bathrooms, :bedrooms, :beds, :numericality => { :greater_than_or_equal_to => 0, :only_integer => true }, :allow_nil => true
 
   UNITS = {"sq. meters" => 1, "sq. feets" => 2}
 

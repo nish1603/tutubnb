@@ -4,6 +4,10 @@
         <td class = "left-cell">
           <% if(deal.place) %>
             <%= image_tag deal.place.photos.first.avatar(:medium), :class => "user_pic", :height => '100px', :width => '95%' %>
+            <p><%= "accepted" if deal.accept == true %></p>
+            <p><%= "rejected" if deal.accept == false %></p>
+            <p><%= "requested" if deal.request == true %></p>
+            <p><%= "completed" if deal.complete == true %></p>
           <% end %>
         </td>
         <td class = "mid-cell">
@@ -14,7 +18,8 @@
             <p class = "Name">Owner Name : <%= deal.place.user.first_name + " " + deal.place.user.last_name %></a><p>
             <p class = "address">Place Location : <%= deal.place.title + ", " + deal.place.address.city + ", " + deal.place.address.country %></a><p>
           <% end %>
-          <p class = "price">Price : &#8377;<%= deal.price %>
+          <p class = "price">Price : &#8377;<%= deal.price %>, Earning from this deal : &#8377;<%= (0.2 * deal.price) %></p>
+          <p class = "date">Start date : <%= deal.start_date %>, End Date : <%= deal.end_date %></p> 
         </td>
         <td class = "right-cell">
           <% if(deal.end_date < Date.current and deal.complete == false) %>

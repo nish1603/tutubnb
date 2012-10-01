@@ -31,8 +31,8 @@ class User < ActiveRecord::Base
   scope :not_verified, where(:verified => false)
 
   def apply_omniauth(auth)
-    self.email = auth['extra']['raw_info']['email']
-    self.first_name = auth['extra']['raw_info']['screen_name']
+    self.email = auth['info']['email']
+    self.first_name = auth['info']['screen_name']
     authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'])
   end
 
@@ -62,8 +62,5 @@ class User < ActiveRecord::Base
     places.each do |place|
       place.verified = active
     end
-  end
-
-  def activate_or_deactivate_user
   end
 end

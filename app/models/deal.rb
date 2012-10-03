@@ -92,6 +92,15 @@ class Deal < ActiveRecord::Base
       self.months = self.end_date.month - self.start_date.month
       self.years = self.end_date.year - self.start_date.year
 
+      adjust_days_weeks_months()
+
+      self.months += self.years * 12
+
+      self.weeks = (self.days + 1) / 7
+      self.days = (self.days + 1) % 7
+    end
+
+    def adjust_days_weeks_months()
       if(self.end_date.month < (self.start_date.month))
         self.years -= 1
         self.months = (12 - self.start_date.month) + self.end_date.month
@@ -102,11 +111,6 @@ class Deal < ActiveRecord::Base
         self.days = self.start_date.end_of_month.day - self.start_date.day
         self.days += self.end_date.day
       end
-
-      self.months += self.years * 12
-
-      self.weeks = (self.days + 1) / 7
-      self.days = (self.days + 1) % 7
     end
 
     def calculate_weekdays_weekends()
@@ -130,14 +134,14 @@ class Deal < ActiveRecord::Base
     end
 
     def create_divisions()
-      division = []
-      division << "No. of Months : #{self.months}, Price : #{self.months}x#{self.place.monthly} \n" if(months > 0)
-      division << "No. of Weeks : #{self.weeks}, Price : #{self.weeks}x#{self.place.weekly} \n" if(weeks > 0)
-      division << "No. of Weekdays : #{self.weekdays}, Price : #{self.weekdays}x#{self.place.daily} \n" if(weekdays > 0)
-      division << "No. of Weekends : #{self.weekends}, Price : #{self.weekends}x#{self.place.weekend} \n" if(weekends > 0)
-      division << "Additional guests : #{self.place.add_guests}, Price : #{self.place.add_guests}x#{self.place.add_price}" if(place.add_guests and deal.guests >= place.add_guests)
-      division << "Total Amount : #{self.price.round(2)} + 10% Service Charge : #{(0.1 * self.price).round(2)}"
-      return division
+      self.division = []
+      self.division << "No. of Months : #{self.months}, Price : #{self.months}x#{self.place.monthly} \n" if(self.months > 0)
+      self.division << "No. of Weeks : #{self.weeks}, Price : #{self.weeks}x#{self.place.weekly} \n" if(self.weeks > 0)
+      self.division << "No. of Weekdays : #{self.weekdays}, Price : #{self.weekdays}x#{self.place.daily} \n" if(self.weekdays > 0)
+      self.division << "No. of Weekends : #{self.weekends}, Price : #{self.weekends}x#{self.place.weekend} \n" if(self.weekends > 0)
+      self.division << "Additional guests : #{self.place.add_guests}, Price : #{self.place.add_guests}x#{self.place.add_price}" if(self.place.add_guests and self.guests >= self.place.add_guests)
+      self.division << "Total Amount : #{self.price.round(2)} + 10% Service Charge : #{(0.1 * self.price).round(2)}"
+      return self.division
     end
 
     def reply_to_deal(perform)

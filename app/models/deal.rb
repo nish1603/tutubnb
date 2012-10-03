@@ -92,7 +92,8 @@ class Deal < ActiveRecord::Base
       self.months = self.end_date.month - self.start_date.month
       self.years = self.end_date.year - self.start_date.year
 
-      adjust_days_weeks_months()
+      adjust_months()
+      adjust_months()
 
       self.months += self.years * 12
 
@@ -100,12 +101,14 @@ class Deal < ActiveRecord::Base
       self.days = (self.days + 1) % 7
     end
 
-    def adjust_days_weeks_months()
+    def adjust_months()
       if(self.end_date.month < (self.start_date.month))
         self.years -= 1
         self.months = (12 - self.start_date.month) + self.end_date.month
       end
+    end
 
+    def adjust_days()
       if(self.end_date.day < (self.start_date.day-1))
         self.months -= 1 
         self.days = self.start_date.end_of_month.day - self.start_date.day

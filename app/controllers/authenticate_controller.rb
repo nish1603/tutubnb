@@ -21,16 +21,14 @@ class AuthenticateController < ApplicationController
         flash[:alert] = "You have already linked this account"
       end
     else
-      #user = authentication.find_or_initialize_user_by_email(auth['info']['email'])
-
       if(session[:user_id].nil?)
-        user = User.new
+        user = User.find_by_email(auth['info']['email']) || User.new
         flash[:notice] = "Account created and signed in successfully."
       else
         user = User.find_by_id(session[:user_id])
         flash[:notice] = "Acccount has been linked."
       end
-      user.apply_omniauth(auth)
+      user.create_user_with_omniauth(auth)
       if user.save(:validate => false)
         sign_in_and_redirect(user)
       else

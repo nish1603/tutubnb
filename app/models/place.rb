@@ -5,7 +5,7 @@ class Place < ActiveRecord::Base
   
   validates :description, :property_type, :title, :daily, :room_type, presence: true
   validates :add_guests, :add_price, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
-  validates :title, :uniqueness => { :scope => [:user_id] }, :unless => proc { |place| place.title.blank? }
+  validates :title, :uniqueness => { :case_sensitive => false, :scope => [:user_id] }, :unless => proc { |place| place.title.blank? }
   validates :daily, :numericality => { :greater_than_or_equal_to => 0}, :unless => proc{ |place| place.daily.blank? }
   validates_with PhotoValidator
   validate :check_tags
@@ -114,5 +114,28 @@ class Place < ActiveRecord::Base
       end
     end
     return true
+  end
+
+  def activate_or_deactivate_place(activate_type)
+    if(activate_type == 'active')
+      active = true
+    else
+      active = false
+    end
+
+    self.verified = active
+  end
+
+  def hide_or_show_place(operation_type)
+    if(operation_type == 'hide')
+      active = true
+      result = "hidden"
+    else
+      active = false
+      result = "visible"
+    end
+    
+    self.hidden = active
+    return result
   end
 end

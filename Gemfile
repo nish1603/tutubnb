@@ -35,6 +35,7 @@ gem 'will_paginate', '~> 3.0'
 gem "country_select", "~> 1.0.1"
 gem "omniauth-facebook"
 gem 'omniauth-twitter'
+gem 'tweet-button'
 gem 'omniauth-linkedin'
 
 # To use Jbuilder templates for JSON

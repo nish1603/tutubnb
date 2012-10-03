@@ -48,3 +48,5 @@
     <div class = "tag_name"><span><%= place_tag %></span></div></div>
   <% end %>
 </div>
+
+<%= tweet_button(:via => "tutubnb", :text => @place.title, :url => place_url(@place.id), :count => "none" ) %>

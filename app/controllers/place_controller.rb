@@ -2,8 +2,8 @@ class PlaceController < ApplicationController
 
   skip_before_filter :authorize, only: :show
   before_filter :owner_activated, :only => [:activate, :operation]
-  before_filter :place_exists, :only => [:edit, :operation, :show]
-  before_filter :validating_owner, :only => [:edit, :operation]
+  before_filter :place_exists, :only => [:edit, :update, :operation, :show]
+  before_filter :validating_owner, :only => [:edit, :update, :operation]
 
  
   def new
@@ -87,13 +87,7 @@ class PlaceController < ApplicationController
   def activate
     @place = Place.find_by_id(params[:id])
 
-    if(params[:flag] == 'active')
-      active = true
-    else
-      active = false
-    end
-
-    @place.verified = active
+    activate_or_deactivate_place(params[:flag])
 
     respond_to do |format|
       if(@place.save)
@@ -108,16 +102,8 @@ class PlaceController < ApplicationController
   def operation
     @place = Place.find_by_id(params[:id])
 
-    if(params[:flag] == 'hide')
-      active = true
-      result = "hidden"
-    else
-      active = false
-      result = "visible"
-    end
-    
-    @place.hidden = active
-
+    result = hide_or_show_place(params[:flag])
+  
     respond_to do |format|
       if(@place.save)
         flash[:notice] = "#{@place.title} is now #{result}"

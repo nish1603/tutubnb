@@ -1,9 +1,9 @@
 class PhotoValidator < ActiveModel::Validator
-  def validate(record)
+  def validate(place)
 
-    photos_count = record.photos.length
+    photos_count = place.photos.length
 
-    record.photos.each do |photo|
+    place.photos.each do |photo|
       if(photo.invalid? || photo.marked_for_destruction?)
         photos_count -= 1
       end

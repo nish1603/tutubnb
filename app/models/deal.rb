@@ -53,7 +53,7 @@ class Deal < ActiveRecord::Base
     end
 
     def valid_start_date
-      if(start_date.nil? || start_date < Date.current)
+      if(start_date.nil? || end_date.nil? ||start_date < Date.current)
         errors.add(:base, "Start date should be more than or equal to current date.")
       end
     end
@@ -72,7 +72,7 @@ class Deal < ActiveRecord::Base
     end
 
     
-    def calculate_price()
+    def calculate_price_and_divisions()
       self.price = 0.0
       calculate_days_weeks_months()
       calculate_weekdays_weekends()
@@ -83,7 +83,7 @@ class Deal < ActiveRecord::Base
       self.price += (self.weekdays * self.place.daily)
       self.price += calculate_price_for_add_guests()
 
-      return create_divisions()
+      create_divisions()
     end
 
 

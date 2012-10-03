@@ -30,11 +30,12 @@ class User < ActiveRecord::Base
   scope :deactivated, where(:activated => false)
   scope :not_verified, where(:verified => false)
 
-  def apply_omniauth(auth)
-    #if(User.find_by_email(auth['info']['email']))
-    #else
-    self.email = auth['info']['email']
-    self.first_name = auth['info']['screen_name']
+  def create_user_with_omniauth(auth)
+    if(self.new_record?)
+      self.email = auth['info']['email']
+      self.first_name, self.last_name = auth['info']['name'].split(' ')
+      self.gender = auth['info']['gender']
+    end
     authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'])
   end
 

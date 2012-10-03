@@ -58,12 +58,6 @@ class Place < ActiveRecord::Base
     end
   end
 
-  def check_photos()
-    if(self.photos.length < 2)
-      errors.add(:photos, "Photos should be atleast 2")
-    end
-  end
-
   def check_tags
     if(self.tags.length > 10)
       self.errors.add(:tags, "You can specify maximum 10 tags")
@@ -89,12 +83,36 @@ class Place < ActiveRecord::Base
     end
   end
 
-  def property_type_string
+  def property_type_string()
     PROPERTY_TYPE.key(property_type)
   end
   
-  def room_type_string
+  def room_type_string()
     ROOM_TYPE.key(room_type) 
   end
-end
 
+  def reject_deals(start_date, end_date)
+    place_deals = Deal.by_place(self).requested(true)
+    dates = (start_date..end_date).to_a
+    place_deals.each do |place_deal|
+      place_dates = (place_deal.start_date..place_deal.end_date).to_a
+      if((dates & place_dates).empty? == false)
+        place_deal.accept = false
+        place_deal.request = false
+        place_deal.save
+      end
+    end
+  end
+
+  def check_for_deals(start_date, end_date)
+    place_deals = Deal.by_place(self).accepted(true)
+    dates = (start_date..end_date).to_a
+    place_deals.each do |place_deal|
+      place_dates = (place_deal.start_date..place_deal.end_date).to_a
+      if((dates & place_dates).empty? == false)
+        return false
+      end
+    end
+    return true
+  end
+end

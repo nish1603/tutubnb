@@ -31,8 +31,8 @@ class User < ActiveRecord::Base
   scope :not_verified, where(:verified => false)
 
   def apply_omniauth(auth)
-    if(User.find_by_email(auth['info']['email']))
-    else
+    #if(User.find_by_email(auth['info']['email']))
+    #else
     self.email = auth['info']['email']
     self.first_name = auth['info']['screen_name']
     authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'])
@@ -65,5 +65,21 @@ class User < ActiveRecord::Base
       place.verified = active
       place.save
     end
+  end
+
+  def tarnsfer_from_admin(price)
+    admin = User.admin.first
+
+    self.wallet += (price * 0.9) 
+    admin.wallet -= (price * 0.9)
+    admin.save
+  end
+
+  def transfer_to_admin(price)
+    admin = User.admin.first
+
+    self.wallet -= (price * 1.1) 
+    admin.wallet += (price * 1.1)
+    admin.save
   end
 end

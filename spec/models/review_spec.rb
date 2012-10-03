@@ -5,61 +5,40 @@ module ReviewSpecHelper
     {
       :ratings => 9,
       :subject => "Its good",
-      :bedrooms => 3,
-      :beds => 4
+      :description => "the rooms are well furnished."
     }
   end
 end
 
-describe Detail do
-  include DetailSpecHelper
+describe Review do
+  include ReviewSpecHelper
   
   before(:each) do
-    @detail = Detail.new
+    @review = Review.new
   end
 
-  it "accomodation should not be nil" do
-    @detail.attributes = valid_detail_attributes.except(:accomodation)
-    @detail.should have(1).errors_on(:accomodation)
+  it "ratings should not be nil" do
+    @review.attributes = valid_review_attributes.except(:ratings)
+    @review.should have(1).errors_on(:ratings)
   end
 
-  it "accomodation should be greater than zero" do
-    @detail.attributes = valid_detail_attributes.with(:accomodation => -2)
-    @detail.should have(1).errors_on(:accomodation)
+  it "ratings should be smaller than 10" do
+    @review.attributes = valid_review_attributes.with(:ratings => 13)
+    @review.should have(1).errors_on(:ratings)
   end
 
-  it "accomodation should be integer" do
-    @detail.attributes = valid_detail_attributes.with(:accomodation => 2.2)
-    @detail.should have(1).errors_on(:accomodation)
+  it "ratings should be greater than 0" do
+    @review.attributes = valid_review_attributes.with(:ratings => -2)
+    @review.should have(1).errors_on(:ratings)
   end
 
-  it "bedrooms should be greater than zero" do
-    @detail.attributes = valid_detail_attributes.with(:bedrooms => -2)
-    @detail.should have(1).errors_on(:bedrooms)
+  it "subject should not be nil" do
+    @review.attributes = valid_review_attributes.except(:subject)
+    @review.should have(1).errors_on(:subject)
   end
 
-  it "bedrooms should be integer" do
-    @detail.attributes = valid_detail_attributes.with(:bedrooms => 2.2)
-    @detail.should have(1).errors_on(:bedrooms)
-  end
-
-  it "bathrooms should be greater than zero" do
-    @detail.attributes = valid_detail_attributes.with(:bathrooms => -2)
-    @detail.should have(1).errors_on(:bathrooms)
-  end
-
-  it "bathrooms should be integer" do
-    @detail.attributes = valid_detail_attributes.with(:bathrooms => 2.2)
-    @detail.should have(1).errors_on(:bathrooms)
-  end
-
-  it "beds should be greater than zero" do
-    @detail.attributes = valid_detail_attributes.with(:beds => -2)
-    @detail.should have(1).errors_on(:beds)
-  end
-
-  it "beds should be integer" do
-    @detail.attributes = valid_detail_attributes.with(:beds => 2.2)
-    @detail.should have(1).errors_on(:beds)
+  it "description should not be nil" do
+    @review.attributes = valid_review_attributes.except(:description)
+    @review.should have(1).errors_on(:description)
   end
 end

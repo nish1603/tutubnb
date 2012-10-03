@@ -3,11 +3,10 @@ class DisplayController < ApplicationController
   before_filter :confirm_admin, :only => [:user, :deals]
   
   def show
-    @places = ['nasjan']
     if(session[:admin] != true)
   	  @places = Place.visible(true)
     else
-      @places = Place.admin_visible
+      @places = Place.hidden(false)
     end
     
   	respond_to do |format|

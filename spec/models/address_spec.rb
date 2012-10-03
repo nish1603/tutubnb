@@ -31,7 +31,7 @@ describe Address do
   end
 
   it "city should be a string" do
-    @address.attributes = valid_address_attributes.with(:city => "1234")
+    @address.attributes = valid_address_attributes.with(:city => 1234)
     @address.should have(1).errors_on(:city)
   end
 
@@ -41,7 +41,7 @@ describe Address do
   end
 
   it "state should be a string" do
-    @address.attributes = valid_address_attributes.with(:state => "1234")
+    @address.attributes = valid_address_attributes.with(:state => 1234)
     @address.should have(1).errors_on(:state)
   end
 
@@ -62,7 +62,7 @@ describe Address do
   end
 
   it "country should be a string" do
-    @address.attributes = valid_address_attributes.with(:country => "1234")
+    @address.attributes = valid_address_attributes.with(:country => 1234)
     @address.should have(1).errors_on(:country)
   end
 

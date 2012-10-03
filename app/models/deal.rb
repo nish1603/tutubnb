@@ -93,12 +93,7 @@ class Deal < ActiveRecord::Base
       self.years = self.end_date.year - self.start_date.year
 
       adjust_months()
-      adjust_months()
-
-      self.months += self.years * 12
-
-      self.weeks = (self.days + 1) / 7
-      self.days = (self.days + 1) % 7
+      adjust_weeks_and_days()
     end
 
     def adjust_months()
@@ -106,6 +101,7 @@ class Deal < ActiveRecord::Base
         self.years -= 1
         self.months = (12 - self.start_date.month) + self.end_date.month
       end
+      self.months += self.years * 12
     end
 
     def adjust_days()
@@ -114,6 +110,9 @@ class Deal < ActiveRecord::Base
         self.days = self.start_date.end_of_month.day - self.start_date.day
         self.days += self.end_date.day
       end
+
+      self.weeks = (self.days + 1) / 7
+      self.days = (self.days + 1) % 7
     end
 
     def calculate_weekdays_weekends()

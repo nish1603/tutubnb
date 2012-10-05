@@ -3,19 +3,21 @@ class Deal < ActiveRecord::Base
 
   attr_accessor :days, :weeks, :months, :years, :weekdays, :weekends, :division
   
-  validates :price, :presence => true
+
+  validates :price, :guests, :start_date, :end_date, :presence => true
   validates :price, :numericality => { :greater_than_or_equal_to => 0 }, :unless => proc { |deal| deal.price.blank? }
-  validates :guests, :presence => true
   validates :guests, :numericality => { :greater_than_or_equal_to => 1, :only_integer => true }, :unless => proc { |deal| deal.guests.blank? }
+  validates :place_id, :presence => { :message => "can't be blank" }
+  validates :user_id, :presence => { :message => "can't be blank" }
   
+  validate :valid_start_date, :unless => proc { |deal| deal.start_date.blank? }
+  validate :valid_end_date, :unless => proc { |deal| deal.end_date.blank? }
+  validate :less_than_max_guests, :unless => proc { |deal| deal.guests.blank? }
+
   before_create :user_have_amount
   before_create :user_have_wallet
   before_create :place_already_book
   
-  validate :valid_start_date
-  validate :valid_end_date
-  validate :less_than_max_guests
-
   TYPE = ['Accepted', 'Rejected', 'Requests', 'To Complete', 'Completed']
 
   belongs_to :user
@@ -53,26 +55,26 @@ class Deal < ActiveRecord::Base
     end
 
     def valid_start_date
-      if(start_date.nil? || end_date.nil? ||start_date < Date.current)
-        errors.add(:base, "Start date should be more than or equal to current date.")
+      if(start_date.nil? || start_date < Date.current)
+        errors.add(:start_date, "should be more than or equal to current date")
       end
     end
 
     def valid_end_date
-      if(end_date.nil? || end_date < start_date)
-        errors.add(:base, "End date should be more than or equal to Start date.")
+      if(end_date.nil? || start_date.nil? || end_date < start_date)
+        errors.add(:end_date, "should be more than or equal to Start date.")
       end
     end
 
     def less_than_max_guests
       max_guests = self.place.detail.accomodation
       if(max_guests < self.guests.to_i)
-        errors.add(:base, "Guests can't be more than #{max_guests}")
+        errors.add(:guests, "can't be more than #{max_guests}")
       end
     end
 
     
-    def calculate_price_and_divisions()
+    def calculate_price()
       self.price = 0.0
       calculate_days_weeks_months()
       calculate_weekdays_weekends()
@@ -93,7 +95,7 @@ class Deal < ActiveRecord::Base
       self.years = self.end_date.year - self.start_date.year
 
       adjust_months()
-      adjust_weeks_and_days()
+      adjust_days()
     end
 
     def adjust_months()

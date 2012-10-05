@@ -1,7 +1,7 @@
 require 'photovalidator'
 
 class Place < ActiveRecord::Base
-  attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :place_id, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
+  attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
   
   validates :description, :property_type, :title, :daily, :room_type, presence: true
   validates :add_guests, :add_price, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
@@ -17,12 +17,12 @@ class Place < ActiveRecord::Base
   before_save :set_prices
   before_destroy :check_current_deals
   
-  has_one :detail, :dependent => :delete
-  has_one :address, :dependent => :delete
-  has_one :rules, :dependent => :delete
-  has_many :photos, :dependent => :delete_all, :inverse_of => :place
+  has_one :detail, :dependent => :destroy
+  has_one :address, :dependent => :destroy
+  has_one :rules, :dependent => :destroy
+  has_many :photos, :dependent => :destroy
   has_many :deals, :dependent => :nullify
-  has_many :reviews, :dependent => :delete_all
+  has_many :reviews, :dependent => :destroy
   
   has_and_belongs_to_many :tags
 
@@ -122,7 +122,6 @@ class Place < ActiveRecord::Base
     else
       active = false
     end
-
     self.verified = active
   end
 

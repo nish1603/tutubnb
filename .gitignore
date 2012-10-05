@@ -15,6 +15,7 @@
 /tmp
 
 
-/public/system
-/config/database.yml
-/db/schema.rb
+public/system
+config/database.yml
+db/schema.rb
+coverage

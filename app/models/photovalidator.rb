@@ -10,7 +10,7 @@ class PhotoValidator < ActiveModel::Validator
     end
 
     if(photos_count < 2)
-      record.errors[:base] << "Photos should be atleast 2"
+      place.errors[:base] << "Photos should be atleast 2"
     end
   end
 end

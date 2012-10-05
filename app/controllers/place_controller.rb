@@ -48,6 +48,7 @@ class PlaceController < ApplicationController
       if(@place.update_attributes(params[:place]))
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
+        #Twitter::Client.new.update('hey')
       else
         format.html { render action: "new" }
       end
@@ -87,7 +88,7 @@ class PlaceController < ApplicationController
   def activate
     @place = Place.find_by_id(params[:id])
 
-    activate_or_deactivate_place(params[:flag])
+    @place.activate_or_deactivate_place(params[:flag])
 
     respond_to do |format|
       if(@place.save)
@@ -102,7 +103,7 @@ class PlaceController < ApplicationController
   def operation
     @place = Place.find_by_id(params[:id])
 
-    result = hide_or_show_place(params[:flag])
+    result = @place.hide_or_show_place(params[:flag])
   
     respond_to do |format|
       if(@place.save)

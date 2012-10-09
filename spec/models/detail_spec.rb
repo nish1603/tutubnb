@@ -98,23 +98,25 @@ describe Detail do
 
     context "with Place" do
       it "should respond to place" do
-        @address.should respond_to(:place)
+        @detail.should respond_to(:place)
       end
 
       it "should have a place" do
-        @address.place = @place
-        @deal.should have(0).errors_on(:place)
+        @detail.place = @place
+        @detail.should have(0).errors_on(:place)
       end
 
       it "should return a user" do
-        @address.place.should eq(@place)
+        @detail.place.should eq(@place)
       end
     end
   end
 
   describe "Functions" do
     context "unit_string" do
-      @address.unit_string.should == "sq. feet"
+      it "should return unit string" do
+        @detail.unit_string.should == "sq. feet"
+      end
     end
   end
 end

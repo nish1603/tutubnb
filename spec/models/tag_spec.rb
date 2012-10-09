@@ -75,5 +75,6 @@ describe Tag do
       it "should return a user" do
         @tag.place.should eq(@place)
       end
+    end
   end
 end

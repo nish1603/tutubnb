@@ -2,7 +2,10 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :first_name, :gender, :last_name, :password, :password_confirmation, :describe, :work, :live, :birth_date, :school, :avatar, :activate
 
-  validates :first_name, :last_name, :gender, :email, :presence => true
+  validates :first_name, :presence => true
+  validates :last_name, :presence => true, :if => :last_name
+  validates :gender, :presence => true, :if => :gender
+  validates :email, :presence => true, :if => :email
   validates :email, format: { :with => /^([a-zA-Z]([a-zA-Z0-9+.\-][.]?)*@[a-zA-Z0-9]+.[a-zA-Z]{2,4}.[a-zA-Z]{0,3})$/, :message => "Invalid Email Address" }, :unless => proc { |user| user.email.blank? }
   validates :email, :uniqueness => true, :unless => proc { |user| user.errors[:email].any? }
   validates :password, :presence => true, :if => :password

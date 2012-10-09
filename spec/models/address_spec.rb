@@ -7,8 +7,19 @@ module AddressSpecHelper
       :address_line2 => "uttam nagar",
       :city => "new delhi",
       :state => "delhi",
-      :pincode => "110059",
-      :country => "India",
+      :pincode => 110059,
+      :country => "India"
+    }
+  end
+
+  def invalid_address_attributes
+    {
+      :address_line1 => "l",
+      :address_line2 => "l",
+      :city => "l",
+      :state => "delhi",
+      :pincode => 1,
+      :country => "afganistan"
     }
   end
 
@@ -103,6 +114,7 @@ describe Address do
 
     before(:each) do
       @place = Place.create(valid_place_attributes)
+      @address.place = @place
     end
 
     context "with Place" do
@@ -112,11 +124,43 @@ describe Address do
 
       it "should have a place" do
         @address.place = @place
-        @deal.should have(0).errors_on(:place)
+        @address.should have(0).errors_on(:place)
       end
 
-      it "should return a user" do
+      it "should return a place" do
         @address.place.should eq(@place)
+      end
+    end
+  end
+
+  describe "Gmap" do
+    context "Function" do
+      it "gmaps4rails_address" do
+        address = [@address.address_line1, @address.address_line2, @address.city, @address.state, @address.pincode, @address.country].join(", ")
+        @address.gmaps4rails_address.should eq(address)
+      end
+    end
+
+    context "latitude and longitude" do
+      before(:each) do
+        @address.attributes = valid_address_attributes
+        @address.save
+      end
+
+      it "should fill latitude and longitude" do
+        p @address
+        @address.latitude.nil?.should be_false
+        @address.longitude.nil?.should be_false
+      end
+    end
+
+    context "Validations" do
+      before(:each) do
+        @address = Address.create(invalid_address_attributes)
+      end
+
+      it "should be invalid" do
+        @address.should have(1).errors
       end
     end
   end

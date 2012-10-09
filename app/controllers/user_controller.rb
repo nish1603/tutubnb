@@ -57,7 +57,7 @@ class UserController < ApplicationController
   end
 
   def edit_func
-     @user = User.find_by_id(params[:id])
+    @user = User.find_by_id(params[:id])
     
     respond_to do |format|
       format.html
@@ -122,6 +122,17 @@ class UserController < ApplicationController
 
   def update_password
     update_func("change_password", "Password")
+  end
+
+  def register_with_site
+    edit_func
+  end
+
+  def update_information
+    update_func("register_with_site", "Email and Password")
+    @user.activation_link = BCrypt::Password.create("activation_link")
+    link = authenticate_url + "?email=#{@user.email}&activation_link=#{@user.activation_link}"
+    Notifier.verification(link, @user.email, @user.first_name).deliver
   end
 
   def places

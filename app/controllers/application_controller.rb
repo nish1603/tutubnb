@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
   def user_verified
     user = User.find_by_email(params[:email])
     if(user.verified == false)
-      redirect_to profile_login_path
+      redirect_to login_profile_index_path
       flash[:alert] = 'You have not verified your user account.'
     end
   end
@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_session(user_id)
-    user = User.find(user_id)
+    user = User.find_by_id(user_id)
     session[:user_id] = user.id
     session[:user_name] = user.first_name
     session[:admin] = user.admin

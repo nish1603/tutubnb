@@ -60,6 +60,8 @@ Tutubnb2::Application.routes.draw do
       get :change_password, :as => :change_password
       get :places, :as => :places
       put :update_password, :as => :update_password
+      get :register_with_site, :as => :register_with_site
+      put :update_information, :as => :update_information
     end
   end
 

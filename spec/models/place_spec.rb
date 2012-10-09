@@ -181,25 +181,25 @@ describe Place do
     end
   end
 
-  # describe "Relationship with Deal" do
+  describe "Relationship with Deal" do
 
-  #   before(:each) do
-  #     @deal1 = Deal.create(valid_deal_attributes)
-  #     @deal2 = Deal.create(valid_deal_attributes)
-  #     @place.deals = [@deal1, @deal2]
-  #   end
+    before(:each) do
+      @deal1 = Deal.create(valid_deal_attributes)
+      @deal2 = Deal.create(valid_deal_attributes)
+      @place.deals = [@deal1, @deal2]
+    end
 
-  #   it "should have many deal" do
-  #     @place.should respond_to(:deals)
-  #   end
+    it "should have many deal" do
+      @place.should respond_to(:deals)
+    end
 
-  #   it "should return deals" do
-  #     @place.deals.should eq([@deal1, @deal2])
-  #   end
+    it "should return deals" do
+      @place.deals.should eq([@deal1, @deal2])
+    end
 
-  #   it "should destroy reviews when destoyed" do
-  #     @place.destroy
-  #     @place.deals.should have(0).items
-  #   end
-  # end
+    it "should destroy deals when destoyed" do
+      @place.destroy
+      @place.deals.should have(0).items
+    end
+  end
 end

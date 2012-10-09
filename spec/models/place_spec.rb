@@ -193,7 +193,7 @@ describe Place do
   #     @place.should respond_to(:deals)
   #   end
 
-  #   it "should return reviews" do
+  #   it "should return deals" do
   #     @place.deals.should eq([@deal1, @deal2])
   #   end
 

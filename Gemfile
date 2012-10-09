@@ -38,6 +38,7 @@ gem "omniauth-facebook"
 gem 'omniauth-twitter'
 gem 'tweet-button'
 gem 'omniauth-linkedin'
+gem 'twitter'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

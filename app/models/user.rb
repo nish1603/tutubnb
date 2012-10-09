@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
     if(self.new_record?)
       self.email = auth['info']['email']
       self.first_name, self.last_name = auth['info']['name'].split(' ')
-      self.gender = auth['info']['gender']
+      self.last_name = auth['info']['last_name'] if(self.last_name.nil?)
     end
     authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'])
   end

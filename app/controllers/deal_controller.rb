@@ -13,7 +13,7 @@ class DealController < ApplicationController
     @no_guests = (1..@deal.place.detail.accomodation).to_a
     @deal.price = 0.0
 
-    @divisions = @deal.calculate_price() if @deal.valid?
+    @deal.calculate_price() if @deal.valid?
 
     respond_to do |format|
       if(params[:commit]  == "Book Place" && @deal.save)

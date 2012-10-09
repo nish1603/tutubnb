@@ -15,6 +15,7 @@ class Place < ActiveRecord::Base
   PLACE_TYPE = ['Activated', 'Deactivated']
 
   before_save :set_prices
+  after_create :post_on_twitter
   before_destroy :check_current_deals
   
   has_one :detail, :dependent => :destroy
@@ -136,5 +137,11 @@ class Place < ActiveRecord::Base
     
     self.hidden = active
     return result
+  end
+
+  def post_on_twitter
+    client = Twitter::Client.new
+    text = "Have a look on a new place #{self.title}"
+    client.update(self.description)
   end
 end

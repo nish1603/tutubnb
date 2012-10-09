@@ -62,7 +62,7 @@ class Deal < ActiveRecord::Base
 
     def valid_end_date
       if(end_date.nil? || start_date.nil? || end_date < start_date)
-        errors.add(:end_date, "should be more than or equal to Start date.")
+        errors.add(:end_date, "should be more than or equal to start date")
       end
     end
 

@@ -50,6 +50,5 @@
 </div>
 
 <%= tweet_button(:via => "tutubnb", :text => @place.title, :url => place_url(@place.id), :count => "none" ) %>
-
-<%= link_to "tweet me", "http://twitter.com/home?status=#{@place.title} #{place_url(@place.id)}" %>
+<%= link_to "tweet me", "http://localhost:3000/auth/twitter", :target => "_blank"  %>
 

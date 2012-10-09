@@ -14,3 +14,5 @@ class PhotoValidator < ActiveModel::Validator
     end
   end
 end
+
+#FIXME_AB: should be moved to lib or app/validators directory.

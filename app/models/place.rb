@@ -12,6 +12,8 @@ class Place < ActiveRecord::Base
 
   PROPERTY_TYPE = {'Appartment' => 1, 'House' => 2, 'Castle' => 3, 'Villa' => 4, 'Cabin' => 5, 'Bed & Breakfast' => 6, 'Boat' => 7, 'Plane' => 8, 'Light House' => 9, 'Tree House' => 10, 'Earth House' => 11, 'Other' => 12}
   ROOM_TYPE = {'Private room' => 1, 'Shared room' => 2, 'Entire Home/apt' => 3}
+
+  #FIXME_AB: follow instructions from deal.rb
   PLACE_TYPE = ['Activated', 'Deactivated']
 
   before_save :set_prices
@@ -40,6 +42,7 @@ class Place < ActiveRecord::Base
   scope :visible, lambda{ |flag| where(:verified => flag) }
   scope :hidden, lambda{ |flag| where(:hidden => flag) }
 
+  #FIXME_AB: view helper
   def tags_string
     tags.map(&:tag).join(', ')
   end
@@ -66,6 +69,7 @@ class Place < ActiveRecord::Base
   end
 
   def check_current_deals
+    #FIXME_AB: deals.completed.empty?
     if(Deal.completed_by_place(self).empty?)
       return true
     else
@@ -73,6 +77,7 @@ class Place < ActiveRecord::Base
     end
   end
 
+  #FIXME_AB:  this is  a controller method
   def check_commit(commit_type)
     if(commit_type == "Save Place")
       validate = false
@@ -92,6 +97,7 @@ class Place < ActiveRecord::Base
     ROOM_TYPE.key(room_type) 
   end
 
+  #FIXME_AB: this should be done in two parts. 1) find conflicting deals 2) loop them over and call reject!
   def reject_deals(start_date, end_date)
     place_deals = Deal.by_place(self).requested(true)
     dates = (start_date..end_date).to_a
@@ -117,6 +123,7 @@ class Place < ActiveRecord::Base
     return true
   end
 
+  #FIXME_AB: activate! and deactivate!
   def activate_or_deactivate_place(activate_type)
     if(activate_type == 'active')
       active = true

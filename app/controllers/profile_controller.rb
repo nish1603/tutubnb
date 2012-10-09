@@ -1,26 +1,28 @@
 class ProfileController < ApplicationController
-  
+
   skip_before_filter :authorize
   before_filter :user_exist_by_email, :user_verified, :user_activated, :only => [:validate_user]
   before_filter :user_logged_in, :only => [:login, :signup, :authenticate, :forget_password, :change_password]
 
+#FIXME_AB: should be done in sessions controller
   def login
   end
 
   def validate_user
     user = User.find_by_email(params[:email])
-    
+
     respond_to do |format|
       if(user.authenticate(params[:password]))
         set_session(user.id)
         format.html { redirect_to display_show_path }
-      else 
+      else
         format.html { redirect_to login_profile_index_path }
         flash[:error] = 'E-mail Address/Password doesn\'t match.'
-      end 
+      end
     end
   end
 
+#FIXME_AB: should be done in sessions controller
   def logout
     clear_session()
 
@@ -29,14 +31,16 @@ class ProfileController < ApplicationController
     end
   end
 
-  def signup
-  	@user = User.new
+#FIXME_AB: should be a part of users controller users/new
+  def signup 
+    @user = User.new
   end
 
+#FIXME_AB: users/create
   def save
-  	@user = User.new(params[:user])
+    @user = User.new(params[:user])
     @user.activation_link = BCrypt::Password.create("activation_link")
-    
+
     respond_to do |format|
       if @user.save
         link = authenticate_url + "?email=#{@user.email}&activation_link=#{@user.activation_link}"
@@ -45,14 +49,15 @@ class ProfileController < ApplicationController
         format.html { redirect_to display_show_path }
       else
         format.html { render action: "signup" }
-      end	
+      end
     end
   end
 
+#FIXME_AB: users/activate
   def authenticate
     params = request.parameters
     user = User.find_by_email(params[:email])
-    
+
 
     respond_to do |format|
       if(user and user.activation_link == params[:activation_link])
@@ -67,12 +72,13 @@ class ProfileController < ApplicationController
     end
   end
 
+#FIXME_AB: users/forgotten_password
   def forget_password
   end
 
   def send_activation_link
     user = User.find_by_email(params[:email])
-    
+
     if(user)
       user.activation_link = BCrypt::Password.create("activation_link")
       link = change_password_url + "?email=#{user.email}&activation_link=#{user.activation_link}"
@@ -95,7 +101,7 @@ class ProfileController < ApplicationController
   def change_password
     params = request.parameters
     @user = User.find_by_email(params[:email])
-    
+
     respond_to do |format|
       if(@user and @user.activation_link == params[:activation_link] and @user.verified == false)
         format.html
@@ -108,7 +114,7 @@ class ProfileController < ApplicationController
 
   def update_password
     @user = User.find_by_id(params[:id])
-      
+
     respond_to do |format|
       if(@user and @user.update_attributes(params[:user]))
         @user.verified = true

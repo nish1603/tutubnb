@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+  #FIXME_AB: admin related functionality should go in admin namespace
   before_filter :validate_account, :except => [:wallet, :activate]
 
   def edit
@@ -18,7 +19,13 @@ class UserController < ApplicationController
   end
 
   def visits
+<<<<<<< HEAD
     @user = User.find_by_id(params[:id])
+=======
+    #FIXME_AB: you nee user in almost all actions. Use before_filter
+    #FIXME_AB: What if user not found with the id
+    @user = User.find(params[:id])
+>>>>>>> 49ff1db476813a05cb60b15f02776df0b0786359
     @visits = Deal.find_visits_of_user(@user)
 
     respond_to do |format|
@@ -51,14 +58,14 @@ class UserController < ApplicationController
     respond_to do |format|
       format.html
     end
-  end  
+  end
 
   def show
   end
 
   def edit_func
     @user = User.find_by_id(params[:id])
-    
+
     respond_to do |format|
       format.html
     end
@@ -66,7 +73,7 @@ class UserController < ApplicationController
 
   def update_func(render_option, message)
     @user = User.find_by_id(params[:id])
-    
+
     respond_to do |format|
       if(@user.update_attributes(params[:user]))
         flash[:notice] = "#{message} updated."
@@ -80,20 +87,20 @@ class UserController < ApplicationController
 
   def wallet
     @user = User.find(params[:id])
-   
+
     @user.update_wallet(params[:commit], params[:amount].to_f)
-    
+
     respond_to do |format|
       if @user.save
         format.html { redirect_to admin_users_path }
       end
-    end 
+    end
   end
 
   def activate
     @user = User.find(params[:id])
     @user.activate_or_deactivate_user(params[:flag])
-    
+
     respond_to do |format|
       if(@user.save!)
         flash[:notice] = "Account #{@user.first_name} is now #{params[:flag]}"
@@ -106,9 +113,9 @@ class UserController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    
+
     if(@user.destroy)
-      clear_session() unless(session[:admin])      
+      clear_session() unless(session[:admin])
       flash[:error] = "The account ha been successfully deleted."
     else
       flash[:error] = "You can't delete the account, when it have pending requests."

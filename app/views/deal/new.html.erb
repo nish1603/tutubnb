@@ -28,9 +28,9 @@
     </table>
   <% end %>
 
-  <% if(@deal.division) %>
-    <% @deal.division.each do |msg| %>
-      <%= msg %><br />
-    <% end %>
+  <% divisions = create_divisions(@deal) %>
+
+  <% divisions.each do |msg| %>
+    <%= msg %><br />
   <% end %>
 </div>

@@ -8,11 +8,11 @@ class PlaceController < ApplicationController
  
   def new
   	@place = Place.new
-    @place.detail = Detail.new
-    @place.address = Address.new
-    @place.rules = Rules.new
+    @place.build_detail 
+    @place.build_address
+    @place.build_rules
 
-    2.times { @place.photos << Photo.new }
+    2.times { @place.photos.build }
     respond_to do |format|
       format.html
     end
@@ -25,8 +25,8 @@ class PlaceController < ApplicationController
     validate, notice = @place.check_commit(params[:commit])
     
   	respond_to do |format|
-      if(@place.save)  
-        format.html { redirect_to display_show_path }
+      if(@place.save(:validate => validate))  
+        format.html { redirect_to root_url }
         flash[:notice] = notice
       else
         format.html { render action: "new" }

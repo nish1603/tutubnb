@@ -18,7 +18,7 @@ class UserController < ApplicationController
   end
 
   def visits
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
     @visits = Deal.find_visits_of_user(@user)
 
     respond_to do |format|
@@ -27,7 +27,7 @@ class UserController < ApplicationController
   end
 
   def trips
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
     @trips = Deal.find_trips_of_user(@user)
 
     respond_to do |format|
@@ -36,7 +36,7 @@ class UserController < ApplicationController
   end
 
   def requests
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
     @requests = Deal.find_requests_of_user(@user)
 
     respond_to do |format|
@@ -45,7 +45,7 @@ class UserController < ApplicationController
   end
 
   def requested_trips
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
     @requested_trips = Deal.find_requested_trips_of_user(@user)
 
     respond_to do |format|

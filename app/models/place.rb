@@ -33,8 +33,7 @@ class Place < ActiveRecord::Base
   accepts_nested_attributes_for :detail
   accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => lambda { |photo| photo[:avatar].blank? }
   accepts_nested_attributes_for :rules
-
-
+  
   scope :by_location, lambda{ |type, location| joins(:address).where("addresses.#{type} LIKE ?", "%#{location}%") }
   scope :by_property, lambda{ |type, type_value| where(type => type_value) }
   scope :visible, lambda{ |flag| where(:verified => flag) }

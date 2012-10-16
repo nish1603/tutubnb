@@ -36,8 +36,8 @@ class ApplicationController < ActionController::Base
   end
 
   def validate_account
-    if(session[:user_id] != params[:id].to_i)
-      redirect_to display_show_path
+    if(session[:user_id].to_i != params[:id].to_i)
+      redirect_to root_url
     end
   end
 

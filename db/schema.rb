@@ -44,13 +44,9 @@ ActiveRecord::Schema.define(:version => 20120927052717) do
     t.integer  "guests"
     t.integer  "user_id"
     t.integer  "place_id"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.boolean  "cancel",     :default => false
-    t.boolean  "accept"
-    t.boolean  "request",    :default => true
-    t.boolean  "complete",   :default => false
-    t.boolean  "review",     :default => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+    t.integer  "state",      :default => 0
   end
 
   create_table "details", :force => true do |t|

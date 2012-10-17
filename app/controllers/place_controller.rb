@@ -22,7 +22,7 @@ class PlaceController < ApplicationController
   	@place = Place.new(params[:place])
     @place.user_id = session[:user_id]
 
-    validate, notice = @place.check_commit(params[:commit])
+    validate, notice = check_commit(@place)
     
   	respond_to do |format|
       if(@place.save(:validate => validate))  
@@ -88,10 +88,8 @@ class PlaceController < ApplicationController
   def activate
     @place = Place.find_by_id(params[:id])
 
-    @place.activate_or_deactivate_place(params[:flag])
-
     respond_to do |format|
-      if(@place.save)
+      if(perform_activate)
         flash[:notice] = "#{@place.title} is now #{params[:flag]}"
       else
         flash[:error] = "#{@place.title} has not been verified"
@@ -103,8 +101,6 @@ class PlaceController < ApplicationController
   def operation
     @place = Place.find_by_id(params[:id])
 
-    result = @place.hide_or_show_place(params[:flag])
-  
     respond_to do |format|
       if(params[:flag] == "hide" && @place.hide!)
         flash[:notice] = "#{@place.title} is now hidden"
@@ -116,4 +112,24 @@ class PlaceController < ApplicationController
       format.html { redirect_to request.referrer }
     end
   end
+
+  def perform_activate
+    if(params[:flag] == "active")
+      @place.activate!
+    elsif(params[:flag] == "deactive")
+      @place.deactive!
+    end
+  end
+
+  def check_commit(place)
+    if(commit_type == "Save Place")
+      validate = false
+      place.hidden = true
+      notice = "Your place has been saved. But it is hidden from the outside world."
+    else
+      validate = true
+      notice = "Your place has been created."
+    end
+  end
+
 end

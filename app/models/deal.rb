@@ -5,14 +5,12 @@ class Deal < ActiveRecord::Base
 
   attr_accessor :days, :weeks, :months, :years, :weekdays, :weekends, :division
   
-
   validates :price, :guests, :start_date, :end_date, :presence => true
   validates :price, :numericality => { :greater_than_or_equal_to => 0 }, :unless => proc { |deal| deal.price.blank? }
   validates :guests, :numericality => { :greater_than_or_equal_to => 1, :only_integer => true }, :unless => proc { |deal| deal.guests.blank? }
   validates :place_id, :presence => { :message => "can't be blank" }
   validates :user_id, :presence => { :message => "can't be blank" }
   
-  #FIXME_AB: all the following methods should be names as "validate_end_date" etc
   validate :validate_start_date, :unless => proc { |deal| deal.start_date.blank? }
   validate :validate_end_date, :unless => proc { |deal| deal.end_date.blank? }
   validate :less_than_max_guests, :unless => proc { |deal| deal.guests.blank? }
@@ -21,9 +19,8 @@ class Deal < ActiveRecord::Base
   before_create :user_have_amount
   before_create :user_have_wallet
   before_create :place_already_book
-  
-  #FIXME_AB: This type constant should be a hash like TYPE => {:accpeted => 0, :rejected => 1}
-  TYPE = {'Accepted' => 0, 'Rejected' => 1, 'Requests' => 2, 'To Complete' => 3, 'Completed' => 4]
+
+  TYPE = {'Accepted' => 1, 'Rejected' => 2, 'Requests' => 0, 'To Complete' => 3, 'Completed' => 4, 'Reviewed' => 5}
 
   belongs_to :user
   belongs_to :place
@@ -31,16 +28,13 @@ class Deal < ActiveRecord::Base
   scope :state, lambda { |state_value| where(state: state_value) }
   
   #FIXME_AB: deals.conditions etc.. user_id = user.id . Check if join query is fired 
-  scope :requests, lambda { |user| user.deals.requested(false).canceled(false) }
+  # scope :requests, lambda { |user| user.deals.requested(false).canceled(false) }
 
   scope :find_visits_of_user, lambda { |user| user.deals.accepted(true).canceled(false) }
   scope :find_requests_of_user, lambda { |user| user.deals.requested(true).canceled(false) }
   scope :find_trips_of_user, lambda { |user| user.trips.requested(false).canceled(false) }
   scope :find_requested_trips_of_user, lambda { |user| user.trips.requested(true).canceled(false) }
-  scope :to_complete, lambda { |flag| where(:complete => flag, :request => false) }
-  scope :completed, lambda { |flag| where(:complete => flag) }
-  scope :by_place, lambda { |place| where(:place_id => place.id)}
-
+  
   #FIXME_AB: I doubt if we need following as scope
   scope :completed_by_place, lambda { |place| Deal.where(:place_id => place.id).completed(false).requested(true) }
   scope :unreviewed_by_user_on_place, lambda { |user, place| Deal.where(:place_id => place.id, :user_id => user.id).completed(true).reviewed(false) } 
@@ -49,11 +43,16 @@ class Deal < ActiveRecord::Base
       place.user
     end
 
-    def user_have_amount
-      #FIXME_AB: why doing amoung*1.1 every time. Should have a method called brockerage and use this
-      #FIXME_AB: avoid self.user
+    def add_brockerage_to_price(price)
+      price * 1.1
+    end
 
-      if(user.wallet < (price*1.1))
+    def subtract_brockerage_from_price(price)
+      price * 0.9
+    end
+
+    def user_have_amount
+      if(user.wallet < (add_brockerage_to_price(price)))
         errors.add(:base, "Sorry, You don't have enough amount to pay in your wallet.")
         return false
       end
@@ -62,7 +61,7 @@ class Deal < ActiveRecord::Base
     def user_have_wallet
       amount = self.user.trips.requested(true).sum(:price)
       amount = amount + self.price
-      if(self.user.wallet < (amount*1.1))
+      if(self.user.wallet < (add_brockerage_to_price(amount)))
         errors.add(:base, "Sorry, You have requested places upto the limit of your wallet.")
         return false
       end
@@ -71,12 +70,14 @@ class Deal < ActiveRecord::Base
     def valid_start_date
       if(start_date.nil? || start_date < Date.current)
         errors.add(:start_date, "should be more than or equal to current date")
+        return false
       end
     end
 
     def valid_end_date
-      if(end_date.nil? || start_date.nil? || end_date < start_date)
+      if(end_date.nil? || end_date < start_date)
         errors.add(:end_date, "should be more than or equal to start date")
+        return false
       end
     end
 
@@ -84,6 +85,7 @@ class Deal < ActiveRecord::Base
       max_guests = self.place.detail.accomodation
       if(max_guests < self.guests.to_i)
         errors.add(:guests, "can't be more than #{max_guests}")
+        return false
       end
     end
     

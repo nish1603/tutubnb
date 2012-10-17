@@ -66,26 +66,14 @@ class Place < ActiveRecord::Base
   end
 
   def check_current_deals
-    #FIXME_AB: deals.completed.empty?
-    if(Deal.completed_by_place(self).empty?)
+    if(deals.completed.empty?)
       return true
     else
       return false
     end
   end
 
-  #FIXME_AB:  this is  a controller method
-  def check_commit(commit_type)
-    if(commit_type == "Save Place")
-      validate = false
-      self.hidden = true
-      notice = "Your place has been saved. But it is hidden from the outside world."
-    else
-      validate = true
-      notice = "Your place has been created."
-    end
-  end
-
+  
   def hide!()
     self.hidden = true
     self.save
@@ -103,8 +91,6 @@ class Place < ActiveRecord::Base
   def room_type_string()
     ROOM_TYPE.key(room_type) 
   end
-
-  #FIXME_AB: this should be done in two parts. 1) find conflicting deals 2) loop them over and call reject!
   
   def find_conflicting_deals
     conflicting_deals = []
@@ -138,28 +124,16 @@ class Place < ActiveRecord::Base
     end
   end
 
-  #FIXME_AB: activate! and deactivate!
-  def activate_or_deactivate_place(activate_type)
-    if(activate_type == 'active')
-      active = true
-    else
-      active = false
-    end
-    self.verified = active
+  def activate!
+    self.verified = true
+    self.save
   end
 
-  def hide_or_show_place(operation_type)
-    if(operation_type == 'hide')
-      active = true
-      result = "hidden"
-    else
-      active = false
-      result = "visible"
-    end
-    
-    self.hidden = active
-    return result
+  def deactivate!
+    self.verified = false
+    self.save
   end
+
 
   def post_on_twitter
     client = Twitter::Client.new

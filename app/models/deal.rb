@@ -13,8 +13,8 @@ class Deal < ActiveRecord::Base
   validates :user_id, :presence => { :message => "can't be blank" }
   
   #FIXME_AB: all the following methods should be names as "validate_end_date" etc
-  validate :valid_start_date, :unless => proc { |deal| deal.start_date.blank? }
-  validate :valid_end_date, :unless => proc { |deal| deal.end_date.blank? }
+  validate :validate_start_date, :unless => proc { |deal| deal.start_date.blank? }
+  validate :validate_end_date, :unless => proc { |deal| deal.end_date.blank? }
   validate :less_than_max_guests, :unless => proc { |deal| deal.guests.blank? }
 
   #FIXME_AB: These should be validation.
@@ -23,18 +23,13 @@ class Deal < ActiveRecord::Base
   before_create :place_already_book
   
   #FIXME_AB: This type constant should be a hash like TYPE => {:accpeted => 0, :rejected => 1}
-  TYPE = ['Accepted', 'Rejected', 'Requests', 'To Complete', 'Completed']
+  TYPE = {'Accepted' => 0, 'Rejected' => 1, 'Requests' => 2, 'To Complete' => 3, 'Completed' => 4]
 
   belongs_to :user
   belongs_to :place
 
-  #FIXME_AB:  instead of having so much cols like cancel, review you should have only one col. called state, that hold the integer value of the state(TYPE)
-  scope :canceled, lambda { |flag| where(cancel: flag) }
-  scope :requested, lambda { |flag| where(request: flag) }
-  scope :accepted, lambda { |flag| where(accept: flag) }
-  scope :reviewed, lambda { |flag| where(review: flag) }
-  #FIXME_AB: above scops would be updated based on the state
-
+  scope :state, lambda { |state_value| where(state: state_value) }
+  
   #FIXME_AB: deals.conditions etc.. user_id = user.id . Check if join query is fired 
   scope :requests, lambda { |user| user.deals.requested(false).canceled(false) }
 
@@ -50,11 +45,15 @@ class Deal < ActiveRecord::Base
   scope :completed_by_place, lambda { |place| Deal.where(:place_id => place.id).completed(false).requested(true) }
   scope :unreviewed_by_user_on_place, lambda { |user, place| Deal.where(:place_id => place.id, :user_id => user.id).completed(true).reviewed(false) } 
 
+    def owner
+      place.user
+    end
+
     def user_have_amount
       #FIXME_AB: why doing amoung*1.1 every time. Should have a method called brockerage and use this
       #FIXME_AB: avoid self.user
 
-      if(self.user.wallet < (price*1.1))
+      if(user.wallet < (price*1.1))
         errors.add(:base, "Sorry, You don't have enough amount to pay in your wallet.")
         return false
       end
@@ -87,43 +86,25 @@ class Deal < ActiveRecord::Base
         errors.add(:guests, "can't be more than #{max_guests}")
       end
     end
-
     
     def calculate_price()
       self.price = 0.0
-      #FIXME_AB: method name should refelect that it is setting attributes value
       self.months, self.weeks, self.days = start_date.calculate_days_weeks_months(end_date)
-      self.weekdays, self.weekends = start_date.calculate_weekdays_weekends(self.days)
+      self.weekdays, self.weekends = start_date.calculate_weekdays_weekends(days)
 
-      #FIXME_AB: weekly should be weekly_price same with month and others
-      self.price += self.weeks * self.place.weekly
-      self.price += self.months * self.place.monthly
-      self.price += (self.weekends * self.place.weekend)
-      self.price += (self.weekdays * self.place.daily)
-      #FIXME_AB: add_guest => additional_guests
+      self.price += weeks * place.weekly_price
+      self.price += months * place.monthly_price
+      self.price += weekends * place.weekend_price
+      self.price += weekdays * place.daily_price
       self.price += calculate_price_for_add_guests()
     end
     
     def calculate_price_for_add_guests()
-      #FIXME_AB: use && in conditions not and
-      if(self.place.add_guests and self.guests >= self.place.add_guests)
-        return (self.guests - self.place.add_guests) * self.place.add_price
+      if(place.add_guests && guests >= place.add_guests)
+        return (guests - place.add_guests) * place.add_price
       end
       return 0
     end
-
-    #FIXME_AB: This method is a perfect candidate for view helper
-    # def create_divisions()
-    #   self.division = []
-    #   self.division << "No. of Months : #{self.months}, Price : #{self.months}x#{self.place.monthly} \n" if(self.months > 0)
-    #   self.division << "No. of Weeks : #{self.weeks}, Price : #{self.weeks}x#{self.place.weekly} \n" if(self.weeks > 0)
-    #   self.division << "No. of Weekdays : #{self.weekdays}, Price : #{self.weekdays}x#{self.place.daily} \n" if(self.weekdays > 0)
-    #   self.division << "No. of Weekends : #{self.weekends}, Price : #{self.weekends}x#{self.place.weekend} \n" if(self.weekends > 0)
-    #   self.division << "Additional guests : #{self.place.add_guests}, Price : #{self.place.add_guests}x#{self.place.add_price}" if(self.place.add_guests and self.guests >= self.place.add_guests)
-    #   self.division << "Total Amount : #{self.price.round(2)} + 10% Service Charge : #{(0.1 * self.price).round(2)}"
-    #   return self.division
-    # end
-
 
     #FIXME_AB: Create two method accept! or reject!
     def reply_to_deal(perform)
@@ -142,9 +123,8 @@ class Deal < ActiveRecord::Base
 
     #FIXME_AB: naming issues. mark_complete!
     def completion_of_deal()
-      self.complete = true
-      self.place.user.transfer_from_admin(price)
-      self.place.user.save
+      complete = true
+      owner.transfer_from_admin!(price)
     end
 
     

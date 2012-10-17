@@ -106,10 +106,12 @@ class PlaceController < ApplicationController
     result = @place.hide_or_show_place(params[:flag])
   
     respond_to do |format|
-      if(@place.save)
-        flash[:notice] = "#{@place.title} is now #{result}"
+      if(params[:flag] == "hide" && @place.hide!)
+        flash[:notice] = "#{@place.title} is now hidden"
+      elsif(params[:flag] == "show" && @place.show!)
+        flash[:notice] = "#{@place.title} is now visible"
       else
-        flash[:error] = "#{@place.title} is not #{result}."
+        flash[:error] = "#{@place.title} is not visible."
       end
       format.html { redirect_to request.referrer }
     end

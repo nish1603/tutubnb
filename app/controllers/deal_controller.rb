@@ -48,10 +48,8 @@ class DealController < ApplicationController
     notify_visitor = "#{(@deal.price*0.9).round(2)} has been added to your wallet for the deal at #{@deal.place.title} from #{@deal.start_date} to #{@deal.end_date}."
     link_visitor = ''
 
-    @deal.completion_of_deal()
-
     respond_to do |format|
-      if(@deal.save)
+      if(@deal.mark_completed!)
         Notifier.notification(notify_visitor, link_visitor, @deal.place.user.email, @deal.place.user.first_name, "Deal #{params[:perform].capitalize}ed.").deliver
         format.html { redirect_to admin_deals_path }
         flash[:notice] = "#{@deal.price * 0.9} has been added to #{@owner.first_name} to your wallet."

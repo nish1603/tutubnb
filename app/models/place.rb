@@ -1,20 +1,19 @@
-require 'photovalidator'
+require "photovalidator"
 
 class Place < ActiveRecord::Base
-  attr_accessible :description, :property_type, :room_type, :title, :add_guests, :add_price, :daily, :monthly, :weekend, :weekly, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
+  attr_accessible :description, :property_type, :room_type, :title, :additional_guests, :additional_price, :daily_price, :monthly_price, :weekend_price, :weekly_price, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
   
-  validates :description, :property_type, :title, :daily, :room_type, presence: true
-  validates :add_guests, :add_price, :monthly, :weekend, :weekly, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
+  validates :description, :property_type, :title, :daily_price, :room_type, presence: true
+  validates :additional_guests, :additional_price, :monthly_price, :weekend_price, :weekly_price, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
   validates :title, :uniqueness => { :case_sensitive => false, :scope => [:user_id] }, :unless => proc { |place| place.title.blank? }
-  validates :daily, :numericality => { :greater_than_or_equal_to => 0}, :unless => proc{ |place| place.daily.blank? }
+  validates :daily_price, :numericality => { :greater_than_or_equal_to => 0}, :unless => proc{ |place| place.daily.blank? }
   validates_with PhotoValidator
   validate :check_tags
 
   PROPERTY_TYPE = {'Appartment' => 1, 'House' => 2, 'Castle' => 3, 'Villa' => 4, 'Cabin' => 5, 'Bed & Breakfast' => 6, 'Boat' => 7, 'Plane' => 8, 'Light House' => 9, 'Tree House' => 10, 'Earth House' => 11, 'Other' => 12}
   ROOM_TYPE = {'Private room' => 1, 'Shared room' => 2, 'Entire Home/apt' => 3}
 
-  #FIXME_AB: follow instructions from deal.rb
-  PLACE_TYPE = ['Activated', 'Deactivated']
+  PLACE_TYPE = {'Activated' => 1, 'Deactivated' => 0}
 
   before_save :set_prices
   after_create :post_on_twitter
@@ -38,10 +37,9 @@ class Place < ActiveRecord::Base
   
   scope :by_location, lambda{ |type, location| joins(:address).where("addresses.#{type} LIKE ?", "%#{location}%") }
   scope :by_property, lambda{ |type, type_value| where(type => type_value) }
-  scope :visible, lambda{ |flag| where(:verified => flag) }
+  scope :state, lambda{ |flag| where(:verified => flag) }
   scope :hidden, lambda{ |flag| where(:hidden => flag) }
 
-  #FIXME_AB: view helper
   def tags_string
     tags.map(&:tag).join(', ')
   end
@@ -88,6 +86,16 @@ class Place < ActiveRecord::Base
     end
   end
 
+  def hide!()
+    self.hidden = true
+    self.save
+  end
+
+  def show!()
+    self.hidden = false
+    self.save
+  end
+
   def property_type_string()
     PROPERTY_TYPE.key(property_type)
   end
@@ -97,29 +105,37 @@ class Place < ActiveRecord::Base
   end
 
   #FIXME_AB: this should be done in two parts. 1) find conflicting deals 2) loop them over and call reject!
-  def reject_deals(start_date, end_date)
+  
+  def find_conflicting_deals
+    conflicting_deals = []
     place_deals = Deal.by_place(self).requested(true)
     dates = (start_date..end_date).to_a
     place_deals.each do |place_deal|
       place_dates = (place_deal.start_date..place_deal.end_date).to_a
       if((dates & place_dates).empty? == false)
-        place_deal.accept = false
-        place_deal.request = false
-        place_deal.save
+        conflicting_deals << place_deal
       end
+    end
+
+    return conflicting_deals
+  end
+
+  def reject_deals(start_date, end_date)
+    conflicting_deals = find_conflicting_deals
+
+    conflicting_deals.each do |place_deal|
+      place_deal.accept = false
+      place_deal.request = false
+      place_deal.save
     end
   end
 
   def check_for_deals(start_date, end_date)
-    place_deals = Deal.by_place(self).accepted(true)
-    dates = (start_date..end_date).to_a
-    place_deals.each do |place_deal|
-      place_dates = (place_deal.start_date..place_deal.end_date).to_a
-      if((dates & place_dates).empty? == false)
-        return false
-      end
+    if find_conflicting_deals().empty?
+      return true
+    else
+      return false
     end
-    return true
   end
 
   #FIXME_AB: activate! and deactivate!

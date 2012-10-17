@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   validates :password_confirmation, :presence => true, :if => :password
 
   has_secure_password
+  
   has_attached_file :avatar, :styles => { :thumb => "150x150>" }
   validates_format_of :avatar, :with => %r{\.(jpg|png|gif|jpeg)}i, :message => "Image only of .jpg, .jpeg, .gif and .png format is allowed."
 

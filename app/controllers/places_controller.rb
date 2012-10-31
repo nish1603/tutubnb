@@ -54,18 +54,18 @@ class PlacesController < ApplicationController
   def update
     @place = Place.find_by_id(params[:id], :lock => true)
       
-      notice = "Successfully updated."
-      notice += "It is still hidden, you can make it visible on My Places." if(@place.hidden == true)
+    notice = "Successfully updated."
+    notice += "It is still hidden, you can make it visible on My Places." if(@place.hidden == true)
 
-      respond_to do |format|
-        if(@place.update_attributes(params[:place]))
-          format.html { redirect_to display_show_path }
-          flash[:notice] = notice
-          #Twitter::Client.new.update('hey')
-        else
-          format.html { render action: "new" }
-        end
+    respond_to do |format|
+      if(@place.update_attributes(params[:place]))
+        format.html { redirect_to display_show_path }
+        flash[:notice] = notice
+        #Twitter::Client.new.update('hey')
+      else
+        format.html { render action: "new" }
       end
+    end
   end
 
   def show
@@ -128,10 +128,11 @@ class PlacesController < ApplicationController
 
   def perform_activate
     if(params[:flag] == "active")
-      @place.activate!
+      return @place.activate!
     elsif(params[:flag] == "deactive")
-      @place.deactivate!
+      return @place.deactivate!
     end
+    return false
   end
 
   def check_commit(place)

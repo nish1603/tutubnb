@@ -8,7 +8,7 @@ class Place < ActiveRecord::Base
   validates :title, :uniqueness => { :case_sensitive => false, :scope => [:user_id] }, :unless => proc { |place| place.title.blank? }
   validates :daily_price, :numericality => { :greater_than_or_equal_to => 0}, :unless => proc{ |place| place.daily_price.blank? }
   validates_with PhotoValidator
-#  validate :check_tags
+  validate :check_tags
 
   PROPERTY_TYPE = {'Appartment' => 1, 'House' => 2, 'Castle' => 3, 'Villa' => 4, 'Cabin' => 5, 'Bed & Breakfast' => 6, 'Boat' => 7, 'Plane' => 8, 'Light House' => 9, 'Tree House' => 10, 'Earth House' => 11, 'Other' => 12}
   ROOM_TYPE = {'Private room' => 1, 'Shared room' => 2, 'Entire Home/apt' => 3}
@@ -135,7 +135,6 @@ class Place < ActiveRecord::Base
     self.verified = false
     self.save
   end
-
 
   def post_on_twitter
     client = Twitter::Client.new

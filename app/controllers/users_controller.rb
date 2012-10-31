@@ -14,7 +14,6 @@ class UsersController < ApplicationController
     end
   end
 
-
   def edit
     edit_func
   end
@@ -106,10 +105,9 @@ class UsersController < ApplicationController
 
   def activate
     @user = User.find(params[:id])
-    @user.activate_or_deactivate_user(params[:flag])
 
     respond_to do |format|
-      if(@user.save!)
+      if(perform_activate)
         flash[:notice] = "Account #{@user.first_name} is now #{params[:flag]}"
       else
         flash[:error] = "Acoount #{@user.first_name} has not been activated"
@@ -118,8 +116,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def perform_activate
+    if(params[:flag] == "active")
+      return @place.activate!
+    elsif(params[:flag] == "deactive")
+      return @place.deactivate!
+    end
+    return false
+  end
+
   def destroy
     @user = User.find_by_id(params[:id])
+
     if(@user.destroy)
       clear_session() unless(session[:admin])
       flash[:error] = "The account has been successfully deleted."
@@ -220,7 +228,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def change_forget_password
+  def change_forgetton_password
     params = request.parameters
     @user = User.find_by_email(params[:email])
 
@@ -234,17 +242,17 @@ class UsersController < ApplicationController
     end
   end
 
-  def update_forget_password
+  def update_forgotton_password
     @user = User.find_by_id(params[:id])
 
     respond_to do |format|
-      if(@user and @user.update_attributes(params[:user]))
+      if(@user && @user.update_attributes(params[:user]))
         @user.verified = true
         @user.save
-        format.html { redirect_to display_show_path }
+        format.html { redirect_to root_url }
         flash[:notice] = "Password has been successfully updated."
       else
-        format.html {  render action: "change_password" }
+        format.html { render action: "change_forgotton_password" }
         flash[:error] = "Password doesn't match."
       end
     end

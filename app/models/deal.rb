@@ -104,24 +104,29 @@ class Deal < ActiveRecord::Base
     end
 
     #FIXME_AB: Create two method accept! or reject!
-    def reply_to_deal(perform)
-      self.request = false
+    # def reply_to_deal(perform)
+    #   self.request = false
 
-      if(perform == "accept")
-        res = true
-        user.transfer_to_admin(price)
-        user.save
-        place.reject_deals(start_date, end_date)
-      else
-        res = false
-      end
-      self.accept = res
-    end
+    #   if(perform == "accept")
+    #     res = true
+    #     user.transfer_to_admin(price)
+    #     user.save
+    #     place.reject_deals(start_date, end_date)
+    #   else
+    #     res = false
+    #   end
+    #   self.accept = res
+    # end
 
     def accept!
-      self.accept = true
+      self.state = 1
       user.transfer_to_admin!(price)
       place.reject_deals!(start_date, end_date)
+      self.save
+    end
+
+    def reject!
+      self.accept = 2
       self.save
     end
 

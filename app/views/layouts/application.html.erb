@@ -7,26 +7,18 @@
   <%= csrf_meta_tags %>
 </head>
 <body class = "<%= controller.controller_name %> main">
-  <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
 	<div class = "header">
     <table>
       <tr>
 	      <% if session[:user_id].nil? %>
-          <td class = "user_name" ><%= link_to "Hi, Guest", login_profile_index_path  %></td>
-          <td class = "for_guest" ><%= link_to 'Sign Up', signup_profile_index_path %></td>
-	        <td class = "for_guest" ><%= link_to 'Log In', login_profile_index_path %></td>
-          <td class = "for_guest" ><%= link_to 'Places', display_show_path %></td>
+          <td class = "user_name" ><%= link_to "Hi, Guest", login_sessions_path  %></td>
+          <td class = "for_guest" ><%= link_to 'Sign Up', new_user_path %></td>
+	        <td class = "for_guest" ><%= link_to 'Log In', login_sessions_path %></td>
+          <td class = "for_guest" ><%= link_to 'Places', root_url %></td>
         <% else %>
           <td class = "user_name" ><%= link_to session[:user_name], edit_user_path(session[:user_id])  %></td>
-	        <td class = "for_user" ><%= link_to 'Log Out', logout_profile_index_path %></td>
-          <td class = "for_user" ><%= link_to 'Places', display_show_path %></td>
+	        <td class = "for_user" ><%= link_to 'Log Out', logout_sessions_path %></td>
+          <td class = "for_user" ><%= link_to 'Places', root_url %></td>
           <% if(session[:admin] and session[:admin] == true) %>
             <td class = "for_user" ><%= link_to 'Users', admin_users_path %></td>
             <td class = "for_user" ><%= link_to 'Deals', admin_deals_path %></td>

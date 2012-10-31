@@ -6,17 +6,17 @@ class Place < ActiveRecord::Base
   validates :description, :property_type, :title, :daily_price, :room_type, presence: true
   validates :additional_guests, :additional_price, :monthly_price, :weekend_price, :weekly_price, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
   validates :title, :uniqueness => { :case_sensitive => false, :scope => [:user_id] }, :unless => proc { |place| place.title.blank? }
-  validates :daily_price, :numericality => { :greater_than_or_equal_to => 0}, :unless => proc{ |place| place.daily.blank? }
+  validates :daily_price, :numericality => { :greater_than_or_equal_to => 0}, :unless => proc{ |place| place.daily_price.blank? }
   validates_with PhotoValidator
-  validate :check_tags
+#  validate :check_tags
 
   PROPERTY_TYPE = {'Appartment' => 1, 'House' => 2, 'Castle' => 3, 'Villa' => 4, 'Cabin' => 5, 'Bed & Breakfast' => 6, 'Boat' => 7, 'Plane' => 8, 'Light House' => 9, 'Tree House' => 10, 'Earth House' => 11, 'Other' => 12}
   ROOM_TYPE = {'Private room' => 1, 'Shared room' => 2, 'Entire Home/apt' => 3}
 
-  PLACE_TYPE = {'Activated' => 1, 'Deactivated' => 0}
+  PLACE_TYPE = ['Activated', 'Deactivated']
 
   before_save :set_prices
-  after_create :post_on_twitter
+  #after_create :post_on_twitter
   before_destroy :check_current_deals
   
   has_one :detail, :dependent => :destroy
@@ -37,7 +37,7 @@ class Place < ActiveRecord::Base
   
   scope :by_location, lambda{ |type, location| joins(:address).where("addresses.#{type} LIKE ?", "%#{location}%") }
   scope :by_property, lambda{ |type, type_value| where(type => type_value) }
-  scope :state, lambda{ |flag| where(:verified => flag) }
+  scope :verified, lambda{ |flag| where(:verified => flag) }
   scope :hidden, lambda{ |flag| where(:hidden => flag) }
 
   def tags_string
@@ -53,9 +53,9 @@ class Place < ActiveRecord::Base
 
   def set_prices()
     if(self.valid?)
-      self.weekend = self.daily if self.weekend.nil?
-      self.weekly = self.daily * 5 + self.weekend * 2 if weekly.nil? 
-      self.monthly = self.daily * 30 if self.monthly.nil?
+      self.weekend_price = daily_price if weekend_price.nil?
+      self.weekly_price = daily_price * 5 + weekend_price * 2 if weekly_price.nil? 
+      self.monthly_price = daily_price * 30 if monthly_price.nil?
     end
   end
 
@@ -94,8 +94,10 @@ class Place < ActiveRecord::Base
   
   def find_conflicting_deals
     conflicting_deals = []
+    
     place_deals = Deal.by_place(self).requested(true)
     dates = (start_date..end_date).to_a
+    
     place_deals.each do |place_deal|
       place_dates = (place_deal.start_date..place_deal.end_date).to_a
       if((dates & place_dates).empty? == false)
@@ -106,8 +108,8 @@ class Place < ActiveRecord::Base
     return conflicting_deals
   end
 
-  def reject_deals(start_date, end_date)
-    conflicting_deals = find_conflicting_deals
+  def reject_deals!(start_date, end_date)
+    conflicting_deals = find_conflicting_deals()
 
     conflicting_deals.each do |place_deal|
       place_deal.accept = false

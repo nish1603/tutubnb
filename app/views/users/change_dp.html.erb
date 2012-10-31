@@ -1,0 +1,27 @@
+
+<div class = "outer-user-info">
+  <%= render 'form' %>
+
+  <div class = "user-info">
+    <%= form_for(@user, :url => { :action => 'update_dp', :id => @user.id, :controller => 'user', :method => :put}) do |form| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this product from being saved:</h2>
+          <ul>
+            <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+      </div>
+    <% end %>
+      <table>
+        <tr class="field">
+          <td><%= form.file_field :avatar %></td>
+        </tr>
+        <tr class="actions">
+          <td><%= form.submit("Upload Picture") %></td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</div>

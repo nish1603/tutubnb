@@ -4,14 +4,14 @@ class DisplayController < ApplicationController
   
   def show
     if(session[:admin] != true)
-  	  @places = Place.visible(true)
+  	  @places = Place.verified(true)
     else
       @places = Place.hidden(false)
     end
     
   	respond_to do |format|
   		format.html
-      format.js
+      format.js 
     end
   end
 

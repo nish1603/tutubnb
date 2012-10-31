@@ -81,17 +81,17 @@ ActiveRecord::Schema.define(:version => 20120927052717) do
     t.text     "description"
     t.integer  "property_type"
     t.integer  "room_type"
-    t.float    "daily"
-    t.float    "weekend"
-    t.float    "weekly"
-    t.float    "monthly"
-    t.integer  "add_guests"
-    t.float    "add_price"
+    t.float    "daily_price"
+    t.float    "weekend_price"
+    t.float    "weekly_price"
+    t.float    "monthly_price"
+    t.integer  "additional_guests"
+    t.float    "additional_price"
     t.integer  "user_id"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.boolean  "verified",      :default => false
-    t.boolean  "hidden",        :default => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.boolean  "verified",          :default => false
+    t.boolean  "hidden",            :default => false
   end
 
   create_table "places_tags", :id => false, :force => true do |t|
@@ -145,6 +145,9 @@ ActiveRecord::Schema.define(:version => 20120927052717) do
     t.boolean  "admin",               :default => false
     t.string   "activation_link"
     t.boolean  "activated",           :default => true
+  end
+
+  create_table "xyz", :force => true do |t|
   end
 
 end

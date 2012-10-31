@@ -1,0 +1,49 @@
+
+<div class = "outer-user-info">
+  
+  <%= render 'form' %>
+  
+  <div class = "user-info">
+
+    <% @requested_trips.each do |requested_trip| %>
+      <table>
+        <tr class="field">
+          <td><%= "Start date:" %></td>
+          <td><%= requested_trip.start_date %></td>
+        </tr>
+        <tr class="field">
+          <td><%= "End date:" %></td>
+          <td><%= requested_trip.end_date %></td>
+        </tr>
+        <tr class="field">
+          <td><%= "price:" %></td>
+          <td>&#8377;<%= (requested_trip.price*1.1).round(2) %>(inlusive tutubnb commission)</td>
+        </tr>
+        <tr class="field">
+          <td><%= "User Name:" %></td>
+          <% if(requested_trip.user) %>
+            <td><%= requested_trip.user.first_name + " " + requested_trip.user.last_name %></td>
+          <% else %>
+            <td><%= "The user has deleted his account." %></td>
+          <% end %>
+        </tr>
+        <tr class="field">
+          <td><%= "Place Name:" %></td>
+          <% if(requested_trip.place && requested_trip.place.verified && (requested_trip.place.hidden == false)) %>
+            <td><%= link_to(requested_trip.place.title, place_path(requested_trip.place.id)) %></td>
+          <% elsif(requested_trip.place.nil?) %>
+            <td><%= The place has been deleted %></td>
+          <% else %>
+            <td><%= requested_trip.place.title %></td>
+          <% end %>
+        </tr>
+        <tr class="action">
+          <td><%= button_to('Reject', deal_reply_path(:reject, requested_trip.id), :method => :get) %></td>
+        </tr>
+      </table>
+    <% end %>
+    <% if(@requested_trips.empty?) %>
+      <%= render :text => "No trips are requested as of now." %>
+    <% end %>
+  </div>
+</div>

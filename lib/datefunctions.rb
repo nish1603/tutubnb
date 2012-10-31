@@ -4,11 +4,10 @@ class Date
     months = end_date.month - self.month
     years = end_date.year - self.year
 
-    months = adjust_months(end_date, months, years)
-    weeks, days = adjust_weeks_and_days(end_date, weeks, days)
+    months = self.adjust_months(end_date, months, years)
+    months, weeks, days = self.adjust_weeks_and_days(end_date, months, weeks, days)
     return months, weeks, days
   end
-    #FIXME_AB: done looking at your implementation I really think that all date related calculation should be moved to date class
 
   def adjust_months(end_date, months, years)
     if(end_date.month < (self.month))
@@ -19,7 +18,7 @@ class Date
     return months
   end
 
-  def adjust_weeks_and_days(end_date, weeks, days)
+  def adjust_weeks_and_days(end_date, months, weeks, days)
     if(end_date.day < (self.day-1))
       months -= 1 
       days = self.end_of_month.day - self.day
@@ -28,7 +27,7 @@ class Date
 
     weeks = (days + 1) / 7
     days = (days + 1) % 7
-    return weeks, days
+    return months, weeks, days
   end
 
   def calculate_weekdays_weekends(days)

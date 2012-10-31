@@ -72,19 +72,25 @@ class User < ActiveRecord::Base
     end
   end
 
-  def tarnsfer_from_admin(price)
+  def tarnsfer_from_admin!(price)
     admin = User.admin.first
 
-    self.wallet += (price * 0.9) 
-    admin.wallet -= (price * 0.9)
-    admin.save
+    ActiveRecord::Base.transaction do
+      self.wallet += subtract_brockerage_from_price(price) 
+      admin.wallet -= subtract_brockerage_from_price(price)
+      admin.save
+      self.save
+    end
   end
 
-  def transfer_to_admin(price)
+  def transfer_to_admin!(price)
     admin = User.admin.first
-
-    self.wallet -= (price * 1.1) 
-    admin.wallet += (price * 1.1)
-    admin.save
+    
+    ActiveRecord::Base.transaction do
+      self.wallet -= add_brockerage_to_price(price) 
+      admin.wallet += add_brockerage_to_price(price)
+      admin.save
+      self.save
+    end
   end
 end

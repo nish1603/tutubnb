@@ -3,11 +3,15 @@ class ApplicationController < ActionController::Base
 
   before_filter :authorize
 
+  def current_user
+    @current_user ||= User.find_by_id(session[:id])
+  end
+
   protected
 
   def authorize
     unless User.find_by_id(session[:user_id])
-      redirect_to login_profile_index_path
+      redirect_to login_sessions_path
       flash[:alert] = "Please log in"
     end
   end
@@ -52,7 +56,7 @@ class ApplicationController < ActionController::Base
   def user_exist_by_email
     user = User.find_by_email(params[:email])
     if(user.nil?)
-      redirect_to profile_login_path
+      redirect_to login_profile_index_path
       flash[:error] = 'Invalid E-mail Address.'
     end
   end
@@ -93,8 +97,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_session(user_id)
-    user = User.find_by_id(user_id)
+  def set_session(user)
     session[:user_id] = user.id
     session[:user_name] = user.first_name
     session[:admin] = user.admin
@@ -104,7 +107,6 @@ class ApplicationController < ActionController::Base
     session[:user_id] = nil
     session[:user_name] = nil
     session[:admin] = nil
+    @current_user = nil
   end
-
-
 end

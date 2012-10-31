@@ -37,7 +37,6 @@ module DisplayHelper
 
 
   def select_users()
-
     users = User.find_all_by_email(params[:email])
 
     if(params[:type] == 'Activated' || params[:type] == 'Deactivated' || params[:type] == 'Not_Verified' || params[:type] == 'All')
@@ -47,17 +46,6 @@ module DisplayHelper
   end
 
   def select_deals()
-    if(params[:type] == 'Accepted')
-        deals = Deal.accepted(true)
-    elsif(params[:type] == 'Rejected')
-        deals = Deal.accepted(false)
-    elsif(params[:type] == 'To Complete')
-        deals = Deal.to_complete(false)
-    elsif(params[:type] == 'Completed')
-        deals = Deal.completed(true)
-    else
-        deals = Deal.all
-    end
-    deals
+    Deal.state(value) || Deal.all
   end
 end

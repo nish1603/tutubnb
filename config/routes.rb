@@ -1,12 +1,13 @@
 Tutubnb2::Application.routes.draw do
 
-  # im get "authenticate/create"
-  # im get "authenticate/index"
-  # im delete "authenticate/destroy"
+  get "authenticate/create"
+  get "authenticate/index"
+  get "authenticate/tweet"
+  delete "authenticate/destroy"
 
   resources :tags, :only => [:index]
   
-  # im match '/auth/:provider/callback' => 'authenticate#create'
+  match '/auth/:provider/callback' => 'authenticate#create'
 
   resources :reviews, :only => [:new, :create]
 
@@ -40,15 +41,21 @@ Tutubnb2::Application.routes.draw do
       post :activate
       get :places
       get :change_password
-      post :update_password
+      put :update_forgotton_password
+      put :update_password
+      get :change_dp
+      put :update_dp
     end
 
     collection do
-      get :forget_password
+      get :forgotton_password
+      post :send_activation_link
+      get :change_forgotton_password
       get :authenticate
     end
   end
 
+  match '/sessions/:locale/locale' => "sessions#locale", :as => :locale_sessions
   resources :sessions, :only => [] do
     collection do
       get :login
@@ -106,9 +113,9 @@ Tutubnb2::Application.routes.draw do
 
   # match "/user/activate/:flag/:id" => "user#activate", :via => :get, :as => :user_activate  
 
-  # match "/admin/user" => "display#user", :via => :get, :as => :admin_users
+   match "/admin/user" => "display#user", :via => :get, :as => :admin_users
 
-  # match "/admin/deals" => "display#deals", :via => :get, :as => :admin_deals
+   match "/admin/deals" => "display#deals", :via => :get, :as => :admin_deals
 
   # # match  "/user/visits/:id" => "user#visits", :via => :get, :as => :user_visits
 

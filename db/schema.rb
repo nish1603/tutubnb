@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120927052717) do
+ActiveRecord::Schema.define(:version => 20121102084250) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address_line1"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20120927052717) do
     t.string   "token"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "secret"
   end
 
   create_table "deals", :force => true do |t|

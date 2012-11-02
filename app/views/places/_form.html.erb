@@ -12,30 +12,30 @@
       </div>
     <% end %>
 
-    <p><a name = "description">Description</a></p>
+    <p><a name = "description"><%= t("description", :scope => [:places, :new]) %></a></p>
     <table>    
       <tr class="field">
-        <td><%= form.label 'Title *' %></td>
+        <td><%= form.label :title %>*</td>
         <td><%= form.text_field :title %></td>
       </tr>
       <tr class="field">
-        <td><%= form.label 'Description *' %></td>
+        <td><%= form.label :description %>*</td>
         <td><%= form.text_area :description, :rows => 10 %></td>
       </tr>
       <tr class="field">
-        <td><%= form.label 'Property type *' %></td>
+        <td><%= form.label :property_type %>*</td>
         <td><%= form.select :property_type, Place::PROPERTY_TYPE, prompt: "Select Property Type" %></td>
       </tr>
       <tr class="field">
-        <td><%= form.label 'Room type *' %></td>
+        <td><%= form.label :room_type %>*</td>
         <td><%= form.select :room_type, Place::ROOM_TYPE, prompt: "Select Room Type" %></td>
       </tr>
     </table>
 
-    <p><a name = "prices">Prices</a></p>
+    <p><a name = "prices"><%= t("prices", :scope => [:places, :new]) %></a></p>
     <table>
       <tr class="field">
-        <td><%= form.label 'Daily Price*' %></td>
+        <td><%= form.label :daily_price %>*</td>
         <td><%= form.text_field :daily_price %></td>
       </tr>
       <tr class="field">
@@ -60,7 +60,7 @@
       </tr>
     </table>
 
-    <p><a name = "images">Images</a></p>
+    <p><a name = "images"><%= t("images", :scope => [:places, :new]) %></a></p>
 
     <span> Please Choose Minimum Two pics of your Place to register it </span>
     <%= form.fields_for :photos do |builder| %>
@@ -70,12 +70,12 @@
     
 
     
-    <p><a name = "details">Details</a></p>
+    <p><a name = "details"><%= t("details", :scope => [:places, :new]) %></a></p>
     <%= form.fields_for :detail do |builder| %>
       <%= render :template => 'details/_form.html.erb', :locals => { :form => builder } %>
     <% end %>
     
-    <p><a name = "address">Address</a></p>
+    <p><a name = "address"><%= t("address", :scope => [:places, :new]) %></a></p>
     <%= form.fields_for :address do |builder| %>
       <%= render :template => 'addresses/_form.html.erb', :locals => { :form => builder } %>
     <% end %>
@@ -86,7 +86,7 @@
       </tr>
     </table>      
 
-    <p><a name = "rules">Rules</a></p>
+    <p><a name = "rules"><%= t("rules", :scope => [:places, :new]) %></a></p>
     <%= form.fields_for :rules do |builder| %>
       <%= render :template => 'rules/_form.html.erb', :locals => { :form => builder } %>
     <% end %>
@@ -95,7 +95,7 @@
       <tr class="actions">
         <% if(params[:action] == "new" || params[:action] == "create") %>
           <td><%= form.submit 'Save Place'%></td>
-          <td><%= form.submit 'Create Place'%></td>
+          <td><%= form.submit t('.create_place') %></td>
         <% else %>
           <td><%= form.submit 'Update Place'%></td>
         <% end %>

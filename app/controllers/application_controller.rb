@@ -2,9 +2,27 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authorize
+  before_filter :set_i18n_locale_from_session
+
+
+  def set_i18n_locale_from_session
+    
+    logger.info session[:locale]
+    logger.info session["locale"]
+
+    if session[:locale]
+      if I18n.available_locales.include?(session[:locale].to_sym)
+        I18n.locale = session[:locale]
+      else
+        flash.now[:notice] = "#{session[:locale]} translation not available"
+        logger.error flash.now[:notice]
+      end
+    end
+  end
+
 
   def current_user
-    @current_user ||= User.find_by_id(session[:id])
+    @current_user ||= User.find_by_id(session[:user_id])
   end
 
   protected
@@ -64,7 +82,7 @@ class ApplicationController < ActionController::Base
   def user_verified
     user = User.find_by_email(params[:email])
     if(user.verified == false)
-      redirect_to login_profile_index_path
+      redirect_to login_sessions_path
       flash[:alert] = 'You have not verified your user account.'
     end
   end
@@ -97,10 +115,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_session(user)
-    session[:user_id] = user.id
-    session[:user_name] = user.first_name
-    session[:admin] = user.admin
+  def set_session(user_id)
+    session[:user_id] = user_id
+    session[:user_name] = current_user.first_name
+    session[:admin] = current_user.admin
   end
 
   def clear_session

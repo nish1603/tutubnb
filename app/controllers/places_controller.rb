@@ -4,21 +4,6 @@ class PlacesController < ApplicationController
   before_filter :place_exists, :only => [:edit, :update, :operation, :show]
   before_filter :validating_owner, :only => [:edit, :update, :operation]
 
- 
-  def index
-    if(session[:admin] != true)
-      @places = Place.verified(true)
-    else
-      @places = Place.hidden(false)
-    end
-    
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
-
   def new
   	@place = Place.new
     @place.build_detail 

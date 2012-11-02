@@ -1,0 +1,120 @@
+hi:
+
+  male: पुरुष
+  other: अन्य
+  female: महिला
+
+  activerecord:
+    models:
+      user: उपयोगकर्ता
+      place: स्थान
+      detail: विस्तार 
+      deal: सौदा 
+      address: पता 
+      photo: तस्वीर
+    attributes:
+      user:
+        first_name: प्रथम नाम
+        last_name: अंतिम नाम 
+        password: पासवर्ड 
+        password_confirmation: पासवर्ड पुनः 
+        email: ईमेल पता
+        birth_date: जन्म तिथि
+        school: स्कूल
+      place:
+        description: वर्णन
+        property_type: संपत्ति प्रकार
+        room_type: कमरे का प्रकार
+        title: शीर्षक
+        additional_guests: अतिरिक्त अतिथि
+        additional_price: अतिरिक्त मूल्य
+        daily_price: दैनिक मूल्य
+        monthly_price: मासिक मूल्य
+        weekend_price: सप्ताहांत मूल्य
+        weekly_price: साप्ताहिक मूल्य
+      detail:
+        accomodation: अधिकतम अतिथि
+        bathrooms: बाथरूम
+        bed_type: बेड प्रकार
+        bedrooms: शयन कक्ष
+        beds: बेड
+        pets: पालतू जानवर
+        size: लंबाई - चौड़ाई
+      address:
+        address_line1: पता पंक्ति 1
+        address_line2: पता पंक्ति 2
+        city: शहर
+        country: देश
+        pincode: पिन कोड
+        state: राज्य
+      deal:
+        end_date: अंतिम दिनांक
+        start_date: प्रारंभ दिनांक
+        guests: अतिथि
+        price: मूल्य
+      rules:
+        rules: नियम
+        availables: उपलब्ध
+    errors:
+      messages:
+        inclusion:
+        confirmation: "अपने पुष्ठीकरन के बराबर होना चाहिए"
+        too_short: "न्यूनतम %{count} अक्षर का होना चाहिए"
+        taken: "अद्वितीय होना चाहिए"
+        blank: "डालना अनिवार्य हैं" 
+      template:
+        header:
+          one:   "१ गलती इस %{model} को बन्ने से रोक रही हैं "
+          other: "%{count} गलतियां इस %{model} को बन्ने से रोक रही हैं"
+
+  layouts:
+    application:
+      log_in: प्रवेश करे
+      sign_up: साइन अप
+      guest: अतिथि
+      list_your_place: अपनी जगह दर्ज करे
+      places: स्थान
+      log_out: बाहर प्रवेश करे
+
+  users:
+    new:
+      first_name: प्रथम नाम
+      last_name: अंतिम नाम 
+      password: पासवर्ड
+      confirm_password: पासवर्ड पुनः डाले 
+      email_address: ईमेल पता
+      submit: उपयोगकर्ता बनाएं
+    edit:
+      i_am: मैं हूँ
+      tell_about_yourself: अपने बारे में बताओ
+      where_you_work: जहां आप काम करते हैं
+      where_you_live: तुम कहाँ रहते हैं
+    change_password:
+      old_password: पुराना पासवर्ड
+      new_password: नया पासवर्ड
+      password_confirm: पासवर्ड पुनः डाले
+      change_password: पासवर्ड बदलें
+
+  places:
+    new:
+      description: विवरण
+      prices: मूल्य
+      images: फ़ोटो
+      details: विस्तार
+      address: पता
+      rules: नियम
+      upload: अपलोड
+      create_place: स्थान बनाएं
+
+  sessions:
+    login:
+      password: पासवर्ड 
+      email_address: ईमेल पता
+      log_in: प्रवेश करे
+      need_an_account: एक खाता चाहिए?
+      forgot_your_password: अपना पासवर्ड भूल गए?
+
+  deals:
+    new:
+      calculate_price: मूल्य की गणना
+      book_place: जगह के लिए सौदा करे

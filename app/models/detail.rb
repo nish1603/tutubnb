@@ -1,5 +1,5 @@
 class Detail < ActiveRecord::Base
-  attr_accessible :accomodation, :bathrooms, :bed_type, :bedrooms, :beds, :pets, :size, :unit, :place_id
+  attr_accessible :accomodation, :bathrooms, :bed_type, :bedrooms, :beds, :pets, :size, :unit
   belongs_to :place
 
   validates :accomodation, :presence => true

@@ -7,27 +7,27 @@
   
   <table>
     <tr class="field">
-      <td><%= "Address Line 1:" %></td>
+      <td><%= Address.human_attribute_name(:address_line1) %></td>
       <td><%= @address.address_line1 %></td>
     </tr>
     <tr class="field">
-      <td><%= "Address Line 2:" %></td>
+      <td><%= Address.human_attribute_name(:address_line2) %></td>
       <td><%= @address.address_line2 %></td>
     </tr>
     <tr class="field">
-      <td><%= "City:" %></td>
+      <td><%= Address.human_attribute_name(:city) %></td>
       <td><%= @address.city %></td>
     </tr>
     <tr class="field">
-      <td><%= "State:" %></td>
+      <td><%= Address.human_attribute_name(:state) %></td>
       <td><%= @address.state %></td>
     </tr>
     <tr class="field">
-      <td><%= "Pin Code:" %></td>
+      <td><%= Address.human_attribute_name(:pincode) %></td>
       <td><%= @address.pincode %></td>
     </tr>
     <tr class="field">
-      <td><%= "Country:" %></td>
+      <td><%= Address.human_attribute_name(:country) %></td>
       <td><%= @address.country %></td>
     </tr>
   </table>

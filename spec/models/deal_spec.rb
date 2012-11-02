@@ -24,7 +24,7 @@ module DealSpecHelper
     }
   end
 
-    def valid_detail_attributes
+  def valid_detail_attributes
     {
       :accomodation => 9,
       :bathrooms => 2,
@@ -128,7 +128,7 @@ describe Deal do
   end
 
 
-  describe "Relationships" do
+  describe "Associations" do
     context "with User" do
       it "should respond to user" do
         @deal.should respond_to(:user)

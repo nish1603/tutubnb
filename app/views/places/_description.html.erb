@@ -1,18 +1,18 @@
       <table>
         <tr class="field">
-          <td><%= "Title:" %></td>
+          <td><%= Place.human_attribute_name(:title) %></td>
           <td><%= @place.title %></td>
         </tr>
         <tr class="field">
-          <td><%= "Description:" %></td>
+          <td><%= Place.human_attribute_name(:description) %></td>
           <td><%= @place.description %></td>
         </tr>
         <tr class="field">
-          <td><%= "Property Type:" %></td>
+          <td><%= Place.human_attribute_name(:property_type) %></td>
           <td><%= @place.property_type_string %></td>
         </tr>
         <tr class="field">
-          <td><%= "Room Type:" %></td>
+          <td><%= Place.human_attribute_name(:room_type) %></td>
           <td><%= @place.room_type_string %></td>
         </tr>
       </table>

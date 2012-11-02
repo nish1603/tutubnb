@@ -1,4 +1,4 @@
-
+<%= @deal.errors.inspect %>
 <div id = "new-deal">
   <%= form_for(@deal, :url => place_deals_path(params[:place_id])) do |form| %>
     <table>
@@ -22,8 +22,8 @@
       </tr>
       <tr class="actions">
         <td></td>
-        <td><%= form.submit 'Calculate Price' %></td>
-        <td><%= form.submit 'Book Place', :data => {:confirm => "Are you sure want to make this deal?"} %></td>
+        <td><%= form.submit t('.calculate_price') %></td>
+        <td><%= form.submit t('.book_place'), :data => {:confirm => "Are you sure want to make this deal?"} %></td>
       </tr>
     </table>
   <% end %>

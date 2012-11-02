@@ -11,20 +11,22 @@
     <table>
       <tr>
 	      <% if session[:user_id].nil? %>
-          <td class = "user_name" ><%= link_to "Hi, Guest", login_sessions_path  %></td>
-          <td class = "for_guest" ><%= link_to 'Sign Up', new_user_path %></td>
-	        <td class = "for_guest" ><%= link_to 'Log In', login_sessions_path %></td>
-          <td class = "for_guest" ><%= link_to 'Places', root_url %></td>
+          <td class = "user_name" ><%= link_to t('.guest'), login_sessions_path  %></td>
+          <td class = "for_guest" ><%= link_to t('.sign_up'), new_user_path %></td>
+	        <td class = "for_guest" ><%= link_to t('.log_in'), login_sessions_path %></td>
+          <td class = "for_guest" ><%= link_to t('.places'), root_url %></td>
         <% else %>
           <td class = "user_name" ><%= link_to session[:user_name], edit_user_path(session[:user_id])  %></td>
-	        <td class = "for_user" ><%= link_to 'Log Out', logout_sessions_path %></td>
-          <td class = "for_user" ><%= link_to 'Places', root_url %></td>
+	        <td class = "for_user" ><%= link_to t('.log_out'), logout_sessions_path %></td>
+          <td class = "for_user" ><%= link_to t('.places'), root_url %></td>
           <% if(session[:admin] and session[:admin] == true) %>
             <td class = "for_user" ><%= link_to 'Users', admin_users_path %></td>
             <td class = "for_user" ><%= link_to 'Deals', admin_deals_path %></td>
           <% end %>
         <% end %>
-        <td class = "new_place" ><%= button_to 'List your place', new_place_path, :method => :get %></td>
+        <td class = "new_place" ><%= button_to t('.list_your_place'), new_place_path, :method => :get %></td>
+        <td><%= link_to "हिन्दी", locale_sessions_path(:hi) %></td>
+        <td><%= link_to "English", locale_sessions_path(:en) %></td> 
       </tr>
     </table>
   </div>

@@ -1,7 +1,7 @@
 <div>
   <% @authentications.each do |authentication| %>
 	  <div>
-      <%= link_to @authentication.capitalize, '/auth/' + authentication.provider %>
+      <%= link_to authentication.provider.capitalize, '/auth/' + authentication.provider %>
     </div>
   <% end %>
 </div>

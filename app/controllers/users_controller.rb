@@ -1,18 +1,9 @@
 class UsersController < ApplicationController
   #FIXME_AB: admin related functionality should go in admin namespace
-  skip_before_filter :authorize, :only => [:new, :create, :authenticate]
+  skip_before_filter :authorize, :only => [:new, :create, :authenticate, :forgotton_password, :change_forgotton_password, :update_forgotton_password, :send_activation_link]
   before_filter :validate_account, :except => [:wallet, :activate, :destroy, :new, :create]
   before_filter :validate_account_for_destroy, :only => :destroy
-  before_filter :user_logged_in, :only => [:signup, :authenticate, :forget_password, :change_password]
-
-  def index
-    @users = User.all
-    @users = @users
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
+  before_filter :user_logged_in, :only => [:signup, :authenticate, :forgotton_password, :change_forgotton_password]
 
   def edit
     edit_func
@@ -203,7 +194,7 @@ class UsersController < ApplicationController
   end
 
 #FIXME_AB: users/forgotten_password
-  def forgetten_password
+  def forgotton_password
   end
 
   def send_activation_link
@@ -211,40 +202,39 @@ class UsersController < ApplicationController
 
     if(user)
       user.activation_link = BCrypt::Password.create("activation_link")
-      link = change_password_url + "?email=#{user.email}&activation_link=#{user.activation_link}"
+      link = change_forgotton_password_users_url + "?email=#{user.email}&activation_link=#{user.activation_link}"
       user.verified = false
-      user.save
     end
 
     respond_to do |format|
       if(user && user.save)
         Notifier.verification(link, user.email, user.first_name).deliver
-        format.html { redirect_to profile_login_path }
+        format.html { redirect_to login_sessions_path }
         flash[:notice] = "An Email has been send to your account"
       else
-        format.html { redirect_to profile_login_path }
+        format.html { redirect_to login_sessions_path }
         flash[:error] = "Not a valid E-mail Address, Please check your e-mail address."
       end
     end
   end
 
-  def change_forgetton_password
+  def change_forgotton_password
     params = request.parameters
     @user = User.find_by_email(params[:email])
 
     respond_to do |format|
-      if(@user and @user.activation_link == params[:activation_link] and @user.verified == false)
+      if(@user && @user.activation_link == params[:activation_link] && @user.verified == false)
         format.html
       else
         flash[:error] = "Invalid URL."
-        format.html { redirect_to display_show_path }
+        format.html { redirect_to root_url }
       end
     end
   end
 
   def update_forgotton_password
     @user = User.find_by_id(params[:id])
-
+    kjkjnknkj
     respond_to do |format|
       if(@user && @user.update_attributes(params[:user]))
         @user.verified = true

@@ -1,27 +1,27 @@
 
 <table>
   <tr class="field">
-    <td><%= "daily:" %></td>
-    <td><%= @place.daily_price %></td>
+    <td><%= Place.human_attribute_name(:daily_price) %></td>
+    <td>&#8377;<%= @place.daily_price %></td>
   </tr>
   <tr class="field">
-    <td><%= "weekend:" %></td>
-    <td><%= @place.weekend_price %></td>
+    <td><%= Place.human_attribute_name(:weekend_price) %></td>
+    <td>&#8377;<%= @place.weekend_price %></td>
   </tr>
   <tr class="field">
-    <td><%= "weekly:" %></td>
-    <td><%= @place.weekly_price %></td>
+    <td><%= Place.human_attribute_name(:weekly_price) %></td>
+    <td>&#8377;<%= @place.weekly_price %></td>
   </tr>
   <tr class="field">
-    <td><%= "monthly:" %></td>
-    <td><%= @place.monthly_price %></td>
+    <td><%= Place.human_attribute_name(:monthly_price) %></td>
+    <td>&#8377;<%= @place.monthly_price %></td>
   </tr>
   <tr class="field">
-    <td><%= "add_guests:" %></td>
+    <td><%= Place.human_attribute_name(:additional_guests) %></td>
     <td><%= @place.additional_guests %></td>
   </tr>
   <tr class="field">
-    <td><%= "add_price:" %></td>
-    <td><%= @place.additional_price %></td>
+    <td><%= Place.human_attribute_name(:additional_price) %></td>
+    <td>&#8377;<%= @place.additional_price || '0.00' %></td>
   </tr>
 </table>

@@ -19,34 +19,32 @@
     	<legend>Enter your details</legend>
 
     	<div>
-    		<%= form.text_field :first_name, placeholder: 'First Name' %>
+    		<%= form.text_field :first_name, placeholder: t('.first_name') %>
     	</div>
 
     	<div>
-    		<%= form.text_field :last_name, placeholder: 'Last Name' %>
+    		<%= form.text_field :last_name, placeholder: t('.last_name') %>
     	</div>
 
       <div>
-    		<%= form.text_field :email, placeholder: 'Email Address' %>  
+    		<%= form.text_field :email, placeholder: t('.email_address') %>  
     	</div>
 
       <div>
-    		<%= form.password_field :password, placeholder: 'Password' %>  
+    		<%= form.password_field :password, placeholder: t('.password') %>  
     	</div>
 
       <div>
-        <%= form.password_field :password_confirmation, placeholder: 'Confirm Password' %>  
+        <%= form.password_field :password_confirmation, placeholder: t('.confirm_password') %>  
       </div>
-
 
     	<div>
-    		<%= form.select :gender, User::GENDER %>
+    		<%= form.select :gender, User::GENDER, :locale => I18n.locale %>
     	</div>
 
       <div>
-        <%= form.submit 'Create User' %>
+        <%= form.submit t('.submit') %>
       </div>
-
 
     </fieldset>
   <% end %>

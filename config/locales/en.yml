@@ -2,4 +2,58 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+
+  layouts:
+    application:
+      log_in: Log in
+      sign_up: Sign up
+      guest: Guest
+      list_your_place: List Your Place
+      places: Places
+      log_out: Log Out
+
+
+  users:
+    new:
+      first_name: First Name
+      last_name: Last Name 
+      password: Password 
+      confirm_password: Confirm Password 
+      email_address: Email Address
+      submit: Create User 
+    edit:
+      i_am: I am
+      tell_about_yourself: Tell About Yourself
+      where_you_work: Where you work
+      where_you_live: Where you live
+    change_password:
+      old_password: Old Password
+      new_password: New Password
+      password_confirm: Confirm Password
+      change_password: Change Password
+
+
+  places:
+    new:
+      description: Description
+      prices: Prices
+      images: Images
+      details: Details
+      address: Address
+      rules: Rules
+      upload: Upload
+      create_place: Create Place
+
+
+  sessions:
+    login:
+      password: Password 
+      email_address: Email Address
+      log_in: Log In
+      need_an_account: Need An Account? 
+      forgot_your_password: Forgot Your Password?
+  
+  deals:
+    new:
+      calculate_price: Calculate Price
+      book_place: Book Place

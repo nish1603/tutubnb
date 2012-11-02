@@ -1,35 +1,31 @@
 
   <table>
     <tr class="field">
-      <td><%= "Accomodation:" %></td>
+      <td><%= Detail.human_attribute_name(:accomodation) %></td>
       <td><%= @detail.accomodation %></td>
     </tr>
     <tr class="field">
-      <td><%= "bedrooms:" %></td>
+      <td><%= Detail.human_attribute_name(:bedrooms) %></td>
       <td><%= @detail.bedrooms %></td>
     </tr>
     <tr class="field">
-      <td><%= "beds:" %></td>
+      <td><%= Detail.human_attribute_name(:beds) %></td>
       <td><%= @detail.beds %></td>
     </tr>
     <tr class="field">
-      <td><%= "bed_type:" %></td>
+      <td><%= Detail.human_attribute_name(:bed_type) %></td>
       <td><%= @detail.bed_type %></td>
     </tr>
     <tr class="field">
-      <td><%= "bathrooms:" %></td>
+      <td><%= Detail.human_attribute_name(:bathrooms) %></td>
       <td><%= @detail.bathrooms %></td>
     </tr>
     <tr class="field">
-      <td><%= "size:" %></td>
-      <td><%= @detail.size %></td>
+      <td><%= Detail.human_attribute_name(:size) %></td>
+      <td><%= @detail.size %> <%= @detail.units_string if(@detail.size) %></td>
     </tr>
     <tr class="field">
-      <td><%= "unit:" %></td>
-      <td><%= @detail.units_string %></td>
-    </tr>
-    <tr class="field">
-      <td><%= "pets:" %></td>
+      <td><%= Detail.human_attribute_name(:pets) %></td>
       <td><%= @detail.pets %></td>
     </tr>
 </table>

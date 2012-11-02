@@ -95,7 +95,7 @@ class Place < ActiveRecord::Base
   def find_conflicting_deals
     conflicting_deals = []
     
-    place_deals = Deal.by_place(self).requested(true)
+    place_deals = Deal.by_place(self).state(0)
     dates = (start_date..end_date).to_a
     
     place_deals.each do |place_deal|

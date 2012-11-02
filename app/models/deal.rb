@@ -103,29 +103,14 @@ class Deal < ActiveRecord::Base
       return 0
     end
 
-    #FIXME_AB: Create two method accept! or reject!
-    # def reply_to_deal(perform)
-    #   self.request = false
-
-    #   if(perform == "accept")
-    #     res = true
-    #     user.transfer_to_admin(price)
-    #     user.save
-    #     place.reject_deals(start_date, end_date)
-    #   else
-    #     res = false
-    #   end
-    #   self.accept = res
-    # end
-
-    def accept!
+    def accept!()
       self.state = 1
       user.transfer_to_admin!(price)
       place.reject_deals!(start_date, end_date)
       self.save
     end
 
-    def reject!
+    def reject!()
       self.accept = 2
       self.save
     end
@@ -136,8 +121,8 @@ class Deal < ActiveRecord::Base
     end
     
     def place_already_book()
-      available = self.place.check_for_deals(self.start_date, self.end_date)
-      self.errors.add(:base, "Sorry, this place is already booked for these dates") if(available == false)
+      available = place.check_for_deals(start_date, end_date)
+      errors.add(:base, "Sorry, this place is already booked for these dates") if(available == false)
       return available
     end
 end

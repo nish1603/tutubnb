@@ -10,23 +10,23 @@
   </div>
 
   <ul>
-    <li><a class = "place-info-list">Description</a></li>
+    <li><a class = "place-info-list"><%= t("description", :scope => [:places, :new]) %></a></li>
     <div class = "place-details">
       <%= render 'description' %>
     </div>
-    <li><a class = "place-info-list">Details</a></li>
+    <li><a class = "place-info-list"><%= t("details", :scope => [:places, :new]) %></a></li>
     <div class = "place-details">
       <%= render :template =>'details/show.html.erb' %>
     </div>
-    <li><a class = "place-info-list">Rules</a></li>
+    <li><a class = "place-info-list"><%= t("rules", :scope => [:places, :new]) %></a></li>
     <div class = "place-details">
       <%= render :template => 'rules/show.html.erb' %>
     </div>
-    <li><a class = "place-info-list">Price</a></li>
+    <li><a class = "place-info-list"><%= t("price", :scope => [:places, :new]) %></a></li>
     <div class = "place-details">
       <%= render 'price' %>
     </div>
-    <li><a class = "place-info-list">Address</a></li>
+    <li><a class = "place-info-list"><%= t("address", :scope => [:places, :new]) %></a></li>
     <div class = "place-details">
       <%= render :template => 'addresses/show.html.erb' %>
     </div>

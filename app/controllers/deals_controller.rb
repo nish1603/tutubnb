@@ -1,14 +1,5 @@
 class DealsController < ApplicationController
 
-  def index
-    @deals = Deal.all
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
   def new
   	@deal = Deal.new
     @deal.place_id = params[:place_id]

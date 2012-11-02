@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
 
   before_destroy :has_pending_deals?
 
-  GENDER = {'Male' => 1, 'Female' => 2, 'Other' => 3}
+  GENDER = {I18n.t('male') => 1, I18n.t('female') => 2, I18n.t('other') => 3}
   TYPE = ['Activated', 'Deactivated', 'Not_Verified', 'All']
 
   scope :admin, where(:admin => true)
@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
       self.first_name, self.last_name = auth['info']['name'].split(' ')
       self.last_name = auth['info']['last_name'] if(self.last_name.nil?)
     end
-    authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'])
+    authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'], :secret => auth['credentials']['secret'])
   end
 
   def update_wallet(commit_type, amount)

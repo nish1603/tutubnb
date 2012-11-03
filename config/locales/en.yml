@@ -3,6 +3,10 @@
 
 en:
 
+  male: Male
+  other: Other
+  female: Female
+
   layouts:
     application:
       log_in: Log in

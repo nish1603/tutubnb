@@ -9,13 +9,13 @@ class AuthenticateController < ApplicationController
   def create
     
     auth = request.env["omniauth.auth"]
-    @auth = auth.clone
+
     authentication = Authentication.find_by_provider_and_uid(auth['provider'], auth['uid'])
  
     if(authentication)
-      if(session[:user_id].nil?)
+      if(current_user.nil?)
         flash[:notice] = "Signed in successfully."
-        sign_in_and_redirect(authentication.user)
+        check_sign_in_and_redirect(authentication.user)
       elsif(session[:user_id] != authentication.user_id)
         flash[:error] = "The #{authentication.provider} account has already been added by some other user."
         redirect_to root_url
@@ -23,17 +23,11 @@ class AuthenticateController < ApplicationController
         flash[:alert] = "You have already linked this account"
         redirect_to root_url
       end
-    else
-      if(session[:user_id].nil?)
-        user = User.find_by_email(auth['info']['email']) || User.new
-        flash[:notice] = "Account created and signed in successfully."
-      else
-        user = User.find_by_id(session[:user_id])
-        flash[:notice] = "Acccount has been linked."
-      end
-      user.create_user_with_omniauth(auth)
-      if user.save(:validate => false)
-        sign_in_and_redirect(user)
+    else      
+# create omniauth and user if a new record
+      user = User.create_with_authentication(auth, current_user)
+      if user
+        check_sign_in_and_redirect(user)
       else
         flash[:error] = "Error while creating a user account. Please try again."
         redirect_to root_url
@@ -41,9 +35,10 @@ class AuthenticateController < ApplicationController
     end
   end
 
-  def sign_in_and_redirect(user)
+  def check_sign_in_and_redirect(user)
     respond_to do |format|
-      set_session(user.id)
+      set_session(user.id) if(current_user.blank?)
+      flash[:notice] = "Account has been linked"
       format.html { redirect_to root_url } 
     end
   end
@@ -57,13 +52,12 @@ class AuthenticateController < ApplicationController
   end
 
   def tweet
-
     Twitter.configure do |config|
       config.consumer_key       = "hy8b0hn6OMJhyw1qaoUuvQ"
       config.consumer_secret    = "w7WImhhWiQWo2l1XlW1EKr8yT9SavoxGRJvq8FAT0w"
       config.oauth_token        = current_user.authentications.first.token
       config.oauth_token_secret = current_user.authentications.first.secret
     end
-    Twitter.update 'Yo buudy'
+    Twitter.update 'Hello World'
   end
 end

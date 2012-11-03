@@ -46,7 +46,6 @@ class PlacesController < ApplicationController
       if(@place.update_attributes(params[:place]))
         format.html { redirect_to display_show_path }
         flash[:notice] = notice
-        #Twitter::Client.new.update('hey')
       else
         format.html { render action: "new" }
       end

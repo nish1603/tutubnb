@@ -18,9 +18,9 @@
           <td class = "last-cell">
             <%= link_to 'Delete', place_path(place.id), :method => :delete %>
             <% if(place.valid? && place.hidden == true) %>
-              <%= link_to 'Show', operation_place_path('show', place.id) %>
+              <%= link_to 'Show', operation_place_path('show', place.id), :method => :post %>
             <% elsif(place.valid? && place.hidden == false) %>
-              <%= link_to 'Hide', operation_place_path('hide', place.id) %>
+              <%= link_to 'Hide', operation_place_path('hide', place.id), :method => :post %>
             <% end %>
         </td>
     	  </tr>

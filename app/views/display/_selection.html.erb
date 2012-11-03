@@ -17,9 +17,9 @@
             Email :<%= place.user.email %><br />
             <%= link_to 'Delete', place_path(place.id), :method => :delete %>
             <% if(place.verified == false) %>
-              <%= link_to 'Activate', activate_place_path('active', place.id) %>
+              <%= link_to 'Activate', activate_place_path('active', place.id), :method => :post %>
             <% else %>
-              <%= link_to 'Deactivate', activate_place_path('deactive', place.id) %>
+              <%= link_to 'Deactivate', activate_place_path('deactive', place.id), :method => :post %>
             <% end %>
           <% end %>
         </td>

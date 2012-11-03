@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   #FIXME_AB: admin related functionality should go in admin namespace
   skip_before_filter :authorize, :only => [:new, :create, :authenticate, :forgotton_password, :change_forgotton_password, :update_forgotton_password, :send_activation_link]
-  before_filter :validate_account, :except => [:wallet, :activate, :destroy, :new, :create]
+  before_filter :validate_account, :except => [:wallet, :activate, :destroy, :new, :create, :forgotton_password, :change_forgotton_password, :update_forgotton_password]
   before_filter :validate_account_for_destroy, :only => :destroy
-  before_filter :user_logged_in, :only => [:signup, :authenticate, :forgotton_password, :change_forgotton_password]
+  before_filter :user_logged_in, :only => [:signup, :authenticate, :forgotton_password, :change_forgotton_password, :update_forgotton_password]
 
   def edit
     edit_func
@@ -98,7 +98,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      if(perform_activate)
+      if(perform_activate(@user))
         flash[:notice] = "Account #{@user.first_name} is now #{params[:flag]}"
       else
         flash[:error] = "Acoount #{@user.first_name} has not been activated"
@@ -107,11 +107,11 @@ class UsersController < ApplicationController
     end
   end
 
-  def perform_activate
+  def perform_activate(user)
     if(params[:flag] == "active")
-      return @place.activate!
+      return user.activate!
     elsif(params[:flag] == "deactive")
-      return @place.deactivate!
+      return user.deactivate!
     end
     return false
   end
@@ -234,7 +234,6 @@ class UsersController < ApplicationController
 
   def update_forgotton_password
     @user = User.find_by_id(params[:id])
-    kjkjnknkj
     respond_to do |format|
       if(@user && @user.update_attributes(params[:user]))
         @user.verified = true

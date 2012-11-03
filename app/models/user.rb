@@ -2,13 +2,15 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :first_name, :gender, :last_name, :password, :password_confirmation, :describe, :work, :live, :birth_date, :school, :avatar, :activate
 
+  attr_accessor :authentication_of_email
+
   validates :first_name, :presence => true
-  validates :last_name, :presence => true, :if => :last_name
-  validates :gender, :presence => true, :if => :gender
-  validates :email, :presence => true, :if => :email
+  validates :last_name, :presence => true
+  validates :gender, :presence => true
+  validates :email, :presence => true, :if => proc { |user| user.authentication_of_email == 'no' }
   validates :email, format: { :with => /^([a-zA-Z]([a-zA-Z0-9+.\-][.]?)*@[a-zA-Z0-9]+.[a-zA-Z]{2,4}.[a-zA-Z]{0,3})$/, :message => "Invalid Email Address" }, :unless => proc { |user| user.email.blank? }
   validates :email, :uniqueness => true, :unless => proc { |user| user.errors[:email].any? }
-  validates :password, :presence => true, :if => :password
+  validates :password, :presence => true, :if => { |user| user.nil? && user.authentication_of_password 
   validates :password, :length => { :minimum => 6 }, :if => :password, :unless => proc { |user| user.password.blank? }
   validates :password_confirmation, :presence => true, :if => :password
 
@@ -34,13 +36,28 @@ class User < ActiveRecord::Base
   scope :deactivated, where(:activated => false)
   scope :not_verified, where(:verified => false)
 
-  def create_user_with_omniauth(auth)
+  def self.create_with_authentication(auth, current_user)
+    current_user = user_for_authentication(auth, current_user)
+    current_user.create_with_authentication(auth)
+    current_user
+  end
+
+  def self.user_for_authentication(auth, current_user)
+    current_user = User.find_by_email(auth['info']['email']) || User.new if current_user.blank?
+    current_user
+  end
+
+  def create_with_authentication(auth)
+    self.authentication_of_email = 'no' if(auth['provider'] == "twitter")
+    self.password = self.password_confirmation = SecureRandom.urlsafe_base64(n = 6)
+
     if(self.new_record?)
       self.email = auth['info']['email']
       self.first_name, self.last_name = auth['info']['name'].split(' ')
-      self.last_name = auth['info']['last_name'] if(self.last_name.nil?)
+      self.last_name = auth['info']['last_name'] if(self.last_name.blank?)
     end
     authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'], :secret => auth['credentials']['secret'])
+    self.save
   end
 
   def update_wallet(commit_type, amount)
@@ -57,20 +74,22 @@ class User < ActiveRecord::Base
     end
   end
 
-  def activate_or_deactivate_user(active_flag)
-    if(active_flag == 'active')
-      active = true
-    else
-      active = false
-    end
-
-    self.activated = active
-
+  def activate!()
+    self.activated = true
     places.each do |place|
-      place.verified = active
-      place.save
+      place.activated!()
     end
+    self.save
   end
+
+  def deactivate!
+    self.activated = false
+    places.each do |place|
+      place.deactivated!()
+    end
+    self.save
+  end
+
 
   def tarnsfer_from_admin!(price)
     admin = User.admin.first

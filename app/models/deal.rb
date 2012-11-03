@@ -16,9 +16,9 @@ class Deal < ActiveRecord::Base
   validate :less_than_max_guests, :unless => proc { |deal| deal.guests.blank? }
 
   #FIXME_AB: These should be validation.
-  before_create :user_have_amount
-  before_create :user_have_wallet
-  before_create :place_already_book
+  validate :user_have_amount, :on => :create
+  validate :user_have_wallet, :on => :create
+  validate :place_already_book, :on => :create
 
   TYPE = {'Accepted' => 1, 'Rejected' => 2, 'Requests' => 0, 'To Complete' => 3, 'Completed' => 4, 'Reviewed' => 5}
 

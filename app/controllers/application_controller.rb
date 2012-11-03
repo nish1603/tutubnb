@@ -7,22 +7,22 @@ class ApplicationController < ActionController::Base
 
   def set_i18n_locale_from_session
     
-    logger.info session[:locale]
-    logger.info session["locale"]
-
     if session[:locale]
       if I18n.available_locales.include?(session[:locale].to_sym)
         I18n.locale = session[:locale]
       else
         flash.now[:notice] = "#{session[:locale]} translation not available"
-        logger.error flash.now[:notice]
       end
     end
   end
 
 
   def current_user
-    @current_user ||= User.find_by_id(session[:user_id])
+    if(session[:user_id].present?)
+      @current_user ||= User.find_by_id(session[:user_id])
+    else
+      nil
+    end
   end
 
   protected

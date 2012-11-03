@@ -13,10 +13,12 @@ Tutubnb2::Application.routes.draw do
 
   resources :deals, :only => [:index] do
     member do
-      post :reply
+#     post :reply
       post :complete
     end
   end
+
+  match "deals/:perform/:id/reply" => "deals#reply", :via => :post
   
   resources :places, :only => [] do
     resources :deals, :only => [:new, :create]
@@ -32,19 +34,21 @@ Tutubnb2::Application.routes.draw do
   resources :users do
     member do
       get :change_dp
-      post :update_dp
+      put :update_dp
       get :visits
       get :trips
       get :requests
       get :requested_trips
       post :wallet
-      post :activate
+#     post :activate
       get :places
       get :change_password
       put :update_forgotton_password
       put :update_password
       get :change_dp
       put :update_dp
+      get :register_with_site
+      post :update_information
     end
 
     collection do
@@ -54,6 +58,10 @@ Tutubnb2::Application.routes.draw do
       get :authenticate
     end
   end
+
+  match "users/:flag/:id/activate" => "users#activate", :via => :post, :as => :activate_user
+  match "places/:flag/:id/activate" => "places#activate", :via => :post, :as => :activate_place
+  match "places/:flag/:id/operation" => "places#operation", :via => :post, :as => :operation_place
 
   match '/sessions/:locale/locale' => "sessions#locale", :as => :locale_sessions
   resources :sessions, :only => [] do
@@ -116,6 +124,8 @@ Tutubnb2::Application.routes.draw do
    match "/admin/user" => "display#user", :via => :get, :as => :admin_users
 
    match "/admin/deals" => "display#deals", :via => :get, :as => :admin_deals
+
+   match "/display/show" => "display#show", :via => :post, :as => :display_show
 
   # # match  "/user/visits/:id" => "user#visits", :via => :get, :as => :user_visits
 

@@ -22,9 +22,9 @@
           <% end %>
           <% if(user.admin != true) %>
             <% if(user.activated == false) %>
-              <%= link_to 'Activate', user_activate_path('active', user.id) %>
+              <%= link_to 'Activate', activate_user_path('active', user.id), :method => :post %>
             <% else %>
-              <%= link_to 'Deactivate', user_activate_path('deactive', user.id) %>
+              <%= link_to 'Deactivate', activate_user_path('deactive', user.id), :method => :post %>
             <% end %>
             <%= link_to 'Delete', user_path(user.id), :method => :delete %>
           <% end %>

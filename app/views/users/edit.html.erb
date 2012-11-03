@@ -32,7 +32,7 @@
           <% if(@user.email) %>
             <td><%= @user.email %></td>
           <% else %>
-            <td><%= link_to 'Enter email address', register_with_site_user_path(@user.id) %></td>
+            <td><%= link_to 'Enter email address', register_with_site_path(@user.id) %></td>
           <% end %> 
         </tr>
         <tr class="field">

@@ -12,6 +12,7 @@ class Admin::DealsController < ApplicationController
         flash[:notice] = "#{@deal.price * 0.9} has been added to #{@owner.first_name} to your wallet."
       end
     end
+  end
 
   def send_mail_after_completion
     @deal = Deal.find_by_id(params[:id])

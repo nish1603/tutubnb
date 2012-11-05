@@ -110,8 +110,8 @@ class User < ActiveRecord::Base
       admin = User.admin.first
       
       ActiveRecord::Base.transaction do
-        self.update_wallet(ARTH_OPERATION.key(1 - code), Deal.add_brockerage_to_price(price)) 
-        admin.update_wallet(ARTH_OPERATION.key(code), Deal.add_brockerage_to_price(price))
+        self.update_wallet(ARTH_OPERATION.key(1 - code), amount) 
+        admin.update_wallet(ARTH_OPERATION.key(code), amount)
         admin.save
         self.save
       end

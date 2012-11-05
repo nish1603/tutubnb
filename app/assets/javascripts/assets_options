@@ -1,0 +1,52 @@
+assets_options
+
+compile :	
+
+I wrote that bit of the guide.
+
+You definitely do not want to live compile in production.
+
+When you have compile on, this is what happens:
+
+Every request for a file in /assets is passed to Sprockets. On the first request for each and every asset it is compiled and cached in whatever Rails is using for cache (usually the filesystem).
+
+On subsequent requests Sprockets receives the request and has to look up the fingerprinted filename, check that the file (image) or files(css and js) that make up the asset were not modified, and then if there is a cached version serve that.
+
+That is everything in the assets folder and in any vendor/assets folders used by plugins.
+
+That is a lot of overhead as, to be honest, the code is not optimized for speed.
+
+This will have an impact on how fast asset go over the wire to the client, and will negatively impact the page load times of your site.
+
+Compare with the default:
+
+When assets are precompiled and compile is off, assets are compiled and fingerprinted to the public/assets. Sprockets returns a mapping table of the plain to fingerprinted filenames to Rails, and Rails writes this to the filesystem. The manifests.yml file is loaded into Memory by Rails at startup and cached for use by the asset helper methods.
+
+This makes the generation of pages withe correct fingerprinted assets very fast, and the serving of the files themselves are web-server-from-the-filesystem fast. Both dramatically faster than live compiling.
+
+To get the maximum advantage of the pipeline and fingerprinting, you need to set far-future headers on your web server, and enable gzip compression for js and css files. Sprockets writes gzipped versions of assets which you can set your server to use, removing the need for it to do so for each request.
+
+This get assets out to the client as fast as possible, and in the smallest size possible, speeding up client-side display of the pages, and reducing (with far-future header) requests.
+
+So if you are live compiling it is:
+
+    Very slow
+    Lacks compression
+    Will impact render time of pages
+
+Versus
+
+    As fast as possible
+    Compressed
+    Remove compression overheard from server (optionally).
+    Minimize render time of pages.
+
+Edit: (Answer to follow up comment)
+
+The pipeline could be changed to precompile on the first request but there are some major roadblocks to doing so. The first is that there has to be a lookup table for fingerprinted names or the helper methods are too slow. Under a compile-on-demand senario there would need to be some way to append to the lookup table as each new asset is compiled or requested.
+
+Also, someone would have to pay the price of slow asset delivery for an unknown period of time until all the assets are compiled and in place.
+
+The default, where the price of compiling everything is paid off-line at one time, does not impact public visitors and ensures that everything works before things go live.
+
+The deal-breaker is that it adds a lot of complexity to production systems.

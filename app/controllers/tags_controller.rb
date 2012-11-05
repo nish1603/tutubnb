@@ -1,11 +1,9 @@
-class TagController < ApplicationController
+class TagsController < ApplicationController
   skip_before_filter :authorize
 
   def index
   	params = request.parameters
-  	@tags = []
-  	@tags = Tag.find(:all,:conditions => ['tag LIKE ?', "#{params[:tag]}%"],  :limit => 10, :order => 'tag') if(params[:tag])
-    @tags = @tags.map(&:tag)
+  	@tags = Tag.tags_starting_with(params[:tag])
     
     respond_to do |format|
       format.html

@@ -1,0 +1,11 @@
+
+<%= form_tag('/admin/deals', :method => :get, :remote => :true) do %>
+<table class = "search-options">
+  <tr>
+    <td><%= 'Deal type : ' %><%= select_tag(:type, options_for_select(Deal::TYPE), :prompt => 'Select Deals Type') %></td>
+    <td><%= submit_tag :Search %></td>
+  </tr>
+</table>
+<% end %>
+
+<p>Admin wallet : <%= User.admin.first.wallet %></p>

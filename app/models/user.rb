@@ -2,15 +2,14 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :first_name, :gender, :last_name, :password, :password_confirmation, :describe, :work, :live, :birth_date, :school, :avatar, :activate
 
-  attr_accessor :authentication_of_email
 
   validates :first_name, :presence => true
   validates :last_name, :presence => true
   validates :gender, :presence => true
-  validates :email, :presence => true, :if => proc { |user| user.authentication_of_email == 'no' }
+  validates :email, :presence => true#, :if => proc { |user| user.authentication_of_email == 'no' }
   validates :email, format: { :with => /^([a-zA-Z]([a-zA-Z0-9+.\-][.]?)*@[a-zA-Z0-9]+.[a-zA-Z]{2,4}.[a-zA-Z]{0,3})$/, :message => "Invalid Email Address" }, :unless => proc { |user| user.email.blank? }
   validates :email, :uniqueness => true, :unless => proc { |user| user.errors[:email].any? }
-  validates :password, :presence => true, :if => { |user| user.nil? && user.authentication_of_password 
+  validates :password, :presence => true, :if => proc { |user| user.nil? && user.authentication_of_password }
   validates :password, :length => { :minimum => 6 }, :if => :password, :unless => proc { |user| user.password.blank? }
   validates :password_confirmation, :presence => true, :if => :password
 
@@ -22,12 +21,11 @@ class User < ActiveRecord::Base
   has_many :places, :dependent => :destroy
   has_many :trips, :class_name => 'Deal', :dependent => :nullify
   has_many :deals, :through => :places
-  has_many :reviews, :dependent => :delete_all
-  has_many :authentications, :dependent => :delete_all
+  has_many :reviews, :dependent => :destroy
+  has_many :authentications, :dependent => :destroy
 
   before_destroy :has_pending_deals?
 
-  GENDER = {I18n.t('male') => 1, I18n.t('female') => 2, I18n.t('other') => 3}
   TYPE = ['Activated', 'Deactivated', 'Not_Verified', 'All']
 
   scope :admin, where(:admin => true)
@@ -35,6 +33,10 @@ class User < ActiveRecord::Base
   scope :activated, where(:verified => true, :activated => true)
   scope :deactivated, where(:activated => false)
   scope :not_verified, where(:verified => false)
+
+  def self.gender()
+    {I18n.t('male') => 1, I18n.t('female') => 2, I18n.t('other') => 3}
+  end
 
   def self.create_with_authentication(auth, current_user)
     current_user = user_for_authentication(auth, current_user)
@@ -48,7 +50,6 @@ class User < ActiveRecord::Base
   end
 
   def create_with_authentication(auth)
-    self.authentication_of_email = 'no' if(auth['provider'] == "twitter")
     self.password = self.password_confirmation = SecureRandom.urlsafe_base64(n = 6)
 
     if(self.new_record?)
@@ -57,7 +58,7 @@ class User < ActiveRecord::Base
       self.last_name = auth['info']['last_name'] if(self.last_name.blank?)
     end
     authentications.build(:provider => auth['provider'], :uid => auth['uid'], :token => auth['credentials']['token'], :secret => auth['credentials']['secret'])
-    self.save
+    self.save(:validate => false)
   end
 
   def update_wallet(commit_type, amount)
@@ -69,7 +70,7 @@ class User < ActiveRecord::Base
   end
 
   def has_pending_deals?
-    unless(deals.completed(false).requested(true).empty? && trips.completed(false).requested(true).empty?)
+    unless(deals.not_completed.empty? && trips.not_completed.empty?)
       return false
     end
   end
@@ -77,7 +78,7 @@ class User < ActiveRecord::Base
   def activate!()
     self.activated = true
     places.each do |place|
-      place.activated!()
+      place.activate!()
     end
     self.save
   end
@@ -85,18 +86,18 @@ class User < ActiveRecord::Base
   def deactivate!
     self.activated = false
     places.each do |place|
-      place.deactivated!()
+      place.deactivate!()
     end
     self.save
   end
 
 
-  def tarnsfer_from_admin!(price)
+  def transfer_from_admin!(price)
     admin = User.admin.first
 
     ActiveRecord::Base.transaction do
-      self.wallet += subtract_brockerage_from_price(price) 
-      admin.wallet -= subtract_brockerage_from_price(price)
+      self.update_wallet("Add", Deal.subtract_brockerage_from_price(price)) 
+      admin.update_wallet("Subtract", Deal.subtract_brockerage_from_price(price))
       admin.save
       self.save
     end
@@ -106,8 +107,8 @@ class User < ActiveRecord::Base
     admin = User.admin.first
     
     ActiveRecord::Base.transaction do
-      self.wallet -= add_brockerage_to_price(price) 
-      admin.wallet += add_brockerage_to_price(price)
+      self.update_wallet("Subtract", Deal.add_brockerage_to_price(price)) 
+      admin.update_wallet("Add", Deal.add_brockerage_to_price(price))
       admin.save
       self.save
     end

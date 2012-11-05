@@ -7,12 +7,12 @@ module PlaceSpecHelper
       :property_type => 2,
       :room_type => 1,
       :title => "Awesome",
-      :add_guests => 5, 
-      :add_price => 400.0,
-      :daily => 300,
-      :monthly => 8000,
-      :weekend => 300,
-      :weekly => 2000
+      :additional_guests => 5, 
+      :additional_price => 400.0,
+      :daily_price => 300,
+      :monthly_price => 8000,
+      :weekend_price => 300,
+      :weekly_price => 2000
     }
   end
 
@@ -36,6 +36,14 @@ module PlaceSpecHelper
     }
   end
 
+  def valid_rules_attributes
+    {
+      :rules => "No Smoking",
+      :availables => "fridge, t.v."
+    }
+  end
+
+
   def valid_review_attributes
     {
       :ratings => 9,
@@ -48,8 +56,7 @@ module PlaceSpecHelper
     {
       :start_date => "22/09/2013",
       :end_date => "24/09/2013",
-      :guests => 4,
-      :price => 8000
+      :guests => 4
     }
   end
 end
@@ -60,85 +67,122 @@ describe Place do
     @place = Place.new
   end
 
-  describe "validations" do
-    it "description should not be nil" do
-      @place.attributes = valid_place_attributes.except(:description)
-      @place.should have(1).errors_on(:description)
+  describe "Validations" do
+    context "description" do
+      it "should not be nil" do
+        @place.attributes = valid_place_attributes.except(:description)
+        @place.should have(1).errors_on(:description)
+        @place.errors_on(:description).should eq(["can't be blank"])
+      end
     end
 
-    it "title should not be nil" do
-      @place.attributes = valid_place_attributes.except(:title)
-      @place.should have(1).errors_on(:title)
+    context "title" do
+      it "should not be nil" do
+        @place.attributes = valid_place_attributes.except(:title)
+        @place.should have(1).errors_on(:title)
+        @place.errors_on(:title).should eq(["can't be blank"])
+      end
     end
 
-    it "room_type should not be nil" do
-      @place.attributes = valid_place_attributes.except(:room_type)
-      @place.should have(1).errors_on(:room_type)
+    context "room_type" do
+      it "should not be nil" do
+        @place.attributes = valid_place_attributes.except(:room_type)
+        @place.should have(1).errors_on(:room_type)
+        @place.errors_on(:room_type).should eq(["can't be blank"]) 
+      end
     end
 
-    it "property_type should not be nil" do
-      @place.attributes = valid_place_attributes.except(:property_type)
-      @place.should have(1).errors_on(:property_type)
+    context "property_type" do
+      it "property_type should not be nil" do
+        @place.attributes = valid_place_attributes.except(:property_type)
+        @place.should have(1).errors_on(:property_type)
+        @place.errors_on(:property_type).should eq(["can't be blank"])
+      end
     end
 
-    it "daily should not be nil" do
-      @place.attributes = valid_place_attributes.except(:daily)
-      @place.should have(1).errors_on(:daily)
+    context "daily_price" do
+      it "should not be nil" do
+        @place.attributes = valid_place_attributes.except(:daily_price)
+        @place.should have(1).errors_on(:daily_price)
+        @place.errors_on(:daily_price).should eq(["can't be blank"])
+      end
+
+      it "should be greater than or equal to zero" do
+        @place.attributes = valid_place_attributes.with(:daily_price => -2)
+        @place.should have(1).errors_on(:daily_price)
+        @place.errors_on(:daily_price).should eq(["must be greater than or equal to 0"])
+      end
     end
 
-    it "daily should be greater than or equal to zero" do
-      @place.attributes = valid_place_attributes.with(:daily => -2)
-      @place.should have(1).errors_on(:daily)
+    context "weekend_price" do
+      it "should be greater than or equal to zero" do
+        @place.attributes = valid_place_attributes.with(:weekend_price => -2)
+        @place.should have(1).errors_on(:weekend_price)
+        @place.errors_on(:weekend_price).should eq(["must be greater than or equal to 0"])
+      end
     end
 
-    it "weekend should be greater than or equal to zero" do
-      @place.attributes = valid_place_attributes.with(:weekend => -2)
-      @place.should have(1).errors_on(:weekend)
+    context "weekly_price" do
+      it "should be greater than or equal to zero" do
+        @place.attributes = valid_place_attributes.with(:weekly_price => -2)
+        @place.should have(1).errors_on(:weekly_price)
+        @place.errors_on(:weekly_price).should eq(["must be greater than or equal to 0"])
+      end
     end
 
-    it "weekly should be greater than or equal to zero" do
-      @place.attributes = valid_place_attributes.with(:weekly => -2)
-      @place.should have(1).errors_on(:weekly)
+    context "monthly_price" do
+      it "should be greater than or equal to zero" do
+        @place.attributes = valid_place_attributes.with(:monthly_price => -2)
+        @place.should have(1).errors_on(:monthly_price)
+        @place.errors_on(:monthly_price).should eq(["must be greater than or equal to 0"])
+      end
     end
 
-    it "monthly should be greater than or equal to zero" do
-      @place.attributes = valid_place_attributes.with(:monthly => -2)
-      @place.should have(1).errors_on(:monthly)
+    context "additional guests" do
+      it "should be greater than or equal to zero" do
+        @place.attributes = valid_place_attributes.with(:additional_guests => -2)
+        @place.should have(1).errors_on(:additional_guests)
+        @place.errors_on(:additional_guests).should eq(["must be greater than or equal to 0"])
+      end
+
+      it "should be only integer" do
+        @place.attributes = valid_place_attributes.with(:additional_guests => 2.8)
+        @place.should have(1).errors_on(:additional_guests)
+        @place.errors_on(:additional_guests).should eq(["must be an integer"])
+      end
     end
 
-    it "additional guests should be greater than or equal to zero" do
-      @place.attributes = valid_place_attributes.with(:add_guests => -2)
-      @place.should have(1).errors_on(:add_guests)
-    end
-
-    it "additional price should be greater than or equal to zero" do
-      @place.attributes = valid_place_attributes.with(:add_price => -2)
-      @place.should have(1).errors_on(:add_price)
+    context "addtional price" do
+      it "should be greater than or equal to zero" do
+        @place.attributes = valid_place_attributes.with(:additional_price => -2)
+        @place.should have(1).errors_on(:additional_price)
+        @place.errors_on(:additional_price).should eq(["must be greater than or equal to 0"])
+      end
     end
   end
 
-  describe "Relationship with Address" do
+  # describe "Association with Address" do
 
-    before(:each) do
-      @address = Address.create(valid_address_attributes)
-      @place.address = @address
-    end
+  #   before(:each) do
+  #     @address = Address.create(valid_address_attributes)
+  #     @place.address = @address
+  #   end
 
-    it "should have one address" do
-      @place.should respond_to(:address)
-    end
+  #   it "should have one address" do
+  #     @place.should respond_to(:address)
+  #   end
 
-    it "should return an address" do
-      @place.address.should eq(@address)
-    end
+  #   it "should return an address" do
+  #     @place.address.should eq(@address)
+  #   end
 
-    it "should destroy address when destroyed" do
-      @place.destroy
-      @place.address.destroyed?.should be_true
-    end
-  end
+  #   it "should destroy address when destroyed" do
+  #     @place.destroy
+  #     @place.address.destroyed?.should be_true
+  #   end
+  # end
 
-  describe "Relationship with Detail" do
+  describe "Association with Detail" do
 
     before(:each) do
       @detail = Detail.create(valid_detail_attributes)
@@ -159,7 +203,7 @@ describe Place do
     end
   end
 
-  describe "Relationship with Review" do
+  describe "Association with Reviews" do
 
     before(:each) do
       @review1 = Review.create(valid_review_attributes)
@@ -181,12 +225,14 @@ describe Place do
     end
   end
 
-  describe "Relationship with Deal" do
-
+  describe "Association with Deals" do
     before(:each) do
-      @deal1 = Deal.create(valid_deal_attributes)
-      @deal2 = Deal.create(valid_deal_attributes)
-      @place.deals = [@deal1, @deal2]
+      @place.attributes = valid_place_attributes
+      @place.save(:validate => false)
+      @detail = Detail.create(valid_detail_attributes)
+      @place.detail = @detail
+      @deal1 = @place.deals.build(valid_deal_attributes)
+      @deal2 = @place.deals.build(valid_deal_attributes)
     end
 
     it "should have many deal" do
@@ -194,12 +240,175 @@ describe Place do
     end
 
     it "should return deals" do
-      @place.deals.should eq([@deal1, @deal2])
+      @place.deals.should eq([@deal1, @deal2])      
     end
 
     it "should destroy deals when destoyed" do
       @place.destroy
-      @place.deals.should have(0).items
+      @deal1.place_id.should be_nil
+      @deal1.place_id.should be_nil
+    end
+  end
+
+  describe "Association with Rules" do
+
+    before(:each) do
+      @rules = Rules.create(valid_rules_attributes)
+      @place.rules = @rules
+    end
+
+    it "should have rules" do
+      @place.should respond_to(:rules)
+    end
+
+    it "should return rules" do
+      @place.rules.should eq(@rules)
+    end
+
+    it "should destroy rules when destroyed" do
+      @place.destroy
+      @place.rules.destroyed?.should be_true
+    end
+  end
+
+  describe "Association with Photos" do
+
+    before(:each) do
+      @photo1 = Photo.new()
+      @photo2 = Photo.new()
+      @place.photos = [@photo1, @photo2]
+    end
+
+    it "should have many photos" do
+      @place.should respond_to(:photos)
+    end
+
+    it "must have more than 2 photos" do
+      @place.photos = [@photo1]
+      @place.save
+      @place.should have(1).errors_on(:base)
+      @place.errors_on(:base).should eq(["Photos should be atleast 2"])
+    end
+
+    it "should return photos" do
+      @place.photos.should eq([@photo1, @photo2])
+    end
+
+    it "should destroy photos when destoyed" do
+      @place.destroy
+      @place.photos.should have(0).items
+    end
+  end
+
+  describe "Association with Tags" do
+
+    before(:each) do
+      @tag1 = Tag.new()
+      @tag2 = Tag.new()
+      @place.tags = [@tag1, @tag2]
+    end
+
+    it "should have many review" do
+      @place.should respond_to(:tags)
+    end
+
+    it "should return photos" do
+      @place.tags.should eq([@tag1, @tag2])
+    end
+
+    it "should destroy photos when destoyed" do
+      @place.destroy
+      @place.tags.should have(0).items
+    end
+  end
+
+  describe "tags_string" do
+    before(:each) do
+      @tag1 = Tag.new(:tag => "fridge")
+      @tag2 = Tag.new(:tag => "t.v.")
+      @place.tags = [@tag1, @tag2]
+    end
+
+    it "should return a comma seprated sting of tag names" do
+      @place.tags_string.should eq("fridge, t.v.")
+    end
+  end
+
+  describe "tags_string=" do
+    before(:each) do
+      @place.save(:validate => false)
+      @tag1 = Tag.create(:tag => "fridge")
+      @tag2 = Tag.create(:tag => "t.v.")
+      @place.tags_string = "fridge, t.v."
+    end
+
+    it "should associate with the tags" do
+      @place.tags.should eq([@tag1, @tag2])
+    end
+  end
+
+  describe "hide!" do
+    it "should hide the place" do
+      @place.hide!
+      @place.hidden.should be_true
+    end
+  end
+
+  describe "show!" do
+    it "should hide the place" do
+      @place.show!
+      @place.hidden.should be_false
+    end
+  end
+
+  describe "activate!" do
+    it "should activate the place" do
+      @place.activate!
+      @place.verified.should be_true
+    end
+  end
+
+  describe "deactivate!" do
+    it "should deactivate the place" do
+      @place.deactivate!
+      @place.verified.should be_false
+    end
+  end
+
+  describe "room_type_string" do
+    before(:each) do
+      @place.attributes = valid_place_attributes
+    end
+
+    it "should return the corresponding string of room type" do
+      @place.room_type_string.should eq("Private room")
+    end
+  end
+
+  describe "property_type_string" do
+    before(:each) do
+      @place.attributes = valid_place_attributes
+    end
+
+    it "should return the corresponding string of property type" do
+      @place.property_type_string.should eq("House")
+    end
+  end
+
+  describe "find_conflicting_deals" do
+    before(:each) do
+      @place.save(:validate => false)
+      @place.create_detail(valid_detail_attributes)
+      @deal1 = @place.deals.build(:start_date => "12/11/2012", :end_date => "22/11/2012", :guests => 3)
+      @deal1.price = 8000
+      @deal1.save
+      @deal2 = @place.deals.build(:start_date => "15/12/2012", :end_date => "25/12/2012", :guests => 3)
+      @deal2.price = 8000
+      @deal2.save
+    end
+
+    it "should return conflicting deals" do
+      @place.find_conflicting_deals(Date.new(2012,11,12), Date.new(2012,12,20)).should eq([@deal1, @deal2])
     end
   end
 end

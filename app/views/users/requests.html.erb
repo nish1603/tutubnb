@@ -37,8 +37,8 @@
           <% end %>
         </tr>
         <tr class="action">
-          <td><%= button_to('Accept', deal_reply_path(:accept, request.id), :method => :get) %></td>
-          <td><%= button_to('Reject', deal_reply_path(:reject, request.id), :method => :get) %></td>
+          <td><%= button_to('Accept', reply_deal_path(:accept, request.id)) %></td>
+          <td><%= button_to('Reject', reply_deal_path(:reject, request.id)) %></td>
         </tr>
       </table>
     <% end %>

@@ -158,5 +158,7 @@ describe Deal do
         @deal.place.should eq(@place)
       end
     end
-  end  
+  end
+
+    
 end

@@ -1,7 +1,6 @@
 class DealsController < ApplicationController
 
-  after_filter :send_mail_after_reply
-  after_filter :send_mail_after_completion
+  after_filter :send_mail_after_reply, :only => :reply
 
   def new
   	@deal = current_user.deals.build
@@ -10,7 +9,7 @@ class DealsController < ApplicationController
   end
 
   def create
-    @deal = current_user.deals.build(params[:deal])
+    @deal = current_user.trips.build(params[:deal])
     @deal.place_id = params[:place_id]
     @no_guests = (1..@deal.place.detail.accomodation).to_a
     @deal.price = 0.0
@@ -44,32 +43,12 @@ class DealsController < ApplicationController
     end
   end
 
-  def complete
-    @deal = Deal.find_by_id(params[:id])
-
-    respond_to do |format|
-      if(@deal.mark_completed!)
-        format.html { redirect_to admin_deals_path }
-        flash[:notice] = "#{@deal.price * 0.9} has been added to #{@owner.first_name} to your wallet."
-      end
-    end
-  end
-
   def send_mail_after_reply
     @deal = Deal.find_by_id(params[:id])
 
     notify_visitor = "Your request for {@deal.place.title} has been #{params[:perform]}ed."
     link_visitor = visits_user_path(@deal.user_id)
 
-    Notifier.notification(notify_visitor, link_visitor, @deal.user.email, @deal.user.first_name, 'Deal #{params[:perform].capitalize}ed.').deliver
-  end
-
-  def send_mail_after_completion
-    @deal = Deal.find_by_id(params[:id])
-
-    notify_visitor = "#{(@deal.price*0.9).round(2)} has been added to your wallet for the deal at #{@deal.place.title} from #{@deal.start_date} to #{@deal.end_date}."
-    link_visitor = edit_user_path(@deal.user_id)
-
-    Notifier.notification(notify_visitor, link_visitor, @deal.owner.email, @deal.owner.first_name, "Deal #{params[:perform].capitalize}ed.").deliver
+    Notifier.delay(:queue => 'verification').notification(notify_visitor, link_visitor, @deal.user.email, @deal.user.first_name, "Deal #{params[:perform].capitalize}ed.")
   end
 end

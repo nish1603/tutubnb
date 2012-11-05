@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
   def user_exist_by_email
     user = User.find_by_email(params[:email])
     if(user.nil?)
-      redirect_to login_profile_index_path
+      redirect_to login_sessions_path
       flash[:error] = 'Invalid E-mail Address.'
     end
   end
@@ -96,14 +96,14 @@ class ApplicationController < ActionController::Base
   end
 
   def user_logged_in
-    if(session[:user_id])
+    if(current_user)
       redirect_to root_url
       flash[:alert] = "Sorry, you are already logged in."
     end
   end
 
   def confirm_admin
-    if(session[:admin] == false)
+    if(current_user && current_user.admin == false)
       redirect_to root_url
     end
   end

@@ -3,8 +3,9 @@ require "photovalidator"
 class Place < ActiveRecord::Base
   attr_accessible :description, :property_type, :room_type, :title, :additional_guests, :additional_price, :daily_price, :monthly_price, :weekend_price, :weekly_price, :address_attributes, :detail_attributes, :photos_attributes, :rules_attributes, :tags_string
   
-  validates :description, :property_type, :title, :daily_price, :room_type, presence: true
-  validates :additional_guests, :additional_price, :monthly_price, :weekend_price, :weekly_price, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
+  validates :description, :property_type, :title, :daily_price, :room_type, :presence => true
+  validates :additional_price, :monthly_price, :weekend_price, :weekly_price, :numericality => { :greater_than_or_equal_to => 0}, :allow_nil => true
+  validates :additional_guests, :numericality => { :greater_than_or_equal_to => 0, :only_integer => true }, :allow_nil => true
   validates :title, :uniqueness => { :case_sensitive => false, :scope => [:user_id] }, :unless => proc { |place| place.title.blank? }
   validates :daily_price, :numericality => { :greater_than_or_equal_to => 0}, :unless => proc{ |place| place.daily_price.blank? }
   validates_with PhotoValidator
@@ -16,7 +17,7 @@ class Place < ActiveRecord::Base
   PLACE_TYPE = ['Activated', 'Deactivated']
 
   before_save :set_prices
-  #after_create :post_on_twitter
+  after_create :post_on_twitter
   before_destroy :check_current_deals
   
   has_one :detail, :dependent => :destroy
@@ -66,7 +67,7 @@ class Place < ActiveRecord::Base
   end
 
   def check_current_deals
-    if(deals.completed.empty?)
+    if(deals.not_completed.empty?)
       return true
     else
       return false
@@ -92,10 +93,10 @@ class Place < ActiveRecord::Base
     ROOM_TYPE.key(room_type) 
   end
   
-  def find_conflicting_deals
+  def find_conflicting_deals(start_date, end_date)
     conflicting_deals = []
     
-    place_deals = Deal.by_place(self).state(0)
+    place_deals = self.deals.state(0)
     dates = (start_date..end_date).to_a
     
     place_deals.each do |place_deal|
@@ -109,7 +110,7 @@ class Place < ActiveRecord::Base
   end
 
   def reject_deals!(start_date, end_date)
-    conflicting_deals = find_conflicting_deals()
+    conflicting_deals = find_conflicting_deals(state_date, end_date)
 
     conflicting_deals.each do |place_deal|
       place_deal.accept = false
@@ -119,7 +120,7 @@ class Place < ActiveRecord::Base
   end
 
   def check_for_deals(start_date, end_date)
-    if find_conflicting_deals().empty?
+    if find_conflicting_deals(start_date, end_date).empty?
       return true
     else
       return false
@@ -137,8 +138,12 @@ class Place < ActiveRecord::Base
   end
 
   def post_on_twitter
-    client = Twitter::Client.new
-    text = "Have a look on a new place #{self.title}"
-    client.update(self.description)
+    Twitter.configure do |config|
+      config.consumer_key       = TWITTER_CONSUMER_TOKEN
+      config.consumer_secret    = TWITTER_CONSUMER_SECRET
+      config.oauth_token        = user.authentications.first.token
+      config.oauth_token_secret = user.authentications.first.secret
+    end
+    Twitter.update description
   end
 end

@@ -3,7 +3,9 @@ class UsersController < ApplicationController
   skip_before_filter :authorize, :only => [:new, :create, :authenticate, :forgotton_password, :change_forgotton_password, :update_forgotton_password, :send_activation_link]
   before_filter :validate_account, :except => [:wallet, :activate, :destroy, :new, :create, :forgotton_password, :change_forgotton_password, :update_forgotton_password]
   before_filter :validate_account_for_destroy, :only => :destroy
+  before_filter :confirm_admin, :only => [:wallet, :activate]
   before_filter :user_logged_in, :only => [:signup, :authenticate, :forgotton_password, :change_forgotton_password, :update_forgotton_password]
+
 
   def edit
     edit_func
@@ -82,40 +84,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def wallet
-    @user = User.find(params[:id])
-
-    @user.update_wallet(params[:commit], params[:amount].to_f)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to admin_users_path }
-      end
-    end
-  end
-
-  def activate
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      if(perform_activate(@user))
-        flash[:notice] = "Account #{@user.first_name} is now #{params[:flag]}"
-      else
-        flash[:error] = "Acoount #{@user.first_name} has not been activated"
-      end
-      format.html { redirect_to admin_users_path }
-    end
-  end
-
-  def perform_activate(user)
-    if(params[:flag] == "active")
-      return user.activate!
-    elsif(params[:flag] == "deactive")
-      return user.deactivate!
-    end
-    return false
-  end
-
   def destroy
     @user = User.find_by_id(params[:id])
 
@@ -164,7 +132,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         link = authenticate_users_url + "?email=#{@user.email}&activation_link=#{@user.activation_link}"
-        Notifier.verification(link, @user.email, @user.first_name).deliver
+        Notifier.delay(:queue => 'verification').verification(link, @user.email, @user.first_name)
         flash[:alert] = "An Email has been sent at your e-mail address for verification."
         format.html { redirect_to root_url }
       else
@@ -208,7 +176,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if(user && user.save)
-        Notifier.verification(link, user.email, user.first_name).deliver
+        Notifier.delay(:queue => 'verification').verification(link, user.email, user.first_name).deliver
         format.html { redirect_to login_sessions_path }
         flash[:notice] = "An Email has been send to your account"
       else

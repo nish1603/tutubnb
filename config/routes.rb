@@ -11,14 +11,17 @@ Tutubnb2::Application.routes.draw do
 
   resources :reviews, :only => [:new, :create]
 
-  resources :deals, :only => [:index] do
-    member do
-#     post :reply
-      post :complete
+  resources :deals, :only => [:index]
+  
+  namespace :admin do
+    resources :deals, :only => [] do 
+      member do
+        post :complete
+      end
     end
   end
 
-  match "deals/:perform/:id/reply" => "deals#reply", :via => :post
+  match "deals/:perform/:id/reply" => "deals#reply", :via => :post, :as => :reply_deal
   
   resources :places, :only => [] do
     resources :deals, :only => [:new, :create]
@@ -39,7 +42,7 @@ Tutubnb2::Application.routes.draw do
       get :trips
       get :requests
       get :requested_trips
-      post :wallet
+#      post :wallet
 #     post :activate
       get :places
       get :change_password
@@ -59,8 +62,16 @@ Tutubnb2::Application.routes.draw do
     end
   end
 
-  match "users/:flag/:id/activate" => "users#activate", :via => :post, :as => :activate_user
-  match "places/:flag/:id/activate" => "places#activate", :via => :post, :as => :activate_place
+  namespace :admin do
+    resources :users, :only => [] do
+      member do
+        post :wallet
+      end
+    end
+  end
+
+  match "admin/users/:flag/:id/activate" => "admin/users#activate", :via => :post, :as => :activate_user
+  match "admin/places/:flag/:id/activate" => "admin/places#activate", :via => :post, :as => :activate_place
   match "places/:flag/:id/operation" => "places#operation", :via => :post, :as => :operation_place
 
   match '/sessions/:locale/locale' => "sessions#locale", :as => :locale_sessions
@@ -121,9 +132,15 @@ Tutubnb2::Application.routes.draw do
 
   # match "/user/activate/:flag/:id" => "user#activate", :via => :get, :as => :user_activate  
 
-   match "/admin/user" => "display#user", :via => :get, :as => :admin_users
+  # namespace :admin do
+  #   resources :display do
+  #     get :user
+  #     get :deals
+  #   end
+  # end
+   match "/admin/user" => "admin/display#user", :via => :get, :as => :admin_users
 
-   match "/admin/deals" => "display#deals", :via => :get, :as => :admin_deals
+   match "/admin/deals" => "admin/display#deals", :via => :get, :as => :admin_deals
 
    match "/display/show" => "display#show", :via => :post, :as => :display_show
 

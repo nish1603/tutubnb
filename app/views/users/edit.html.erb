@@ -25,7 +25,7 @@
         </tr>
         <tr class="field">
           <td><%= form.label t('.i_am'), :for => :user_gender %></td>
-          <td><%= form.select :gender, User::GENDER %></td>
+          <td><%= form.select :gender, User.gender %></td>
         </tr>
         <tr class="field">
           <td><%= form.label :email %></td>
@@ -41,7 +41,7 @@
         </tr>
         <tr class="field">
           <td><%= form.label :birth_date %></td>
-          <td><%#= form.date_select(:birth_date, :start_year => Time.now.year - 80, :end_year => Time.now.year - 18) %></td>
+          <td><%= form.date_select(:birth_date, :start_year => Time.now.year - 80, :end_year => Time.now.year - 18, :locale => :en) %></td>
         </tr>
         <tr class="field">
           <td><%= form.label t('.tell_about_yourself'), :for => :user_description %></td>
@@ -59,6 +59,7 @@
           <td><%= form.label t('.where_you_live'), :for => :user_live %></td>
           <td><%= form.text_field :live %></td>
         </tr>
+
         <tr class="actions">
           <td></td>
           <td><%= form.submit("Save User") %></td>

@@ -16,17 +16,18 @@ class Deal < ActiveRecord::Base
   validate :less_than_max_guests, :unless => proc { |deal| deal.guests.blank? }
 
   #FIXME_AB: These should be validation.
-  validate :user_have_amount, :on => :create
-  validate :user_have_wallet, :on => :create
-  validate :place_already_book, :on => :create
-
+  before_save :user_have_amount
+  before_save :user_have_wallet
+  before_save :place_already_book
+  
   TYPE = {'Accepted' => 1, 'Rejected' => 2, 'Requests' => 0, 'To Complete' => 3, 'Completed' => 4, 'Reviewed' => 5}
 
   belongs_to :user
   belongs_to :place
 
-  scope :state, lambda { |value| where(state: value) }
-  
+  scope :state, lambda { |value| where(:state => value) }
+  scope :not_completed, where("state = ? OR state = ?", 1, 3)
+
   scope :find_visits_of_user, lambda { |user| user.deals.state(1) }
   scope :find_requests_of_user, lambda { |user| user.deals.state(0) }
   scope :find_trips_of_user, lambda { |user| user.trips.where("state != ?", 0) }
@@ -34,18 +35,18 @@ class Deal < ActiveRecord::Base
   
   #FIXME_AB: I doubt if we need following as scope
   scope :completed_by_place, lambda { |place| Deal.where(:place_id => place.id).completed(false).requested(true) }
-  scope :unreviewed_by_user_on_place, lambda { |user, place| Deal.where(:place_id => place.id, :user_id => user.id).completed(true).reviewed(false) } 
+  scope :unreviewed_by_user_on_place, lambda { |user, place| Deal.where(:place_id => place.id, :user_id => user.id).status(4) } 
 
     def owner
       place.user
     end
 
-    def add_brockerage_to_price(price)
-      price * 1.1
+    def self.add_brockerage_to_price(price)
+      return (price * 1.1)
     end
 
-    def subtract_brockerage_from_price(price)
-      price * 0.9
+    def self.subtract_brockerage_from_price(price)
+      return (price * 0.9)
     end
 
     def user_have_amount
@@ -53,6 +54,7 @@ class Deal < ActiveRecord::Base
         errors.add(:base, "Sorry, You don't have enough amount to pay in your wallet.")
         return false
       end
+      return  true
     end
 
     def user_have_wallet
@@ -62,6 +64,7 @@ class Deal < ActiveRecord::Base
         errors.add(:base, "Sorry, You have requested places upto the limit of your wallet.")
         return false
       end
+      return true
     end
 
     def validate_start_date
@@ -111,12 +114,12 @@ class Deal < ActiveRecord::Base
     end
 
     def reject!()
-      self.accept = 2
+      self.state = 2
       self.save
     end
 
     def mark_completed!()
-      complete = true
+      self.state = 4
       owner.transfer_from_admin!(price)
     end
     

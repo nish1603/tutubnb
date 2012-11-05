@@ -95,7 +95,7 @@
       <tr class="actions">
         <% if(params[:action] == "new" || params[:action] == "create") %>
           <td><%= form.submit 'Save Place'%></td>
-          <td><%= form.submit t('.create_place') %></td>
+          <td><%= form.submit t('create_place', :scope => [:places, :new]) %></td>
         <% else %>
           <td><%= form.submit 'Update Place'%></td>
         <% end %>

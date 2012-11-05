@@ -39,7 +39,7 @@
       </div>
 
     	<div>
-    		<%= form.select :gender, User::GENDER, :locale => I18n.locale %>
+    		<%= form.select :gender, User.gender() %>
     	</div>
 
       <div>

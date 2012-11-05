@@ -12,6 +12,8 @@ class Notifier < ActionMailer::Base
     mail to: sender_email, subject: "Verification Mail"
   end
 
+  # handle_asynchronously :verification
+
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
@@ -23,4 +25,6 @@ class Notifier < ActionMailer::Base
     @sender_name = sender_name
     mail to: sender_email, subject: subject
   end
+
+  # handle_asynchronously :notification, :queue => 'notification'
 end

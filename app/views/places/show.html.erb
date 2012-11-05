@@ -1,4 +1,10 @@
 
+<div id = "showing_tags">
+  <% @place.tags_string.split(', ').each do |place_tag| %>
+    <div class = "tag_name"><span><%= place_tag %></span></div>
+  <% end %>
+</div>
+
 <div class = "place-information">
   <iframe name = "image-frame" src = "<%= @place.photos.first.avatar.url(:large) %>" >
   </iframe> 
@@ -42,11 +48,3 @@
     <%= render 'reviews' %>
   </div>
 </div>
-
-<div id = "show_tags">
-  <% @place.tags_string.split(', ').each do |place_tag| %>
-    <div class = "tag_name"><span><%= place_tag %></span></div></div>
-  <% end %>
-</div>
-<%= tweet_button(:via => "tutubnb", :text => @place.title, :url => place_url(@place.id), :count => "none" ) %>
-<%= link_to "tweet me", "http://localhost:3000/auth/twitter", :target => "_blank"  %>

@@ -2,23 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-ul.ui-autocomplete {
-  background : white;
-  overflow : auto;
-  max-height : 75px;
-  width : 14%;
-
-  li {
-    color : black;
-    list-style-type : none;
-  }
-
-  a:active {
-    color : white;
-    background : orange;
-  }
-}
-
 div.side {
   background : pink;
   border : 1px solid magenta;
@@ -157,3 +140,23 @@ div#suggestions {
     overflow : auto;
   }
 }
+
+  div#showing_tags {
+    height : 100%;
+    min-height: 1000px;
+    overflow : auto;
+    background-color: pink;
+    width : 20%;
+      div.tag_name {
+        color : white;
+        height : 20px;
+        margin : 10px;
+        z-index : -1px;
+        float : left;
+        background : purple;
+        
+      div {
+        display : inline;
+      }
+    }
+  }

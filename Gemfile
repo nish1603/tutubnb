@@ -18,6 +18,8 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem 'delayed_job_active_record'
+  gem "daemons"
 end
 
 group :development, :test do

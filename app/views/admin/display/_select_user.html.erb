@@ -15,7 +15,7 @@
           <p class = "Email Id"><%= user.email %></p>
         </td>
         <td class = "right-cell">
-          <%= form_tag(wallet_user_path(user.id)) do %>
+          <%= form_tag(wallet_admin_user_path(user.id)) do %>
             <%= text_field_tag :amount %>
             <%= submit_tag 'Add'  %>
             <%= submit_tag 'Subtract' %>

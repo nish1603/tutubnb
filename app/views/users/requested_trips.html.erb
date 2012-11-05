@@ -38,7 +38,7 @@
           <% end %>
         </tr>
         <tr class="action">
-          <td><%= button_to('Reject', deal_reply_path(:reject, requested_trip.id), :method => :get) %></td>
+          <td><%= button_to('Reject', reply_deal_path(:reject, requested_trip.id)) %></td>
         </tr>
       </table>
     <% end %>

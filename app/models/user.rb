@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   before_destroy :has_pending_deals?
 
   TYPE = ['Activated', 'Deactivated', 'Not_Verified', 'All']
+  ARTH_OPERATION = {"Add" => 1, "Subtract" => 0}
 
   scope :admin, where(:admin => true)
   scope :by_email, lambda{ |user| where(:email => user.email)}
@@ -93,24 +94,26 @@ class User < ActiveRecord::Base
 
 
   def transfer_from_admin!(price)
-    admin = User.admin.first
-
-    ActiveRecord::Base.transaction do
-      self.update_wallet("Add", Deal.subtract_brockerage_from_price(price)) 
-      admin.update_wallet("Subtract", Deal.subtract_brockerage_from_price(price))
-      admin.save
-      self.save
-    end
+    amount = Deal.subtract_brockerage_from_price(price)
+    
+    transfer(0, amount)
   end
 
   def transfer_to_admin!(price)
-    admin = User.admin.first
+    amount = Deal.add_brockerage_to_price(price)
     
-    ActiveRecord::Base.transaction do
-      self.update_wallet("Subtract", Deal.add_brockerage_to_price(price)) 
-      admin.update_wallet("Add", Deal.add_brockerage_to_price(price))
-      admin.save
-      self.save
-    end
+    transfer(1, amount)
   end
+
+  private
+    def transfer(code, amount)
+      admin = User.admin.first
+      
+      ActiveRecord::Base.transaction do
+        self.update_wallet(ARTH_OPERATION.key(1 - code), Deal.add_brockerage_to_price(price)) 
+        admin.update_wallet(ARTH_OPERATION.key(code), Deal.add_brockerage_to_price(price))
+        admin.save
+        self.save
+      end
+    end
 end

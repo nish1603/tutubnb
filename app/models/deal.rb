@@ -91,7 +91,16 @@ class Deal < ActiveRecord::Base
       self.months, self.weeks, self.days = start_date.calculate_days_weeks_months(end_date)
       self.weekdays, self.weekends = start_date.calculate_weekdays_weekends(days)
 
-      self.price += ((weeks * place.weekly_price) + (months * place.monthly_price) + (weekends * place.weekend_price) + (weekdays * place.daily_price) + calculate_price_for_additional_guests())
+      self.price = set_price(price)
+    end
+
+    def set_price(price)
+      price += weeks * place.weekly_price
+      price += months * place.monthly_price
+      price += weekends * place.weekend_price
+      price += weekdays * place.daily_price
+      price += calculate_price_for_additional_guests()
+      price
     end
 
     def calculate_price_for_additional_guests()

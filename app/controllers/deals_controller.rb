@@ -2,6 +2,8 @@ class DealsController < ApplicationController
 
   after_filter :send_mail_after_reply, :only => :reply
 
+  caches_action :new, :layout => false
+
   def new
   	@deal = current_user.deals.build
     @deal.place_id = params[:place_id]

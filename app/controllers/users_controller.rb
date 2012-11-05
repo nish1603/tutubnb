@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   before_filter :confirm_admin, :only => [:wallet, :activate]
   before_filter :user_logged_in, :only => [:signup, :authenticate, :forgotton_password, :change_forgotton_password, :update_forgotton_password]
 
+  caches_action :new, :layout => false
 
   def edit
     edit_func
@@ -176,7 +177,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if(user && user.save)
-        Notifier.delay(:queue => 'verification').verification(link, user.email, user.first_name).deliver
+        Notifier.delay(:queue => 'verification').verification(link, user.email, user.first_name)
         format.html { redirect_to login_sessions_path }
         flash[:notice] = "An Email has been send to your account"
       else

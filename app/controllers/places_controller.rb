@@ -4,6 +4,9 @@ class PlacesController < ApplicationController
   before_filter :place_exists, :only => [:edit, :update, :operation, :show]
   before_filter :validating_owner, :only => [:edit, :update, :operation]
 
+  caches_action :new, :layout => false
+  caches_action :show, :expires_in => 10
+
   def new
   	@place = Place.new
     @place.build_detail 
@@ -106,6 +109,7 @@ class PlacesController < ApplicationController
       validate = true
       notice = "Your place has been created."
     end
+    return validate, notice
   end
 
 end

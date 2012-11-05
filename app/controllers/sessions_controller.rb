@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
         set_session(user.id)
         format.html { redirect_to root_url }
       else
-        format.html { redirect_to login_profile_index_path }
+        format.html { redirect_to login_sessions_path }
         flash[:error] = 'E-mail Address/Password doesn\'t match.'
       end
     end

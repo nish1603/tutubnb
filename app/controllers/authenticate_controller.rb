@@ -24,7 +24,6 @@ class AuthenticateController < ApplicationController
         redirect_to root_url
       end
     else      
-# create omniauth and user if a new record
       user = User.create_with_authentication(auth, current_user)
       if user
         check_sign_in_and_redirect(user)
@@ -49,15 +48,5 @@ class AuthenticateController < ApplicationController
     @authentication.destroy
     flash[:notice] = "Successfully destroyed authentication."
     redirect_to authentications_url
-  end
-
-  def tweet
-    Twitter.configure do |config|
-      config.consumer_key       = "hy8b0hn6OMJhyw1qaoUuvQ"
-      config.consumer_secret    = "w7WImhhWiQWo2l1XlW1EKr8yT9SavoxGRJvq8FAT0w"
-      config.oauth_token        = current_user.authentications.first.token
-      config.oauth_token_secret = current_user.authentications.first.secret
-    end
-    Twitter.update 'Hello World'
   end
 end

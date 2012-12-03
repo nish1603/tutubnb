@@ -161,26 +161,26 @@ describe Place do
     end
   end
 
-  # describe "Association with Address" do
+  describe "Association with Address" do
 
-  #   before(:each) do
-  #     @address = Address.create(valid_address_attributes)
-  #     @place.address = @address
-  #   end
+    before(:each) do
+      @address = Address.create(valid_address_attributes)
+      @place.address = @address
+    end
 
-  #   it "should have one address" do
-  #     @place.should respond_to(:address)
-  #   end
+    it "should have one address" do
+      @place.should respond_to(:address)
+    end
 
-  #   it "should return an address" do
-  #     @place.address.should eq(@address)
-  #   end
+    it "should return an address" do
+      @place.address.should eq(@address)
+    end
 
-  #   it "should destroy address when destroyed" do
-  #     @place.destroy
-  #     @place.address.destroyed?.should be_true
-  #   end
-  # end
+    it "should destroy address when destroyed" do
+      @place.destroy
+      @place.address.destroyed?.should be_true
+    end
+  end
 
   describe "Association with Detail" do
 

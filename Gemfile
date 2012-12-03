@@ -7,7 +7,6 @@ gem 'rails', '3.2.8'
 
 gem 'sqlite3'
 
-
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -41,6 +40,8 @@ gem 'omniauth-twitter'
 gem 'tweet-button'
 gem 'omniauth-linkedin'
 gem 'twitter'
+gem 'yaml_db'
+gem 'remotipart'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

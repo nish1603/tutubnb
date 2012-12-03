@@ -39,6 +39,7 @@
         </tr>
       </table>
     <% end %>
+    <%= will_paginate @visits %>
     <% if(@visits.empty?) %>
       <%= render :text => "No visits as of now." %>
     <% end %>

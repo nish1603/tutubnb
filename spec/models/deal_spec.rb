@@ -15,12 +15,12 @@ module DealSpecHelper
       :property_type => 2,
       :room_type => 1,
       :title => "Awesome",
-      :add_guests => 5, 
-      :add_price => 400.0,
-      :daily => 300,
-      :monthly => 8000,
-      :weekend => 300,
-      :weekly => 2000
+      :additional_guests => 5, 
+      :additional_price => 400.0,
+      :daily_price => 300,
+      :monthly_price => 8000,
+      :weekend_price => 300,
+      :weekly_price => 2000
     }
   end
 
@@ -49,9 +49,11 @@ describe Deal do
   
   before(:each) do
     @user = User.create(valid_user_attributes)
+    @owner = User.create(valid_user_attributes)
     @place = Place.create(valid_place_attributes)
     @detail = Detail.create(valid_detail_attributes)
     @place.detail = @detail
+    @place.user = @owner
     @deal = Deal.new
     @deal.user = @user
     @deal.place = @place
@@ -160,5 +162,92 @@ describe Deal do
     end
   end
 
-    
+  describe "owner" do 
+    it "should return the owner of deal" do
+      @deal.owner.should eq(@owner)
+    end
+  end
+
+  describe "accept!" do
+    before(:each) do
+      @deal.attributes = valid_deal_attributes
+      @deal.price = 8000
+      @admin = User.create(valid_user_attributes.with(:email => "nishant1603@gmail.com"))
+      @admin.admin = true
+      @admin.wallet = 20000
+      @admin.save
+      @user.wallet = 20000
+      @deal1 = @deal.clone
+      @deal1.state = 0
+      @deal1.save
+    end
+
+    it "should accept the deal" do
+      @deal.accept!
+      @deal.state.should eq(1)
+    end
+
+    it "should transfer money to admin" do
+      @deal.accept!
+      @user.wallet.should eq(11200.0)
+      @admin.reload
+      @admin.wallet.should eq(28800.0)
+    end
+
+    it "should reject the other contradicting deals" do
+      @deal.accept!
+      @deal1.state.should eq(2)
+    end
+  end
+
+  describe "reject!" do
+    it "should accept the deal" do
+      @deal.reject!
+      @deal.state.should eq(2)
+    end
+  end
+
+  describe "mark_completed!" do
+    before(:each) do
+      @deal.attributes = valid_deal_attributes
+      @deal.price = 8000
+      @admin = User.create(valid_user_attributes.with(:email => "nishant1603@gmail.com"))
+      @admin.admin = true
+      @admin.wallet = 20000
+      @admin.save
+    end
+
+    it "should accept the deal" do
+      @deal.mark_completed!
+      @deal.state.should eq(4)
+    end
+
+    it "should transfer money from admin" do
+      @deal.mark_completed!
+      @admin.reload
+      @owner.wallet.should eq(7200.0)
+      @admin.wallet.should eq(12800.0)
+    end
+  end
+
+  describe "add_brokerage_to_price" do
+    it "should return price after adding brokerage" do
+      Deal.add_brockerage_to_price(1000).should eq(1100)
+    end
+  end
+
+  describe "subtract_brokerage_from_price" do
+    it "should return price after subtracting brokerage" do
+      Deal.subtract_brockerage_from_price(1000).should eq(900)
+    end
+  end
+
+  # describe "calculate_price_for_addtional_guest" do
+  #   before(:each) do
+  #   end
+
+  #   context "No additional_guests for place" do
+  #     it "should have no additonal"
+  #   end
+  # end
 end

@@ -96,7 +96,7 @@ class Place < ActiveRecord::Base
   def find_conflicting_deals(start_date, end_date)
     conflicting_deals = []
     
-    place_deals = self.deals.state(0)
+    place_deals = self.deals.state(1)
     dates = (start_date..end_date).to_a
     
     place_deals.each do |place_deal|
@@ -110,11 +110,10 @@ class Place < ActiveRecord::Base
   end
 
   def reject_deals!(start_date, end_date)
-    conflicting_deals = find_conflicting_deals(state_date, end_date)
+    conflicting_deals = find_conflicting_deals(start_date, end_date)
 
     conflicting_deals.each do |place_deal|
-      place_deal.accept = false
-      place_deal.request = false
+      place_deal.state = 2
       place_deal.save
     end
   end
@@ -138,12 +137,16 @@ class Place < ActiveRecord::Base
   end
 
   def post_on_twitter
-    Twitter.configure do |config|
-      config.consumer_key       = TWITTER_CONSUMER_TOKEN
-      config.consumer_secret    = TWITTER_CONSUMER_SECRET
-      config.oauth_token        = user.authentications.first.token
-      config.oauth_token_secret = user.authentications.first.secret
+    authentication = user.authentications.by_provider(:twitter)
+
+    if(authentication)
+      Twitter.configure do |config|
+        config.consumer_key       = TWITTER_CONSUMER_TOKEN
+        config.consumer_secret    = TWITTER_CONSUMER_SECRET
+        config.oauth_token        = authentication.token
+        config.oauth_token_secret = authentication.secret
+      end
+      Twitter.update title + " " + description 
     end
-    Twitter.update description
   end
 end

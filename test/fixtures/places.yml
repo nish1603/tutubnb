@@ -5,11 +5,11 @@ one:
   description: 'mkxmkmkmmks s mkc'
   property_type: 'Appartment'
   room_type: 'Private room'
-  daily: 45.0
+  daily_price: 45.0
 
 two:
   title: "Adi's place"
   description: 'mkxmkmkmmks s mkc'
   property_type: 'Appartment'
   room_type: 'Shared room'
-  daily: 100.0
+  daily_price: 100.0

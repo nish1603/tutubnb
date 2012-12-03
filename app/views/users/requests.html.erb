@@ -42,6 +42,9 @@
         </tr>
       </table>
     <% end %>
+
+    <%= will_paginate @requests %>
+    
     <% if(@requests.empty?) %>
       <%= render :text => "No requests as of now." %>
     <% end %>

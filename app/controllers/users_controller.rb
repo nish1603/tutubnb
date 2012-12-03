@@ -4,9 +4,7 @@ class UsersController < ApplicationController
   before_filter :validate_account, :except => [:wallet, :activate, :destroy, :new, :create, :forgotton_password, :change_forgotton_password, :update_forgotton_password]
   before_filter :validate_account_for_destroy, :only => :destroy
   before_filter :confirm_admin, :only => [:wallet, :activate]
-  before_filter :user_logged_in, :only => [:signup, :authenticate, :forgotton_password, :change_forgotton_password, :update_forgotton_password]
-
-  caches_action :new, :layout => false
+  before_filter :user_logged_in, :only => [:new, :create]
 
   def edit
     edit_func
@@ -26,7 +24,7 @@ class UsersController < ApplicationController
 
   def visits
     @user = User.find_by_id(params[:id])
-    @visits = Deal.find_visits_of_user(@user)
+    @visits = Deal.find_visits_of_user(@user).paginate(:page => params[:page], :per_page => 2)
 
     respond_to do |format|
       format.html
@@ -35,7 +33,7 @@ class UsersController < ApplicationController
 
   def trips
     @user = User.find_by_id(params[:id])
-    @trips = Deal.find_trips_of_user(@user)
+    @trips = Deal.find_trips_of_user(@user).paginate(:page => params[:page] || 1, :per_page => 2)
 
     respond_to do |format|
       format.html
@@ -44,7 +42,7 @@ class UsersController < ApplicationController
 
   def requests
     @user = User.find_by_id(params[:id])
-    @requests = Deal.find_requests_of_user(@user)
+    @requests = Deal.find_requests_of_user(@user).paginate(:page => params[:page] || 1, :per_page => 2)
 
     respond_to do |format|
       format.html
@@ -53,7 +51,7 @@ class UsersController < ApplicationController
 
   def requested_trips
     @user = User.find_by_id(params[:id])
-    @requested_trips = Deal.find_requested_trips_of_user(@user)
+    @requested_trips = Deal.find_requested_trips_of_user(@user).paginate(:page => params[:page] || 1, :per_page => 2)
 
     respond_to do |format|
       format.html
@@ -134,6 +132,8 @@ class UsersController < ApplicationController
       if @user.save
         link = authenticate_users_url + "?email=#{@user.email}&activation_link=#{@user.activation_link}"
         Notifier.delay(:queue => 'verification').verification(link, @user.email, @user.first_name)
+#        Notifier.verification(link, @user.email, @user.first_name).deliver
+
         flash[:alert] = "An Email has been sent at your e-mail address for verification."
         format.html { redirect_to root_url }
       else

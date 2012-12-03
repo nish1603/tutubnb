@@ -1,11 +1,16 @@
 class PlacesController < ApplicationController  
   skip_before_filter :authorize, only: :show
   before_filter :owner_activated, :only => [:activate, :operation]
-  before_filter :place_exists, :only => [:edit, :update, :operation, :show]
+  before_filter :place_exists, :only => [:edit, :update, :destroy, :operation, :show]
   before_filter :validating_owner, :only => [:edit, :update, :operation]
-
-  caches_action :new, :layout => false
-  caches_action :show, :expires_in => 10
+  #  before_filter :expires_cache_show, :only => :show
+  
+  # caches_action :show, :layout => :false, :if => lambda { |c| Place.find_by_id(c.params[:id]).user != current_user }
+  
+  # def expires_cache_show
+  #   @place = Place.find_by_id(params[:id])
+  #   expire_action :action => :show, :id => params[:id] if(@place.user == current_user)
+  # end
 
   def new
   	@place = Place.new
@@ -20,8 +25,7 @@ class PlacesController < ApplicationController
   end
 
   def create
-  	@place = Place.new(params[:place])
-    @place.user_id = session[:user_id]
+  	@place = current_user.places.build(params[:place])
 
     validate, notice = check_commit(@place)
     
@@ -40,17 +44,20 @@ class PlacesController < ApplicationController
   end
 
   def update
-    @place = Place.find_by_id(params[:id], :lock => true)
+    @place = Place.find_by_id(params[:id])
+    expire_fragment("show_#{@place.id}_hi")
+    expire_fragment("show_#{@place.id}_en")
       
     notice = "Successfully updated."
     notice += "It is still hidden, you can make it visible on My Places." if(@place.hidden == true)
 
     respond_to do |format|
       if(@place.update_attributes(params[:place]))
-        format.html { redirect_to display_show_path }
+        format.html { redirect_to root_url }
         flash[:notice] = notice
+        expires_action :show
       else
-        format.html { render action: "new" }
+        format.html { render action: "edit" }
       end
     end
   end
@@ -65,12 +72,31 @@ class PlacesController < ApplicationController
     @reviews = @place.reviews
     @review = Review.new
     @address_json = @address.to_gmaps4rails
-    
+    @api_data = ApiData.find_by_url('localhost:3001')
+
     respond_to do |format|
       format.html
-      format.js
+      if @api_data.try(:authenticate_token, params[:token])
+        format.json { render json: @place }
+      else
+        format.json { render json: {} }
+      end 
     end
   end
+
+  # def get_job_applications
+  #   @place = Place.find(params[:id])
+  #   @api_data = ApiData.find_by_token('localhost:3001')
+  #   if @api_data.authenticate_token(params[:token])
+  #     link = "localhost:3001/"
+  #     @json_response = RestClient.get link, { :accept => :json }
+  #   else
+  #   # retrieving the jobs of a particular Employer
+  #   link = "http://localhost:3000/places/1.json?token=#{@api_data}"
+  #   @json_response = RestClient.get link, { :accept => :json }
+  #   session[:emp_id] = JSON.parse(@json_response).first.fetch("employer_id")
+  #   end
+  # end
 
   def destroy
     @place = Place.find_by_id(params[:id])
@@ -111,5 +137,4 @@ class PlacesController < ApplicationController
     end
     return validate, notice
   end
-
 end

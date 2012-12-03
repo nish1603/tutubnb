@@ -1,13 +1,13 @@
 class DealsController < ApplicationController
 
   after_filter :send_mail_after_reply, :only => :reply
-
-  caches_action :new, :layout => false
+  before_filter :check_access, :only => :reply
 
   def new
   	@deal = current_user.deals.build
     @deal.place_id = params[:place_id]
     @no_guests = (1..@deal.place.detail.accomodation).to_a
+    @deal.price = 0.0
   end
 
   def create
@@ -31,16 +31,17 @@ class DealsController < ApplicationController
 
   def reply
     @deal = Deal.find_by_id(params[:id])
-    @deal.reply_to_deal(params[:perform])
     
-    notify_visitor = "Your request for {@deal.place.title} has been #{params[:perform]}ed."
-    link_visitor = visits_user_path(@deal.user_id)
-
     respond_to do |format|
-      if(@deal.save)
-        Notifier.notification(notify_visitor, link_visitor, @deal.user.email, @deal.user.first_name, 'Deal #{params[:perform].capitalize}ed.').deliver
-        flash[:notice] = "Deal has been #{params[:perform]}ed."
+      if(params[:perform] == "accept" && @deal.accept!)
+        flash[:notice] = "Deal has been accepted."
         format.html { redirect_to requests_user_path(session[:user_id])}
+      elsif(params[:perform] == "reject" && @deal.reject!)
+        flash[:notice] = "Deal has been rejected."
+        format.html { redirect_to requests_user_path(session[:user_id])}
+      else
+        flash[:alert] = @deal.errors.full_messages.first
+        format.html { redirect_to root_url }
       end
     end
   end
@@ -53,4 +54,13 @@ class DealsController < ApplicationController
 
     Notifier.delay(:queue => 'verification').notification(notify_visitor, link_visitor, @deal.user.email, @deal.user.first_name, "Deal #{params[:perform].capitalize}ed.")
   end
+
+  protected
+    def check_access
+      @deal = Deal.find_by_id(params[:id])
+      if((@deal.owner != current_user) && (@deal.user == current_user && params[:perform] != "reject"))
+        redirect_to root_url
+        flash[:alert] = "You are not authorized to do this action."
+      end
+    end
 end

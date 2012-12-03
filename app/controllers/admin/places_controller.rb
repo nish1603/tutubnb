@@ -12,17 +12,18 @@ class Admin::PlacesController < ApplicationController
       else
         flash[:error] = "#{@place.title} has not been verified"
       end
-      format.html { redirect_to request.referrer }
+      format.html { redirect_to root_url }
     end
   end
 
-  def perform_activate
-    if(params[:flag] == "active")
-      return @place.activate!
-    elsif(params[:flag] == "deactive")
-      return @place.deactivate!
+  protected
+    def perform_activate
+      if(params[:flag] == "active")
+        return @place.activate!
+      elsif(params[:flag] == "deactive")
+        return @place.deactivate!
+      end
+      return false
     end
-    return false
-  end
 
 end

@@ -8,12 +8,12 @@ module ReviewSpecHelper
       :property_type => 2,
       :room_type => 1,
       :title => "Awesome",
-      :add_guests => 5, 
-      :add_price => 400.0,
-      :daily => 300,
-      :monthly => 8000,
-      :weekend => 300,
-      :weekly => 2000
+      :additional_guests => 5, 
+      :additional_price => 400.0,
+      :daily_price => 300,
+      :monthly_price => 8000,
+      :weekend_price => 300,
+      :weekly_price => 2000
     }
   end
 
@@ -83,31 +83,31 @@ describe Review do
   describe "Relationships" do
     context "with User" do
       it "should respond to user" do
-        @deal.should respond_to(:user)
+        @review.should respond_to(:user)
       end
 
       it "should have a user" do
-        @deal.user = @user
-        @deal.should have(0).errors_on(:user)
+        @review.user = @user
+        @review.should have(0).errors_on(:user)
       end
 
       it "should return a user" do
-        @deal.user.should eq(@user)
+        @review.user.should eq(@user)
       end
     end
 
     context "with Place" do
       it "should respond to place" do
-        @deal.should respond_to(:place)
+        @review.should respond_to(:place)
       end
 
       it "should have a place" do
-        @deal.place = @place
-        @deal.should have(0).errors_on(:place)
+        @review.place = @place
+        @review.should have(0).errors_on(:place)
       end
 
       it "should return a user" do
-        @deal.place.should eq(@place)
+        @review.place.should eq(@place)
       end
     end
   end

@@ -10,7 +10,7 @@
           <% end %>
         </td>
         <td class = "mid-cell">
-          <p class = "Name"><%= user.first_name + (user.last_name || '') %><p>
+          <p class = "Name"><%= link_to user.first_name + (user.last_name || ''), edit_user_path(user.id) %><p>
           <p class = "wallet">&#8377;<%= user.wallet.round(2) %></p>
           <p class = "Email Id"><%= user.email %></p>
         </td>

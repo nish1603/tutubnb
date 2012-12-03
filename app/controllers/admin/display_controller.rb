@@ -1,5 +1,5 @@
-class Admin::DisplayController < ApplicationController  
-  skip_before_filter :authorize
+class Admin::DisplayController < ApplicationController
+  
   before_filter :confirm_admin, :only => [:user, :deals]
   
   def user

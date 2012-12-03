@@ -1,0 +1,410 @@
+[33m*[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[32m.[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[33m*[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[33m*[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31mF[0m[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33m*[0m[33m*[0m[33m*[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33m*[0m[33m*[0m[31mF[0m[32m.[0m[32m.[0m[31mF[0m[32m.[0m[31mF[0m[31mF[0m[32m.[0m
+
+Pending:
+[33m  api_data/new.html.erb add some examples to (or delete) /home/nishant/project/tutubnb2/spec/views/api_data/new.html.erb_spec.rb[0m
+[36m    # No reason given[0m
+[36m    # ./spec/views/api_data/new.html.erb_spec.rb:4[0m
+[33m  ApiDataHelper add some examples to (or delete) /home/nishant/project/tutubnb2/spec/helpers/api_data_helper_spec.rb[0m
+[36m    # No reason given[0m
+[36m    # ./spec/helpers/api_data_helper_spec.rb:14[0m
+[33m  api_data/generate.html.erb add some examples to (or delete) /home/nishant/project/tutubnb2/spec/views/api_data/generate.html.erb_spec.rb[0m
+[36m    # No reason given[0m
+[36m    # ./spec/views/api_data/generate.html.erb_spec.rb:4[0m
+[33m  api_data/edit.html.erb add some examples to (or delete) /home/nishant/project/tutubnb2/spec/views/api_data/edit.html.erb_spec.rb[0m
+[36m    # No reason given[0m
+[36m    # ./spec/views/api_data/edit.html.erb_spec.rb:4[0m
+[33m  api_data/update.html.erb add some examples to (or delete) /home/nishant/project/tutubnb2/spec/views/api_data/update.html.erb_spec.rb[0m
+[36m    # No reason given[0m
+[36m    # ./spec/views/api_data/update.html.erb_spec.rb:4[0m
+[33m  api_data/index.html.erb add some examples to (or delete) /home/nishant/project/tutubnb2/spec/views/api_data/index.html.erb_spec.rb[0m
+[36m    # No reason given[0m
+[36m    # ./spec/views/api_data/index.html.erb_spec.rb:4[0m
+[33m  api_data/destroy.html.erb add some examples to (or delete) /home/nishant/project/tutubnb2/spec/views/api_data/destroy.html.erb_spec.rb[0m
+[36m    # No reason given[0m
+[36m    # ./spec/views/api_data/destroy.html.erb_spec.rb:4[0m
+[33m  api_data/show.html.erb add some examples to (or delete) /home/nishant/project/tutubnb2/spec/views/api_data/show.html.erb_spec.rb[0m
+[36m    # No reason given[0m
+[36m    # ./spec/views/api_data/show.html.erb_spec.rb:4[0m
+
+Failures:
+
+  1) Review Validations subject should not be nil
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  2) Review Validations description should not be nil
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  3) Review Validations ratings should be smaller than 10
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  4) Review Validations ratings should be greater than 0
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  5) Review Validations ratings should not be nil
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  6) Review Relationships with User should have a user
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  7) Review Relationships with User should return a user
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  8) Review Relationships with User should respond to user
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  9) Review Relationships with Place should have a place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  10) Review Relationships with Place should return a user
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  11) Review Relationships with Place should respond to place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/review_spec.rb:44:in `block (2 levels) in <top (required)>'[0m
+
+  12) Address Relationships with Place should have a place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/address_spec.rb:116:in `block (3 levels) in <top (required)>'[0m
+
+  13) Address Relationships with Place should return a place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/address_spec.rb:116:in `block (3 levels) in <top (required)>'[0m
+
+  14) Address Relationships with Place should respond to place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/address_spec.rb:116:in `block (3 levels) in <top (required)>'[0m
+
+  15) Address Gmap latitude and longitude should fill latitude and longitude
+     [31mFailure/Error:[0m [31m@address.save[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:147:in `block (4 levels) in <top (required)>'[0m
+
+  16) Address Gmap Validations should be invalid
+     [31mFailure/Error:[0m [31m@address = Address.create(invalid_address_attributes)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:159:in `block (4 levels) in <top (required)>'[0m
+
+  17) Address Validation Pincode should not be nil
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:pincode)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:91:in `block (4 levels) in <top (required)>'[0m
+
+  18) Address Validation Pincode should be an integer
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:pincode)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:96:in `block (4 levels) in <top (required)>'[0m
+
+  19) Address Validation State should not be nil
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:state)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:79:in `block (4 levels) in <top (required)>'[0m
+
+  20) Address Validation State should be a string
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:state)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:84:in `block (4 levels) in <top (required)>'[0m
+
+  21) Address Validation Address line 1 should not be nil
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:address_line1)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:53:in `block (4 levels) in <top (required)>'[0m
+
+  22) Address Validation Address line 1 should be unique
+     [31mFailure/Error:[0m [31m@address1 = Address.create(valid_address_attributes)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:57:in `block (4 levels) in <top (required)>'[0m
+
+  23) Address Validation Country should not be nil
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:country)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:103:in `block (4 levels) in <top (required)>'[0m
+
+  24) Address Validation Country should be a string
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:country)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:108:in `block (4 levels) in <top (required)>'[0m
+
+  25) Address Validation City should not be nil
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:city)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:67:in `block (4 levels) in <top (required)>'[0m
+
+  26) Address Validation City should be a string
+     [31mFailure/Error:[0m [31m@address.should have(1).errors_on(:city)[0m
+     [31mSocketError:[0m
+       [31mgetaddrinfo: Name or service not known[0m
+[36m     # ./spec/models/address_spec.rb:72:in `block (4 levels) in <top (required)>'[0m
+
+  27) Tag Relationships with Place should have a place
+     [31mFailure/Error:[0m [31m@place = Place.new(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/tag_spec.rb:62:in `new'[0m
+[36m     # ./spec/models/tag_spec.rb:62:in `block (3 levels) in <top (required)>'[0m
+
+  28) Tag Relationships with Place should return a user
+     [31mFailure/Error:[0m [31m@place = Place.new(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/tag_spec.rb:62:in `new'[0m
+[36m     # ./spec/models/tag_spec.rb:62:in `block (3 levels) in <top (required)>'[0m
+
+  29) Tag Relationships with Place should respond to place
+     [31mFailure/Error:[0m [31m@place = Place.new(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/tag_spec.rb:62:in `new'[0m
+[36m     # ./spec/models/tag_spec.rb:62:in `block (3 levels) in <top (required)>'[0m
+
+  30) ApiDatasController GET 'show' returns http success
+     [31mFailure/Error:[0m [31mget 'show'[0m
+     [31mActionController::RoutingError:[0m
+       [31mNo route matches {:controller=>"api_datas", :action=>"show"}[0m
+[36m     # ./spec/controllers/api_datas_controller_spec.rb:49:in `block (3 levels) in <top (required)>'[0m
+
+  31) ApiDatasController GET 'edit' returns http success
+     [31mFailure/Error:[0m [31mget 'edit'[0m
+     [31mActionController::RoutingError:[0m
+       [31mNo route matches {:controller=>"api_datas", :action=>"edit"}[0m
+[36m     # ./spec/controllers/api_datas_controller_spec.rb:28:in `block (3 levels) in <top (required)>'[0m
+
+  32) ApiDatasController GET 'new' returns http success
+     [31mFailure/Error:[0m [31mresponse.should be_success[0m
+       [31mexpected success? to return true, got false[0m
+[36m     # ./spec/controllers/api_datas_controller_spec.rb:8:in `block (3 levels) in <top (required)>'[0m
+
+  33) ApiDatasController GET 'generate' returns http success
+     [31mFailure/Error:[0m [31mget 'generate'[0m
+     [31mActionController::RoutingError:[0m
+       [31mNo route matches {:controller=>"api_datas", :action=>"generate"}[0m
+[36m     # ./spec/controllers/api_datas_controller_spec.rb:56:in `block (3 levels) in <top (required)>'[0m
+
+  34) ApiDatasController GET 'destroy' returns http success
+     [31mFailure/Error:[0m [31mget 'destroy'[0m
+     [31mActionController::RoutingError:[0m
+       [31mNo route matches {:controller=>"api_datas", :action=>"destroy"}[0m
+[36m     # ./spec/controllers/api_datas_controller_spec.rb:21:in `block (3 levels) in <top (required)>'[0m
+
+  35) ApiDatasController GET 'create' returns http success
+     [31mFailure/Error:[0m [31mresponse.should be_success[0m
+       [31mexpected success? to return true, got false[0m
+[36m     # ./spec/controllers/api_datas_controller_spec.rb:15:in `block (3 levels) in <top (required)>'[0m
+
+  36) ApiDatasController GET 'index' returns http success
+     [31mFailure/Error:[0m [31mresponse.should be_success[0m
+       [31mexpected success? to return true, got false[0m
+[36m     # ./spec/controllers/api_datas_controller_spec.rb:43:in `block (3 levels) in <top (required)>'[0m
+
+  37) ApiDatasController GET 'update' returns http success
+     [31mFailure/Error:[0m [31mget 'update'[0m
+     [31mActionController::RoutingError:[0m
+       [31mNo route matches {:controller=>"api_datas", :action=>"update"}[0m
+[36m     # ./spec/controllers/api_datas_controller_spec.rb:35:in `block (3 levels) in <top (required)>'[0m
+
+  38) PlacesController Action Destroy when destroy calls destroy return true should destroy the place
+     [31mFailure/Error:[0m [31mdelete :destroy, :id => 1[0m
+     [31mActionController::ActionControllerError:[0m
+       [31mCannot redirect to nil![0m
+[36m     # ./app/controllers/places_controller.rb:85:in `block (2 levels) in destroy'[0m
+[36m     # ./app/controllers/places_controller.rb:79:in `destroy'[0m
+[36m     # ./spec/controllers/places_controller_spec.rb:241:in `do_destroy'[0m
+[36m     # ./spec/controllers/places_controller_spec.rb:281:in `block (5 levels) in <top (required)>'[0m
+
+  39) PlacesController Action Destroy when destroy calls destroy return false should not destroy the place
+     [31mFailure/Error:[0m [31mdelete :destroy, :id => 1[0m
+     [31mActionController::ActionControllerError:[0m
+       [31mCannot redirect to nil![0m
+[36m     # ./app/controllers/places_controller.rb:85:in `block (2 levels) in destroy'[0m
+[36m     # ./app/controllers/places_controller.rb:79:in `destroy'[0m
+[36m     # ./spec/controllers/places_controller_spec.rb:241:in `do_destroy'[0m
+[36m     # ./spec/controllers/places_controller_spec.rb:297:in `block (5 levels) in <top (required)>'[0m
+
+  40) Rules Validation rules should not be nil
+     [31mFailure/Error:[0m [31m@rules.attributes = valid_rules_attributes.except(:rules)[0m
+     [31mNameError:[0m
+       [31mundefined local variable or method `valid_rules_attributes' for #<RSpec::Core::ExampleGroup::Nested_8::Nested_1::Nested_1:0xbff9b90>[0m
+[36m     # ./spec/models/rules_spec.rb:37:in `block (4 levels) in <top (required)>'[0m
+
+  41) Rules Validation availables should not be nil
+     [31mFailure/Error:[0m [31m@rules.attributes = valid_rules_attributes.except(:availables)[0m
+     [31mNameError:[0m
+       [31mundefined local variable or method `valid_rules_attributes' for #<RSpec::Core::ExampleGroup::Nested_8::Nested_1::Nested_2:0xc1ea6d4>[0m
+[36m     # ./spec/models/rules_spec.rb:45:in `block (4 levels) in <top (required)>'[0m
+
+  42) Rules Relationships with Place should have a place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/rules_spec.rb:54:in `block (3 levels) in <top (required)>'[0m
+
+  43) Rules Relationships with Place should return a place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/rules_spec.rb:54:in `block (3 levels) in <top (required)>'[0m
+
+  44) Rules Relationships with Place should respond to place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/rules_spec.rb:54:in `block (3 levels) in <top (required)>'[0m
+
+  45) Detail Relationships with Place should have a place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/detail_spec.rb:96:in `block (3 levels) in <top (required)>'[0m
+
+  46) Detail Relationships with Place should return a user
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/detail_spec.rb:96:in `block (3 levels) in <top (required)>'[0m
+
+  47) Detail Relationships with Place should respond to place
+     [31mFailure/Error:[0m [31m@place = Place.create(valid_place_attributes)[0m
+     [31mActiveModel::MassAssignmentSecurity::Error:[0m
+       [31mCan't mass-assign protected attributes: add_guests, add_price, daily, monthly, weekend, weekly[0m
+[36m     # ./spec/models/detail_spec.rb:96:in `block (3 levels) in <top (required)>'[0m
+
+  48) Detail Functions unit_string should return unit string
+     [31mFailure/Error:[0m [31m@detail.unit_string.should == "sq. feet"[0m
+     [31mNoMethodError:[0m
+       [31mundefined method `unit_string' for #<Detail:0xbe57dc8>[0m
+[36m     # ./spec/models/detail_spec.rb:118:in `block (4 levels) in <top (required)>'[0m
+
+  49) UsersController Action Trips when trips calls with nil id should redirect to login
+     [31mFailure/Error:[0m [31mresponse.should redirect_to login_profile_index_path[0m
+     [31mNameError:[0m
+       [31mundefined local variable or method `login_profile_index_path' for #<RSpec::Core::ExampleGroup::Nested_20::Nested_6::Nested_2:0xbfac00c>[0m
+[36m     # ./spec/controllers/users_controller_spec.rb:302:in `block (4 levels) in <top (required)>'[0m
+
+  50) UsersController Action Requests when requests calls with nil id should redirect to login
+     [31mFailure/Error:[0m [31mresponse.should redirect_to login_profile_index_path[0m
+     [31mNameError:[0m
+       [31mundefined local variable or method `login_profile_index_path' for #<RSpec::Core::ExampleGroup::Nested_20::Nested_8::Nested_2:0xafb5298>[0m
+[36m     # ./spec/controllers/users_controller_spec.rb:396:in `block (4 levels) in <top (required)>'[0m
+
+  51) UsersController Action Requests when requests calls shows requests successfully
+     [31mFailure/Error:[0m [31mget :requests, :id => @user.id[0m
+       [31mDouble User(id: integer, first_name: string, last_name: string, email: string, password_digest: string, gender: integer, created_at: datetime, updated_at: datetime, birth_date: date, school: string, describe: text, live: string, work: string, verified: boolean, avatar_file_name: string, avatar_content_type: string, avatar_file_size: integer, avatar_updated_at: datetime, wallet: float, admin: boolean, activation_link: string, activated: boolean) received unexpected message :deals with (no args)[0m
+[36m     # ./app/models/deal.rb:32:in `block in <class:Deal>'[0m
+[36m     # ./app/controllers/users_controller.rb:47:in `requests'[0m
+[36m     # ./spec/controllers/users_controller_spec.rb:368:in `do_requests'[0m
+[36m     # ./spec/controllers/users_controller_spec.rb:382:in `block (4 levels) in <top (required)>'[0m
+
+  52) UsersController Action Update DP when update_dp calls with nil id should redirect to login
+     [31mFailure/Error:[0m [31mresponse.should redirect_to login_profile_index_path[0m
+     [31mNameError:[0m
+       [31mundefined local variable or method `login_profile_index_path' for #<RSpec::Core::ExampleGroup::Nested_20::Nested_4::Nested_3:0xb8731dc>[0m
+[36m     # ./spec/controllers/users_controller_spec.rb:205:in `block (4 levels) in <top (required)>'[0m
+
+Finished in 2.97 seconds
+[31m115 examples, 52 failures, 8 pending[0m
+
+Failed examples:
+
+[31mrspec ./spec/models/review_spec.rb:69[0m [36m# Review Validations subject should not be nil[0m
+[31mrspec ./spec/models/review_spec.rb:76[0m [36m# Review Validations description should not be nil[0m
+[31mrspec ./spec/models/review_spec.rb:57[0m [36m# Review Validations ratings should be smaller than 10[0m
+[31mrspec ./spec/models/review_spec.rb:62[0m [36m# Review Validations ratings should be greater than 0[0m
+[31mrspec ./spec/models/review_spec.rb:52[0m [36m# Review Validations ratings should not be nil[0m
+[31mrspec ./spec/models/review_spec.rb:89[0m [36m# Review Relationships with User should have a user[0m
+[31mrspec ./spec/models/review_spec.rb:94[0m [36m# Review Relationships with User should return a user[0m
+[31mrspec ./spec/models/review_spec.rb:85[0m [36m# Review Relationships with User should respond to user[0m
+[31mrspec ./spec/models/review_spec.rb:104[0m [36m# Review Relationships with Place should have a place[0m
+[31mrspec ./spec/models/review_spec.rb:109[0m [36m# Review Relationships with Place should return a user[0m
+[31mrspec ./spec/models/review_spec.rb:100[0m [36m# Review Relationships with Place should respond to place[0m
+[31mrspec ./spec/models/address_spec.rb:125[0m [36m# Address Relationships with Place should have a place[0m
+[31mrspec ./spec/models/address_spec.rb:130[0m [36m# Address Relationships with Place should return a place[0m
+[31mrspec ./spec/models/address_spec.rb:121[0m [36m# Address Relationships with Place should respond to place[0m
+[31mrspec ./spec/models/address_spec.rb:150[0m [36m# Address Gmap latitude and longitude should fill latitude and longitude[0m
+[31mrspec ./spec/models/address_spec.rb:162[0m [36m# Address Gmap Validations should be invalid[0m
+[31mrspec ./spec/models/address_spec.rb:89[0m [36m# Address Validation Pincode should not be nil[0m
+[31mrspec ./spec/models/address_spec.rb:94[0m [36m# Address Validation Pincode should be an integer[0m
+[31mrspec ./spec/models/address_spec.rb:77[0m [36m# Address Validation State should not be nil[0m
+[31mrspec ./spec/models/address_spec.rb:82[0m [36m# Address Validation State should be a string[0m
+[31mrspec ./spec/models/address_spec.rb:51[0m [36m# Address Validation Address line 1 should not be nil[0m
+[31mrspec ./spec/models/address_spec.rb:56[0m [36m# Address Validation Address line 1 should be unique[0m
+[31mrspec ./spec/models/address_spec.rb:101[0m [36m# Address Validation Country should not be nil[0m
+[31mrspec ./spec/models/address_spec.rb:106[0m [36m# Address Validation Country should be a string[0m
+[31mrspec ./spec/models/address_spec.rb:65[0m [36m# Address Validation City should not be nil[0m
+[31mrspec ./spec/models/address_spec.rb:70[0m [36m# Address Validation City should be a string[0m
+[31mrspec ./spec/models/tag_spec.rb:70[0m [36m# Tag Relationships with Place should have a place[0m
+[31mrspec ./spec/models/tag_spec.rb:75[0m [36m# Tag Relationships with Place should return a user[0m
+[31mrspec ./spec/models/tag_spec.rb:66[0m [36m# Tag Relationships with Place should respond to place[0m
+[31mrspec ./spec/controllers/api_datas_controller_spec.rb:48[0m [36m# ApiDatasController GET 'show' returns http success[0m
+[31mrspec ./spec/controllers/api_datas_controller_spec.rb:27[0m [36m# ApiDatasController GET 'edit' returns http success[0m
+[31mrspec ./spec/controllers/api_datas_controller_spec.rb:6[0m [36m# ApiDatasController GET 'new' returns http success[0m
+[31mrspec ./spec/controllers/api_datas_controller_spec.rb:55[0m [36m# ApiDatasController GET 'generate' returns http success[0m
+[31mrspec ./spec/controllers/api_datas_controller_spec.rb:20[0m [36m# ApiDatasController GET 'destroy' returns http success[0m
+[31mrspec ./spec/controllers/api_datas_controller_spec.rb:13[0m [36m# ApiDatasController GET 'create' returns http success[0m
+[31mrspec ./spec/controllers/api_datas_controller_spec.rb:41[0m [36m# ApiDatasController GET 'index' returns http success[0m
+[31mrspec ./spec/controllers/api_datas_controller_spec.rb:34[0m [36m# ApiDatasController GET 'update' returns http success[0m
+[31mrspec ./spec/controllers/places_controller_spec.rb:280[0m [36m# PlacesController Action Destroy when destroy calls destroy return true should destroy the place[0m
+[31mrspec ./spec/controllers/places_controller_spec.rb:296[0m [36m# PlacesController Action Destroy when destroy calls destroy return false should not destroy the place[0m
+[31mrspec ./spec/models/rules_spec.rb:36[0m [36m# Rules Validation rules should not be nil[0m
+[31mrspec ./spec/models/rules_spec.rb:44[0m [36m# Rules Validation availables should not be nil[0m
+[31mrspec ./spec/models/rules_spec.rb:62[0m [36m# Rules Relationships with Place should have a place[0m
+[31mrspec ./spec/models/rules_spec.rb:67[0m [36m# Rules Relationships with Place should return a place[0m
+[31mrspec ./spec/models/rules_spec.rb:58[0m [36m# Rules Relationships with Place should respond to place[0m
+[31mrspec ./spec/models/detail_spec.rb:104[0m [36m# Detail Relationships with Place should have a place[0m
+[31mrspec ./spec/models/detail_spec.rb:109[0m [36m# Detail Relationships with Place should return a user[0m
+[31mrspec ./spec/models/detail_spec.rb:100[0m [36m# Detail Relationships with Place should respond to place[0m
+[31mrspec ./spec/models/detail_spec.rb:117[0m [36m# Detail Functions unit_string should return unit string[0m
+[31mrspec ./spec/controllers/users_controller_spec.rb:299[0m [36m# UsersController Action Trips when trips calls with nil id should redirect to login[0m
+[31mrspec ./spec/controllers/users_controller_spec.rb:393[0m [36m# UsersController Action Requests when requests calls with nil id should redirect to login[0m
+[31mrspec ./spec/controllers/users_controller_spec.rb:379[0m [36m# UsersController Action Requests when requests calls shows requests successfully[0m
+[31mrspec ./spec/controllers/users_controller_spec.rb:202[0m [36m# UsersController Action Update DP when update_dp calls with nil id should redirect to login[0m
+
+Randomized with seed 16447
+

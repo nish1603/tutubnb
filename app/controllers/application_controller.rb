@@ -4,9 +4,10 @@ class ApplicationController < ActionController::Base
   before_filter :authorize
   before_filter :set_i18n_locale_from_session
 
+  helper_method :current_user
 
-  def set_i18n_locale_from_session
-    
+
+  def set_i18n_locale_from_session    
     if session[:locale]
       if I18n.available_locales.include?(session[:locale].to_sym)
         I18n.locale = session[:locale]
@@ -58,7 +59,7 @@ class ApplicationController < ActionController::Base
   end
 
   def validate_account
-    if(session[:user_id].to_i != params[:id].to_i)
+    if(session[:user_id].to_i != params[:id].to_i && current_user.admin != true )
       redirect_to root_url
     end
   end
@@ -90,7 +91,7 @@ class ApplicationController < ActionController::Base
   def user_activated
     user = User.find_by_email(params[:email])
     if(user.activated == false)
-      redirect_to profile_login_path
+      redirect_to login_sessions_path
       flash[:alert] = 'You are deactivated by the admin of this site.'
     end
   end
@@ -117,14 +118,10 @@ class ApplicationController < ActionController::Base
 
   def set_session(user_id)
     session[:user_id] = user_id
-    session[:user_name] = current_user.first_name
-    session[:admin] = current_user.admin
   end
 
   def clear_session
     session[:user_id] = nil
-    session[:user_name] = nil
-    session[:admin] = nil
     @current_user = nil
   end
 end

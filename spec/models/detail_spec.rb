@@ -9,7 +9,6 @@ module DetailSpecHelper
       :beds => 4,
       :size => 500,
       :unit => 2
-
     }
   end
 
@@ -19,12 +18,12 @@ module DetailSpecHelper
       :property_type => 2,
       :room_type => 1,
       :title => "Awesome",
-      :add_guests => 5, 
-      :add_price => 400.0,
-      :daily => 300,
-      :monthly => 8000,
-      :weekend => 300,
-      :weekly => 2000
+      :additional_guests => 5, 
+      :additional_price => 400.0,
+      :daily_price => 300,
+      :monthly_price => 8000,
+      :weekend_price => 300,
+      :weekly_price => 2000
     }
   end
 end
@@ -94,6 +93,7 @@ describe Detail do
   describe "Relationships" do
     before(:each) do
       @place = Place.create(valid_place_attributes)
+      @detail.place = @place
     end
 
     context "with Place" do
@@ -102,11 +102,10 @@ describe Detail do
       end
 
       it "should have a place" do
-        @detail.place = @place
         @detail.should have(0).errors_on(:place)
       end
 
-      it "should return a user" do
+      it "should return a place" do
         @detail.place.should eq(@place)
       end
     end
@@ -115,7 +114,7 @@ describe Detail do
   describe "Functions" do
     context "unit_string" do
       it "should return unit string" do
-        @detail.unit_string.should == "sq. feet"
+        @detail.units_string.should eq("sq. feet")
       end
     end
   end

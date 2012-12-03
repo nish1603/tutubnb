@@ -4,10 +4,11 @@ one:
   first_name: 'Aditya'
   last_name: 'Kapoor'
   email: 'adi@ymail.com'
-  gender: 'Male'
+  gender: 1
+  password_digest: <%= BCrypt::Password.create("digest") %>
 
 two:
   first_name: 'KD'
   last_name: 'KD'
   email: 'kd@ymail.com'
-  gender: 'Male'
+  gender: 1

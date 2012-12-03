@@ -40,14 +40,17 @@
         </tr>
         <tr class="field">
           <p>The deal was
-          <% if(trip.accept == true) %>
+          <% if(trip.state == 1) %>
             <%= 'accepted' %>
-          <% else %>
+          <% elsif(trip.state == 2) %>
             <%= 'rejected' %>
           <% end %></p>
         </tr>
       </table>
     <% end %>
+
+    <%= will_paginate @trips %>
+
     <% if(@trips.empty?) %>
       <%= render :text => "No trips as of now." %>
     <% end %>

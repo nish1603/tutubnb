@@ -11,28 +11,28 @@
     <%= link_to 'Change Profile Pic', change_dp_user_path(session[:user_id]), :class => 'change-pic' %>
   </div>
 
-	<ul>
-    <li><%= link_to 'Edit', edit_user_path(session[:user_id]) %></li>
-    <li><%= link_to 'Change Password', change_password_user_path(session[:user_id]) %></li>
-    <li><%= link_to 'My Places', places_user_path(session[:user_id]) %></li>
-    <li><%= link_to 'My Visits', visits_user_path(session[:user_id]) %></li>
-    <li><%= link_to 'Requests', requests_user_path(session[:user_id]) %></li>
-    <li><%= link_to 'My Trips', trips_user_path(session[:user_id]) %></li>
-    <li><%= link_to 'My Requested Trips', requested_trips_user_path(session[:user_id]) %></li>
+  	<ul>
+      <li><%= link_to 'Edit', edit_user_path(params[:id]) %></li>
+      <li><%= link_to 'Change Password', change_password_user_path(params[:id]) %></li>
+      <li><%= link_to 'My Places', places_user_path(params[:id]) %></li>
+      <li><%= link_to 'My Visits', visits_user_path(params[:id]) %></li>
+      <li><%= link_to 'Requests', requests_user_path(params[:id]) %></li>
+      <li><%= link_to 'My Trips', trips_user_path(params[:id]) %></li>
+      <li><%= link_to 'My Requested Trips', requested_trips_user_path(params[:id]) %></li>
 
-    <% @user.authentications.each do |authentication| %>
-      <div>
-        <%= link_to authentication.provider.capitalize, '/auth/' + authentication.provider %>
-      </div>
-    <% end %>
+      <% @user.authentications.each do |authentication| %>
+        <div>
+          <%= link_to authentication.provider.capitalize, '/auth/' + authentication.provider %>
+        </div>
+      <% end %>
 
-    Authenticate Your Account with:
-    <%= link_to 'facebook', '/auth/facebook' %>
-    <%= link_to 'twitter', '/auth/twitter' %>
-    <%= link_to 'linked in', '/auth/linkedin' %>
+      Authenticate Your Account with:
+      <%= link_to 'facebook', '/auth/facebook' %>
+      <%= link_to 'twitter', '/auth/twitter' %>
+      <%= link_to 'linked in', '/auth/linkedin' %>
 
-    <% if(@user.admin == false) %>
-      <li><%= link_to 'Delete My Account', user_path(session[:user_id]), :method => :delete, :data => { :confirm => "Are you sure?"} %></li>
-    <% end %>
-  </ul>
+      <% if(@user.admin == false) %>
+        <li><%= link_to 'Delete My Account', user_path(params[:id]), :method => :delete, :data => { :confirm => "Are you sure?"} %></li>
+      <% end %>
+    </ul>
 </div>

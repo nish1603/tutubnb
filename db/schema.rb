@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121103114213) do
+ActiveRecord::Schema.define(:version => 20121107061226) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address_line1"
@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(:version => 20121103114213) do
     t.float    "latitude"
     t.float    "longitude"
     t.boolean  "gmaps"
+  end
+
+  create_table "api_datas", :force => true do |t|
+    t.string   "url"
+    t.string   "token"
+    t.string   "secret"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "authentications", :force => true do |t|

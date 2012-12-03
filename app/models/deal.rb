@@ -11,14 +11,13 @@ class Deal < ActiveRecord::Base
   validates :place_id, :presence => { :message => "can't be blank" }
   validates :user_id, :presence => { :message => "can't be blank" }
   
-  validate :validate_start_date, :unless => proc { |deal| deal.start_date.blank? }
+  validate :validate_start_date, :unless => proc { |deal| deal.start_date.blank? || !deal.new_record? }
   validate :validate_end_date, :unless => proc { |deal| deal.end_date.blank? }
   validate :less_than_max_guests, :unless => proc { |deal| deal.guests.blank? }
 
-  #FIXME_AB: These should be validation.
-  before_save :user_have_amount
-  before_save :user_have_wallet
-  before_save :place_already_book
+  before_create :user_have_amount
+  before_create :user_have_wallet
+  before_create :place_already_book
   
   TYPE = {'Accepted' => 1, 'Rejected' => 2, 'Requests' => 0, 'To Complete' => 3, 'Completed' => 4, 'Reviewed' => 5}
 
@@ -34,7 +33,6 @@ class Deal < ActiveRecord::Base
   scope :find_requested_trips_of_user, lambda { |user| user.trips.state(0) }
   
   #FIXME_AB: I doubt if we need following as scope
-  scope :completed_by_place, lambda { |place| Deal.where(:place_id => place.id).completed(false).requested(true) }
   scope :unreviewed_by_user_on_place, lambda { |user, place| Deal.where(:place_id => place.id, :user_id => user.id).status(4) } 
 
     def owner
@@ -50,7 +48,7 @@ class Deal < ActiveRecord::Base
     end
 
     def user_have_amount
-      if(user.wallet < (add_brockerage_to_price(price)))
+      if(user.wallet < (Deal.add_brockerage_to_price(price)))
         errors.add(:base, "Sorry, You don't have enough amount to pay in your wallet.")
         return false
       end
@@ -60,7 +58,7 @@ class Deal < ActiveRecord::Base
     def user_have_wallet
       amount = user.trips.state(0).sum(:price)
       amount = amount + price
-      if(user.wallet < (add_brockerage_to_price(amount)))
+      if(user.wallet < (Deal.add_brockerage_to_price(amount)))
         errors.add(:base, "Sorry, You have requested places upto the limit of your wallet.")
         return false
       end
@@ -74,7 +72,7 @@ class Deal < ActiveRecord::Base
     end
 
     def validate_end_date
-      if(end_date.nil? || end_date < start_date)
+      if(end_date.nil? || start_date.nil? || end_date < start_date)
         errors.add(:end_date, "should be more than or equal to start date")
       end
     end

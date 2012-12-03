@@ -1,4 +1,4 @@
-
+<% cache("show_#{@place.id}_#{session[:locale]}") do %>
 <div id = "showing_tags">
   <% @place.tags_string.split(', ').each do |place_tag| %>
     <div class = "tag_name"><span><%= place_tag %></span></div>
@@ -37,7 +37,7 @@
       <%= render :template => 'addresses/show.html.erb' %>
     </div>
   </ul>
-
+<% end %>
     <% if(session[:user_id] && session[:user_id] == @place.user_id) %>
       <td><%= link_to 'Edit', edit_place_path(@place.id) %></td>
     <% else %>

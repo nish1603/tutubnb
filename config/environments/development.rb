@@ -33,12 +33,12 @@ Tutubnb2::Application.configure do
 
   config.assets.compile = true
   config.assets.debug = true
-  config.assets.digest = false
+  config.assets.digest = true
 
   # Do not compress assets
   config.assets.compress = true
-  # config.assets.js_compressor  = :uglifier
-  # config.assets.css_compressor  = :yui
+  config.assets.js_compressor  = :uglifier
+  config.assets.css_compressor  = :scss
 
   # Expands the lines which load the assets
   config.assets.debug = true

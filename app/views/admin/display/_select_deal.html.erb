@@ -22,8 +22,8 @@
           <p class = "date">Start date : <%= deal.start_date %>, End Date : <%= deal.end_date %></p> 
         </td>
         <td class = "right-cell">
-          <% if(deal.end_date < Date.current and deal.complete == false) %>
-            <%= link_to "Transfer #{(deal.price * 0.9).round(2)} to owner", admin_deal_complete_path(deal.id), :method => :post %>
+          <% if(deal.end_date < Date.current && deal.state == 1) %>
+            <%= link_to "Transfer #{(deal.price * 0.9).round(2)} to owner", complete_admin_deal_path(deal.id), :method => :post %>
           <% end %>
         </td>
   	  </tr>

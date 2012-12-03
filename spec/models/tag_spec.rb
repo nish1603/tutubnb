@@ -13,12 +13,12 @@ module TagSpecHelper
       :property_type => 2,
       :room_type => 1,
       :title => "Awesome",
-      :add_guests => 5, 
-      :add_price => 400.0,
-      :daily => 300,
-      :monthly => 8000,
-      :weekend => 300,
-      :weekly => 2000
+      :additional_guests => 5, 
+      :additional_price => 400.0,
+      :daily_price => 300,
+      :monthly_price => 8000,
+      :weekend_price => 300,
+      :weekly_price => 2000
     }
   end
 end
@@ -60,20 +60,20 @@ describe Tag do
   describe "Relationships" do
     before(:each) do
       @place = Place.new(valid_place_attributes)
+      @tag.places = [@place]
     end
 
     context "with Place" do
       it "should respond to place" do
-        @tag.should respond_to(:place)
+        @tag.should respond_to(:places)
       end
 
-      it "should have a place" do
-        @tag.place = @place
+      it "should have multiple place" do
         @tag.should have(0).errors_on(:place)
       end
 
       it "should return a user" do
-        @tag.place.should eq(@place)
+        @tag.places.should eq([@place])
       end
     end
   end

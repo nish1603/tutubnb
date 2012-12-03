@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :deals, :through => :places
   has_many :reviews, :dependent => :destroy
   has_many :authentications, :dependent => :destroy
+  has_many :api_datas, :dependent => :destroy
 
   before_destroy :has_pending_deals?
 

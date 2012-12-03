@@ -1,5 +1,12 @@
 Tutubnb2::Application.routes.draw do
 
+  resources :api_datas do
+    member do
+      get 'generate'
+      get 'request_token'
+    end
+  end
+
   get "authenticate/create"
   get "authenticate/index"
   get "authenticate/tweet"
@@ -31,6 +38,7 @@ Tutubnb2::Application.routes.draw do
     member do
       post :activate
       post :operation
+      get :show_place_to_applications
     end
   end
 
